@@ -39,7 +39,8 @@ uint sys_wmap(void) {
   } else {
     int valid = 0;
     while (!valid) {
-      for(int i = 0; i < 16; ++i) {
+      int i;
+      for(i = 0; i < 16; ++i) {
         if(p->addr[i].va == 0) {
           continue;
         }
@@ -57,9 +58,9 @@ uint sys_wmap(void) {
           cprintf("\t-New addr after if against addr[%d] is 0x%x\n", i, addr);
           break;
         }
-        if (i == 15) {
-          valid = 1;
-        }
+      }
+      if (i == 16) {
+        valid = 1;
       }
     }
     cprintf("\t-Done. Final addr 0x%x\n", addr);
@@ -92,6 +93,9 @@ int sys_wunmap(void) {
   struct proc* p = myproc();
   pte_t *pte;
   for(int i = 0; i < 16; ++i) {
+
+      //PTE_P present bit && *pte to check if valid and then kfree and 0 it.
+
     if (p->addr[i].va == addr && p->addr[i].phys_page_used[i]>0) {
       int size = p->addr[i].size;
       int j = 0;
@@ -102,6 +106,7 @@ int sys_wunmap(void) {
         kfree(P2V(physical_address));
         size-=PAGE_SIZE;
         ++j;
+        *pte = 0;
       }
       p->addr[i].va = 0;
       p->addr[i].flags = 0;
@@ -111,7 +116,6 @@ int sys_wunmap(void) {
       break;
     }
   }
-  pte = 0;
   // flush TLB
   switchuvm(p);
     for(int i = 0; i < 16; ++i) {

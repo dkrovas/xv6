@@ -79,29 +79,31 @@ trap(struct trapframe *tf)
     lapiceoi();
     break;
   case T_PGFLT: // T_PGFLT = 14
-    //cprintf("handling trap\n");
     struct proc* p = myproc();
-    //cprintf("process id in lazy:%d\n", p->pid);
-    //cprintf("process size address: %d\n",p->size_addr);
-    //cprintf("procewss adrress 0: %d\n", p->addr[0].va);
     if(p->pgdir==0) {
       cprintf("Invalid page directory\n");
       kill(p->pid);
       break;
     }
-    //cprintf("entering for\n");
     int success = 0;
     for(int i = 0; i < 16; ++i) {
-      //cprintf("checking addr[%d]\n", i);
+
+      // between start and end request instead of just rcr2
+
+
       if (p->addr[i].va == rcr2()) {
-        //cprintf("va found, position %d\n", i);
         success = 1;
         // do kalloc
         char* mem;
         int temp_length = p->addr[i].size;
         int j = 0;
+
+
+
+        // Allocate one page only at a time. use prounddown(rcr2)
+
+
         while(temp_length > 0){
-          //cprintf("entering while, temp length = %d\n", temp_length);
           mem = kalloc();
           if(mem == 0){
             cprintf("kalloc failed\n");

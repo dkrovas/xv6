@@ -112,6 +112,13 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+  for (int i = 0; i < 16; ++i) {
+    p->addr[i].va = 0;
+    p->addr[i].size = 0;
+  }
+  p->memory_used = 0;
+  p->n_mmaps = 0;
+
   return p;
 }
 
