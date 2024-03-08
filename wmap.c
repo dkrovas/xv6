@@ -103,16 +103,21 @@ int sys_wunmap(void) {
         pte = walkpgdir(p->pgdir, (void*)addr + j*PAGE_SIZE, 0);
         int physical_address = PTE_ADDR(*pte);
         //cprintf("pte = %x", *pte);
-        kfree(P2V(physical_address));
         size-=PAGE_SIZE;
         ++j;
-        *pte = 0;
+        if(PTE_P & *pte){
+          kfree(P2V(physical_address));
+          
+          *pte = 0;
+        }
+
       }
       p->addr[i].va = 0;
       p->addr[i].flags = 0;
       p->addr[i].fd = 0;
       p->memory_used -= p->addr[i].size;
       p->addr[i].size = 0;
+      p->addr[i].phys_page_used[i] = 0;
       break;
     }
   }
@@ -126,6 +131,7 @@ int sys_wunmap(void) {
         p->addr[i].fd = 0;
         p->memory_used -= p->addr[i].size;
         p->addr[i].size = 0;
+         p->addr[i].phys_page_used[i] = 0;
       }
     }
   return 0;

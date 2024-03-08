@@ -197,6 +197,7 @@ void test_wmapinfo(void){
   }
   wunmap(map2);
   wunmap(map3);
+ 
   if(getwmapinfo(&wminfo) < 0){
     printf(1, "\nRESULT: FAILED");
     return;
@@ -220,9 +221,9 @@ int main(void)
   printf(1, "starting tests---\n");
   //test_2_page_map_unmap();
   //test_mult_map_diff_touches();
-  test_map_fixed();
+  //test_map_fixed();
   //test_out_of_va();
-  //test_wmapinfo();
+  test_wmapinfo();
   //test_remap();
   exit();
 }

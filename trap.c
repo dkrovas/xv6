@@ -87,44 +87,24 @@ trap(struct trapframe *tf)
     }
     int success = 0;
     for(int i = 0; i < 16; ++i) {
-
       // between start and end request instead of just rcr2
-
-
-      if (p->addr[i].va == rcr2()) {
+      if (rcr2()>=p->addr[i].va && rcr2() < p->addr[i].va+p->addr[i].size) {
         success = 1;
         // do kalloc
         char* mem;
-        int temp_length = p->addr[i].size;
-        int j = 0;
-
-
-
+        int temp_length;
+        temp_length = PGROUNDDOWN(rcr2());
         // Allocate one page only at a time. use prounddown(rcr2)
-
-
-        while(temp_length > 0){
-          mem = kalloc();
-          if(mem == 0){
-            cprintf("kalloc failed\n");
-            kill(p->pid);
-            break;
-          }
-          //cprintf("map:\n");
-          //cprintf("p->pgdir: %d\nva: %d\nPAGE_SIZE: %d\nmem: %p\n", p->pgdir, (void*)(p->addr[p->size_addr-1].va), PAGE_SIZE, mem);
-          if(temp_length >= 4096){
-            mappages(p->pgdir, (void*)(p->addr[i].va + j * PAGE_SIZE), PAGE_SIZE, V2P(mem), PTE_W | PTE_U);
-          }
-          else{
-            mappages(p->pgdir, (void*)(p->addr[i].va + j * PAGE_SIZE), temp_length, V2P(mem), PTE_W | PTE_U);
-          }
-          
-          //cprintf("completed mappages for %x\n", p->addr[i].va + j* PAGE_SIZE);
-          temp_length -= PAGE_SIZE;
-          j++;
+        mem = kalloc();
+        if(mem == 0){
+          cprintf("kalloc failed\n");
+          kill(p->pid);
+          break;
         }
-        cprintf("j = %d\ti = %d\n",j, i);
-        p->addr[i].phys_page_used[i] = j;
+        mappages(p->pgdir, (void*)temp_length, PAGE_SIZE, V2P(mem), PTE_W | PTE_U);
+        //cprintf("j = %d\ti = %d\n",j, i);
+        //cprintf("starting addr = %x\taddr = %x\tp.addr[i].phys_page_used[i] = %d\n",p->addr[i].va, rcr2(), p->addr[i].phys_page_used[i]);
+        p->addr[i].phys_page_used[i] += 1;
         //cprintf("exited while\n");
         break;
       }
