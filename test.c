@@ -86,18 +86,22 @@ void test_map_fixed(void) {
 
 void test_remap(void) {
   printf(1, "Testing test_remap\n");
-  printf(1, "\t-testing if ifs are right");
+  printf(1, "\t-testing if ifs are right\n");
   uint map0 = wmap(0x60000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
   map0 = map0;
+  uint map2 = wmap(0x70000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+  map2 = map2;
   wremap(0x60000000, 4096, 8192, 0);
   printf(1, "Should be Valid for in place\n\n");
   wremap(0x60000000, 4096, 8192, MREMAP_MAYMOVE);
   printf(1, "Should be Valid for in place\n\n");
-  uint map1 = wmap(0x60002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
   map1=map1;
+  uint map3 = wmap(0x70002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+  map3 = map3;
   wremap(0x60000000, 4096, 8192, 0);
   printf(1, "Should be Cannot\n\n");
-  wremap(0x60000000, 4096, 8192, 0);
+  wremap(0x60000000, 4096, 8192, MREMAP_MAYMOVE);
   printf(1, "Should be valid for moving\n\n");
   return;
 }
@@ -223,8 +227,8 @@ int main(void)
   //test_mult_map_diff_touches();
   //test_map_fixed();
   //test_out_of_va();
-  test_wmapinfo();
-  //test_remap();
+  //test_wmapinfo();
+  test_remap();
   exit();
 }
 

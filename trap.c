@@ -104,7 +104,7 @@ trap(struct trapframe *tf)
         mappages(p->pgdir, (void*)temp_length, PAGE_SIZE, V2P(mem), PTE_W | PTE_U);
         //cprintf("j = %d\ti = %d\n",j, i);
         //cprintf("starting addr = %x\taddr = %x\tp.addr[i].phys_page_used[i] = %d\n",p->addr[i].va, rcr2(), p->addr[i].phys_page_used[i]);
-        p->addr[i].phys_page_used[i] += 1;
+        p->addr[i].phys_page_used += 1;
         //cprintf("exited while\n");
         break;
       }

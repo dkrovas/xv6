@@ -35,12 +35,13 @@ struct context {
 };
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+
 struct address {
     uint va;
     int size;
     int flags;
     int fd;
-    int phys_page_used[16];             // Keeps track of physical pages used.
+    int phys_page_used;             // Keeps track of physical pages used.
 };
 
 // Per-process state

@@ -96,7 +96,7 @@ int sys_wunmap(void) {
 
       //PTE_P present bit && *pte to check if valid and then kfree and 0 it.
 
-    if (p->addr[i].va == addr && p->addr[i].phys_page_used[i]>0) {
+    if (p->addr[i].va == addr && p->addr[i].phys_page_used>0) {
       int size = p->addr[i].size;
       int j = 0;
       while(size > 0){
@@ -117,7 +117,7 @@ int sys_wunmap(void) {
       p->addr[i].fd = 0;
       p->memory_used -= p->addr[i].size;
       p->addr[i].size = 0;
-      p->addr[i].phys_page_used[i] = 0;
+      p->addr[i].phys_page_used = 0;
       break;
     }
   }
@@ -131,7 +131,7 @@ int sys_wunmap(void) {
         p->addr[i].fd = 0;
         p->memory_used -= p->addr[i].size;
         p->addr[i].size = 0;
-         p->addr[i].phys_page_used[i] = 0;
+         p->addr[i].phys_page_used = 0;
       }
     }
   return 0;
@@ -156,16 +156,22 @@ uint sys_wremap(void) {
     cprintf("Address given is not mapped by wmap\n");
     return -1;
   }
-  int valid = 0;
+  int valid = 1;
   for (int j = 0; j < 16; ++j) {
-    if (p->addr[j].va < oldaddr + newsize && p->addr[j].va + p->addr[j].size > oldaddr + newsize) {
+    if(p->addr[j].va == 0) {
       continue;
     }
-    valid = 1;
+    cprintf("\t-%x <= %x < %x\n", p->addr[j].va, oldaddr + newsize, p->addr[j].va + p->addr[j].size);
+    if ((p->addr[j].va > oldaddr) && (p->addr[j].va < oldaddr + newsize)) {
+      cprintf("\t-Address %x between %x and %x, making valid 0\n", oldaddr + newsize, p->addr[j].va, p->addr[j].va + p->addr[j].size);
+      valid = 0;
+      continue;
+    }
   }
   if (oldaddr + newsize > 0x80000000) {
     valid = 0;
   }
+  cprintf("\t-flag is %d\n", flags);
   if (valid == 1) {
     cprintf("\t-Valid for in place\n");
   } else if ((valid == 0) && !(flags & MREMAP_MAYMOVE)) {
@@ -179,11 +185,14 @@ uint sys_wremap(void) {
 }
 
 int sys_getpgdirinfo(void) {
-struct pgdirinfo* pdinfo;
-if (argptr(0, (void*)&pdinfo, sizeof(struct pgdirinfo)) < 0) {
-   return -1;
-}
-
+  struct pgdirinfo* pdinfo;
+  if (argptr(0, (void*)&pdinfo, sizeof(struct pgdirinfo)) < 0) {
+    return -1;
+  }  
+  // struct proc *p = myproc();
+  // for(int i = 0; i < 16; ++i){
+    
+  // }
   return 0;
 }
 
@@ -200,7 +209,7 @@ int sys_getwmapinfo(void) {
   for(int i = 0; i < MAX_WMMAP_INFO; ++i){
     wminfo->addr[i] = p->addr[i].va;
     wminfo->length[i] = p->addr[i].size;
-    wminfo->n_loaded_pages[i] = p->addr[i].phys_page_used[i];
+    wminfo->n_loaded_pages[i] = p->addr[i].phys_page_used;
     // cprintf("loaded pages[%d]: %d\n",i, p->addr[i].phys_page_used[i]);
   }
   return 0;

@@ -7,6 +7,11 @@
 #include "proc.h"
 #include "spinlock.h"
 
+#define MAP_PRIVATE 0x0001
+#define MAP_SHARED 0x0002
+#define MAP_ANONYMOUS 0x0004
+#define MAP_FIXED 0x0008
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -115,6 +120,9 @@ found:
   for (int i = 0; i < 16; ++i) {
     p->addr[i].va = 0;
     p->addr[i].size = 0;
+    p->addr[i].phys_page_used = 0;
+    p->addr[i].flags = 0;
+    p->addr[i].fd = 0;
   }
   p->memory_used = 0;
   p->n_mmaps = 0;
@@ -191,6 +199,12 @@ fork(void)
   struct proc *np;
   struct proc *curproc = myproc();
 
+  for (int i = 0; i < 16; ++i) {
+    if (curproc->addr[i].flags & MAP_PRIVATE) {
+        curproc->addr[i].flags = curproc->addr[i].flags | MAP_ANONYMOUS; //Making all the mappings anonymous, because the mapping is private
+    }
+  }
+
   // Allocate process.
   if((np = allocproc()) == 0){
     return -1;
@@ -240,6 +254,10 @@ exit(void)
 
   if(curproc == initproc)
     panic("init exiting");
+
+  // for(int i = 0; i < 16; ++i) {
+  //   wunmap(curproc->addr[i].va);
+  // }
 
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
