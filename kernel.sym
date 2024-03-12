@@ -4,7 +4,7 @@
 80110f58 panicked
 80100400 consputc.part.0
 80100600 printint
-801083d0 digits.0
+80108450 digits.0
 00000000 exec.c
 00000000 file.c
 00000000 fs.c
@@ -22,9 +22,9 @@
 00000000 kalloc.c
 00000000 kbd.c
 8011367c shift.1
-80108700 shiftcode
-80108600 togglecode
-801085e0 charcode.0
+80108780 shiftcode
+80108680 togglecode
+80108660 charcode.0
 8010a200 normalmap
 8010a100 shiftmap
 8010a000 ctlmap
@@ -43,12 +43,12 @@
 801037b0 allocproc
 8010c000 first.1
 8011ae54 initproc
-801089e0 states.0
+80108a60 states.0
 00000000 sleeplock.c
 00000000 spinlock.c
 00000000 string.c
 00000000 syscall.c
-80108a60 syscalls
+80108ae0 syscalls
 00000000 sysfile.c
 80104d70 create
 00000000 sysproc.c
@@ -200,7 +200,7 @@
 80102560 freerange
 8010670c vector125
 80107280 allocuvm
-80107a40 wunmap
+80107a50 wunmap
 80105c32 trapret
 80106b47 vector216
 801064de vector63
@@ -244,7 +244,7 @@
 80107500 clearpteu
 801039d0 myproc
 80105c40 tvinit
-80108200 sys_getpgdirinfo
+80108280 sys_getpgdirinfo
 801064c3 vector60
 80106376 vector23
 80101750 idup
@@ -301,7 +301,7 @@
 80102d60 begin_op
 80106847 vector152
 801074e0 kvmalloc
-801082d0 sys_getwmapinfo
+80108350 sys_getwmapinfo
 80106bef vector230
 80104a10 strncmp
 801063f4 vector37
@@ -433,7 +433,7 @@
 80106ab7 vector204
 80101780 ilock
 80105770 sys_exec
-80107e10 wremap
+80107e90 wremap
 801077b0 wmap
 80106793 vector137
 8010c460 _binary_initcode_start

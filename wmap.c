@@ -107,6 +107,7 @@ uint wmap(uint addr, int length, int flags, int fd)
     {
       // cprintf("\t\t\tadding addr %x to index %d of maps:\n", addr, i);
       p->addr[i].va = addr;
+      cprintf("length = %x\n", length);
       p->memory_used += length;
       p->addr[i].size = length;
       p->addr[i].flags = flags;
@@ -140,14 +141,22 @@ int wunmap(uint addr)
         struct file *f = p->ofile[p->addr[i].fd];
         f->off = 0;
         //cprintf("attempting umap2:\n\n");
-        if (f->type == FD_INODE) {
-          begin_op();
-          ilock(f->ip);
-          writei(f->ip, (void *)p->addr[i].va, f->off, PAGE_SIZE);
-          iunlock(f->ip);
-          end_op();
-        }
-
+        int offset = 0;
+        cprintf("size = %x\n", p->addr[i].size);
+        while(offset < p->addr[i].size){
+          cprintf("writing address: %x\n", p->addr[i].va + offset);
+          if (f->type == FD_INODE) {
+            begin_op();
+            ilock(f->ip);
+            writei(f->ip, (void *)p->addr[i].va+offset, f->off+offset, PAGE_SIZE);
+            iunlock(f->ip);
+            end_op();
+          }
+          offset += PAGE_SIZE;
+          if(offset > p->addr[i].size){
+            break;
+          }
+        }     
         if (p->parent->pid == 2) {
           // unmap and write from mmap to file
           int size = p->addr[i].size;
@@ -260,13 +269,6 @@ int wunmap(uint addr)
 
 uint wremap(uint oldaddr, int oldsize, int newsize, int flags)
 {
-  // uint oldaddr;
-  // int oldsize;
-  // int newsize;
-  // int flags;
-  // if(argint(0, (int*)&oldaddr) < 0 || argint(1, &oldsize) < 0 || argint(2, &newsize) < 0 || argint(3, &flags) < 0) {
-  //   return -1;
-  // }
   if (newsize % 4096 != 0) {
     newsize = (newsize / 4096) * 4096 + 4096;
   }
