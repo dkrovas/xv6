@@ -7,6 +7,14 @@
 #include "proc.h"
 #include "elf.h"
 
+#define MAP_PRIVATE 0x0001
+#define MAP_SHARED 0x0002
+#define MAP_ANONYMOUS 0x0004
+#define MAP_FIXED 0x0008
+// Flags for remap
+#define MREMAP_MAYMOVE 0x1
+#define PAGE_SIZE 0x1000
+
 extern char data[];  // defined by kernel.ld
 pde_t *kpgdir;  // for use in scheduler()
 
@@ -287,7 +295,7 @@ freevm(pde_t *pgdir)
 
   if(pgdir == 0)
     panic("freevm: no pgdir");
-  deallocuvm(pgdir, KERNBASE, 0);
+  deallocuvm(pgdir, 0x60000000, 0);
   for(i = 0; i < NPDENTRIES; i++){
     if(pgdir[i] & PTE_P){
       char * v = P2V(PTE_ADDR(pgdir[i]));
@@ -327,6 +335,20 @@ copyuvm(pde_t *pgdir, uint sz)
       panic("copyuvm: pte should exist");
     if(!(*pte & PTE_P))
       panic("copyuvm: page not present");
+    // int j;
+    // for(j = 0; j < 16; ++j) {
+    //   if (i == p->addr[j].va) {
+    //     if (p->addr[j].va & MAP_SHARED) {
+    //       mappages(d, (void*)i, PGSIZE, PTE_ADDR(*pte), PTE_W | PTE_U);
+    //     } else if (p->addr[j].va & MAP_PRIVATE) {
+    //       j = 16;
+    //       break;
+    //     }
+    //   }
+    // }
+    // if (j != 16) {
+    //   continue;
+    // }
     pa = PTE_ADDR(*pte);
     flags = PTE_FLAGS(*pte);
     if((mem = kalloc()) == 0)

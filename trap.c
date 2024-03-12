@@ -7,7 +7,11 @@
 #include "x86.h"
 #include "traps.h"
 #include "spinlock.h"
+#include "sleeplock.h"
+#include "fs.h"
+#include "file.h"
 #define PAGE_SIZE 0x1000
+#define MAP_ANONYMOUS 0x0004
 
 // Interrupt descriptor table (shared by all CPUs).
 struct gatedesc idt[256];
@@ -80,15 +84,21 @@ trap(struct trapframe *tf)
     break;
   case T_PGFLT: // T_PGFLT = 14
     struct proc* p = myproc();
+    // cprintf("addr %x, pid %d\t", rcr2(), p->pid, p->killed);
     if(p->pgdir==0) {
       cprintf("Invalid page directory\n");
       kill(p->pid);
       break;
     }
+    //cprintf("in trap\n");
     int success = 0;
     for(int i = 0; i < 16; ++i) {
-      // between start and end request instead of just rcr2
+      // between start and end request 
       if (rcr2()>=p->addr[i].va && rcr2() < p->addr[i].va+p->addr[i].size) {
+        //cprintf("\t\t\tindex: %d addr: %x \n", i, rcr2());
+        // cprintf("in if\n");
+        // // Case 1: anonymous:
+        //if(p->addr[i].flags & MAP_ANONYMOUS){
         success = 1;
         // do kalloc
         char* mem;
@@ -102,19 +112,30 @@ trap(struct trapframe *tf)
           break;
         }
         mappages(p->pgdir, (void*)temp_length, PAGE_SIZE, V2P(mem), PTE_W | PTE_U);
-        //cprintf("j = %d\ti = %d\n",j, i);
-        //cprintf("starting addr = %x\taddr = %x\tp.addr[i].phys_page_used[i] = %d\n",p->addr[i].va, rcr2(), p->addr[i].phys_page_used[i]);
         p->addr[i].phys_page_used += 1;
-        //cprintf("exited while\n");
-        break;
+        memset(mem, 0, PGSIZE);
+        if(p->addr[i].flags & MAP_ANONYMOUS){
+          break;
+        }
+        else if(p->addr[i].fd){
+          struct file *f = p->ofile[p->addr[i].fd];
+          f->off = temp_length - p->addr[i].va;
+          //fileread(of, (void*)temp_length, PAGE_SIZE);
+            if(f->type == FD_INODE){
+              int r;
+              ilock(f->ip);
+              if((r = readi(f->ip, (void*)temp_length, f->off, PAGE_SIZE)) > 0)
+              iunlock(f->ip);
+            }
+            break;
+        }      
       }
     }
-    //cprintf("exited for\n");
     if (!success) {
+      cprintf("addr %x, pid %d, killed: %d\n", rcr2(), p->pid, p->killed);
       cprintf("Segmentation Fault\n");
       kill(p->pid);
     }
-    //cprintf("got to break\n");
     break;
 
 

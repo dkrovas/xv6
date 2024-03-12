@@ -442,10 +442,57 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+uint sys_wmap(void) {
+  uint addr;
+  int length;
+  int flags;
+  int fd;
+  if(argint(0, (int*)&addr) < 0 || argint(1, &length) < 0 || argint(2, &flags) < 0 || argint(3, &fd) < 0) {
+   return -1;
+  }
+  //cprintf("addr = %x\n", addr);
+  uint map = wmap(addr, length, flags, fd);
+  return map;
+}
 
-// int
-// sys_wunmap(void)
-// {
-//   uint addr;
-//   wunmap(addr);
+int
+sys_wunmap(void)
+{
+  uint addr;
+  if (argint(0, (int*)&addr) < 0) {
+   return -1;
+  }
+
+  if(wunmap(addr) == 0){
+    return 0;
+  }
+  else{
+    return -1;
+  }
+}
+uint sys_wremap(void) {
+  uint oldaddr;
+  int oldsize;
+  int newsize;
+  int flags;
+  if(argint(0, (int*)&oldaddr) < 0 || argint(1, &oldsize) < 0 || argint(2, &newsize) < 0 || argint(3, &flags) < 0) {
+    return -1;
+  }
+  
+  return wremap(oldaddr, oldsize, newsize, flags);
+}
+
+// int sys_getpgdirinfo(void) {
+//   struct pgdirinfo* pdinfo;
+//   if (argptr(0, (void*)&pdinfo, sizeof(struct pgdirinfo)) < 0) {
+//     return -1;
+//   }
+//   getpgdirinfo(pdinfo);
+// }
+
+// int sys_getwmapinfo(void) {
+//   struct wmapinfo* wminfo;
+//   if (argptr(0, (void*)&wminfo, sizeof(struct wmapinfo)) < 0) {
+//    return -1;
+//   }
 // }

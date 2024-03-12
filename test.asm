@@ -5,1613 +5,2238 @@ _test:     file format elf32-i386
 Disassembly of section .text:
 
 00000000 <main>:
-  printf(1, "\nRESULT: SUCCESS\n\n");
-  return;
-}
+//   printf(1, "map0 is %x\n", map0);
+//   printf(1, "finished move\n");
+// }
 
 int main(void) 
 {
-   0:	8d 4c 24 04          	lea    0x4(%esp),%ecx
-   4:	83 e4 f0             	and    $0xfffffff0,%esp
-   7:	ff 71 fc             	push   -0x4(%ecx)
-   a:	55                   	push   %ebp
-   b:	89 e5                	mov    %esp,%ebp
-   d:	51                   	push   %ecx
-   e:	83 ec 0c             	sub    $0xc,%esp
+       0:	8d 4c 24 04          	lea    0x4(%esp),%ecx
+       4:	83 e4 f0             	and    $0xfffffff0,%esp
+       7:	ff 71 fc             	push   -0x4(%ecx)
+       a:	55                   	push   %ebp
+       b:	89 e5                	mov    %esp,%ebp
+       d:	51                   	push   %ecx
+       e:	83 ec 0c             	sub    $0xc,%esp
   printf(1, "starting tests---\n");
-  11:	68 d1 13 00 00       	push   $0x13d1
-  16:	6a 01                	push   $0x1
-  18:	e8 03 0c 00 00       	call   c20 <printf>
-  //test_2_page_map_unmap();
-  //test_mult_map_diff_touches();
-  //test_map_fixed();
-  //test_out_of_va();
+      11:	68 67 1c 00 00       	push   $0x1c67
+      16:	6a 01                	push   $0x1
+      18:	e8 53 12 00 00       	call   1270 <printf>
   //test_wmapinfo();
-  test_remap();
-  1d:	e8 0e 03 00 00       	call   330 <test_remap>
+ // test_remap();
+  //test_single_wremap();
+  //test_single_remap_shrink();
+  //test_single_remap_move();
+  test_fork();
+      1d:	e8 8e 0b 00 00       	call   bb0 <test_fork>
+  //test_pg();
+  printf(1, "test finished\n");
+      22:	58                   	pop    %eax
+      23:	5a                   	pop    %edx
+      24:	68 7a 1c 00 00       	push   $0x1c7a
+      29:	6a 01                	push   $0x1
+      2b:	e8 40 12 00 00       	call   1270 <printf>
   exit();
-  22:	e8 7c 0a 00 00       	call   aa3 <exit>
-  27:	66 90                	xchg   %ax,%ax
-  29:	66 90                	xchg   %ax,%ax
-  2b:	66 90                	xchg   %ax,%ax
-  2d:	66 90                	xchg   %ax,%ax
-  2f:	90                   	nop
+      30:	e8 be 10 00 00       	call   10f3 <exit>
+      35:	66 90                	xchg   %ax,%ax
+      37:	66 90                	xchg   %ax,%ax
+      39:	66 90                	xchg   %ax,%ax
+      3b:	66 90                	xchg   %ax,%ax
+      3d:	66 90                	xchg   %ax,%ax
+      3f:	90                   	nop
 
-00000030 <test_mult_map_diff_touches>:
+00000040 <test_mult_map_diff_touches>:
 void test_mult_map_diff_touches () {
-  30:	55                   	push   %ebp
-  31:	89 e5                	mov    %esp,%ebp
-  33:	57                   	push   %edi
-  34:	56                   	push   %esi
-  35:	53                   	push   %ebx
-  36:	83 ec 14             	sub    $0x14,%esp
+      40:	55                   	push   %ebp
+      41:	89 e5                	mov    %esp,%ebp
+      43:	57                   	push   %edi
+      44:	56                   	push   %esi
+      45:	53                   	push   %ebx
+      46:	83 ec 14             	sub    $0x14,%esp
   printf(1, "Testing mult_map_diff_touches\n");
-  39:	68 48 0f 00 00       	push   $0xf48
-  3e:	6a 01                	push   $0x1
-  40:	e8 db 0b 00 00       	call   c20 <printf>
+      49:	68 98 15 00 00       	push   $0x1598
+      4e:	6a 01                	push   $0x1
+      50:	e8 1b 12 00 00       	call   1270 <printf>
   printf(1, "\t-wmapping 0\n");
-  45:	59                   	pop    %ecx
-  46:	5b                   	pop    %ebx
-  47:	68 87 11 00 00       	push   $0x1187
-  4c:	6a 01                	push   $0x1
-  4e:	e8 cd 0b 00 00       	call   c20 <printf>
+      55:	59                   	pop    %ecx
+      56:	5b                   	pop    %ebx
+      57:	68 33 19 00 00       	push   $0x1933
+      5c:	6a 01                	push   $0x1
+      5e:	e8 0d 12 00 00       	call   1270 <printf>
   uint map0 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
-  53:	6a ff                	push   $0xffffffff
-  55:	6a 0e                	push   $0xe
-  57:	68 00 20 00 00       	push   $0x2000
-  5c:	68 00 00 00 60       	push   $0x60000000
-  61:	e8 dd 0a 00 00       	call   b43 <wmap>
+      63:	6a ff                	push   $0xffffffff
+      65:	6a 0e                	push   $0xe
+      67:	68 00 20 00 00       	push   $0x2000
+      6c:	68 00 00 00 60       	push   $0x60000000
+      71:	e8 1d 11 00 00       	call   1193 <wmap>
   printf(1, "\t-touching 0\n");
-  66:	83 c4 18             	add    $0x18,%esp
-  69:	68 95 11 00 00       	push   $0x1195
+      76:	83 c4 18             	add    $0x18,%esp
+      79:	68 41 19 00 00       	push   $0x1941
   uint map0 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
-  6e:	89 c3                	mov    %eax,%ebx
+      7e:	89 c3                	mov    %eax,%ebx
   printf(1, "\t-touching 0\n");
-  70:	6a 01                	push   $0x1
-  72:	e8 a9 0b 00 00       	call   c20 <printf>
+      80:	6a 01                	push   $0x1
+      82:	e8 e9 11 00 00       	call   1270 <printf>
   ptr0[0] = 'a';
-  77:	c6 03 61             	movb   $0x61,(%ebx)
+      87:	c6 03 61             	movb   $0x61,(%ebx)
   printf(1, "\t-wmapping 1\n");
-  7a:	5e                   	pop    %esi
-  7b:	5f                   	pop    %edi
-  7c:	68 a3 11 00 00       	push   $0x11a3
-  81:	6a 01                	push   $0x1
-  83:	e8 98 0b 00 00       	call   c20 <printf>
+      8a:	5e                   	pop    %esi
+      8b:	5f                   	pop    %edi
+      8c:	68 4f 19 00 00       	push   $0x194f
+      91:	6a 01                	push   $0x1
+      93:	e8 d8 11 00 00       	call   1270 <printf>
   uint map1 = wmap(0x60003000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
-  88:	6a ff                	push   $0xffffffff
-  8a:	6a 0e                	push   $0xe
-  8c:	68 00 10 00 00       	push   $0x1000
-  91:	68 00 30 00 60       	push   $0x60003000
-  96:	e8 a8 0a 00 00       	call   b43 <wmap>
+      98:	6a ff                	push   $0xffffffff
+      9a:	6a 0e                	push   $0xe
+      9c:	68 00 10 00 00       	push   $0x1000
+      a1:	68 00 30 00 60       	push   $0x60003000
+      a6:	e8 e8 10 00 00       	call   1193 <wmap>
   printf(1, "\t-wmapping 2\n");
-  9b:	83 c4 18             	add    $0x18,%esp
-  9e:	68 b1 11 00 00       	push   $0x11b1
+      ab:	83 c4 18             	add    $0x18,%esp
+      ae:	68 5d 19 00 00       	push   $0x195d
   uint map1 = wmap(0x60003000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
-  a3:	89 c6                	mov    %eax,%esi
+      b3:	89 c6                	mov    %eax,%esi
   printf(1, "\t-wmapping 2\n");
-  a5:	6a 01                	push   $0x1
-  a7:	e8 74 0b 00 00       	call   c20 <printf>
+      b5:	6a 01                	push   $0x1
+      b7:	e8 b4 11 00 00       	call   1270 <printf>
   uint map2 = wmap(0x60002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
-  ac:	6a ff                	push   $0xffffffff
-  ae:	6a 0e                	push   $0xe
-  b0:	68 00 10 00 00       	push   $0x1000
-  b5:	68 00 20 00 60       	push   $0x60002000
-  ba:	e8 84 0a 00 00       	call   b43 <wmap>
+      bc:	6a ff                	push   $0xffffffff
+      be:	6a 0e                	push   $0xe
+      c0:	68 00 10 00 00       	push   $0x1000
+      c5:	68 00 20 00 60       	push   $0x60002000
+      ca:	e8 c4 10 00 00       	call   1193 <wmap>
     printf(1, "\t-touching 1\n");
-  bf:	83 c4 18             	add    $0x18,%esp
-  c2:	68 bf 11 00 00       	push   $0x11bf
+      cf:	83 c4 18             	add    $0x18,%esp
+      d2:	68 6b 19 00 00       	push   $0x196b
   uint map2 = wmap(0x60002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
-  c7:	89 c7                	mov    %eax,%edi
+      d7:	89 c7                	mov    %eax,%edi
     printf(1, "\t-touching 1\n");
-  c9:	6a 01                	push   $0x1
-  cb:	e8 50 0b 00 00       	call   c20 <printf>
+      d9:	6a 01                	push   $0x1
+      db:	e8 90 11 00 00       	call   1270 <printf>
   ptr1[0] = 'b';
-  d0:	c6 06 62             	movb   $0x62,(%esi)
+      e0:	c6 06 62             	movb   $0x62,(%esi)
   printf(1, "\t-map0 %c map1 %c\n", ptr0[0], ptr1[0]);
-  d3:	6a 62                	push   $0x62
-  d5:	0f be 03             	movsbl (%ebx),%eax
-  d8:	50                   	push   %eax
-  d9:	68 cd 11 00 00       	push   $0x11cd
-  de:	6a 01                	push   $0x1
-  e0:	e8 3b 0b 00 00       	call   c20 <printf>
+      e3:	6a 62                	push   $0x62
+      e5:	0f be 03             	movsbl (%ebx),%eax
+      e8:	50                   	push   %eax
+      e9:	68 79 19 00 00       	push   $0x1979
+      ee:	6a 01                	push   $0x1
+      f0:	e8 7b 11 00 00       	call   1270 <printf>
   printf(1, "\nRESULT: ");
-  e5:	83 c4 18             	add    $0x18,%esp
-  e8:	68 e0 11 00 00       	push   $0x11e0
-  ed:	6a 01                	push   $0x1
-  ef:	e8 2c 0b 00 00       	call   c20 <printf>
+      f5:	83 c4 18             	add    $0x18,%esp
+      f8:	68 8c 19 00 00       	push   $0x198c
+      fd:	6a 01                	push   $0x1
+      ff:	e8 6c 11 00 00       	call   1270 <printf>
   if (ptr0[0] == 'a' && ptr1[0] == 'b') {
-  f4:	83 c4 10             	add    $0x10,%esp
-  f7:	80 3b 61             	cmpb   $0x61,(%ebx)
-  fa:	75 05                	jne    101 <test_mult_map_diff_touches+0xd1>
-  fc:	80 3e 62             	cmpb   $0x62,(%esi)
-  ff:	74 47                	je     148 <test_mult_map_diff_touches+0x118>
+     104:	83 c4 10             	add    $0x10,%esp
+     107:	80 3b 61             	cmpb   $0x61,(%ebx)
+     10a:	75 05                	jne    111 <test_mult_map_diff_touches+0xd1>
+     10c:	80 3e 62             	cmpb   $0x62,(%esi)
+     10f:	74 47                	je     158 <test_mult_map_diff_touches+0x118>
     printf(1, "FAILED");
- 101:	83 ec 08             	sub    $0x8,%esp
- 104:	68 15 13 00 00       	push   $0x1315
- 109:	6a 01                	push   $0x1
- 10b:	e8 10 0b 00 00       	call   c20 <printf>
- 110:	83 c4 10             	add    $0x10,%esp
+     111:	83 ec 08             	sub    $0x8,%esp
+     114:	68 b6 1a 00 00       	push   $0x1ab6
+     119:	6a 01                	push   $0x1
+     11b:	e8 50 11 00 00       	call   1270 <printf>
+     120:	83 c4 10             	add    $0x10,%esp
   wunmap(map0);
- 113:	83 ec 0c             	sub    $0xc,%esp
- 116:	53                   	push   %ebx
- 117:	e8 2f 0a 00 00       	call   b4b <wunmap>
+     123:	83 ec 0c             	sub    $0xc,%esp
+     126:	53                   	push   %ebx
+     127:	e8 6f 10 00 00       	call   119b <wunmap>
   wunmap(map1);
- 11c:	89 34 24             	mov    %esi,(%esp)
- 11f:	e8 27 0a 00 00       	call   b4b <wunmap>
+     12c:	89 34 24             	mov    %esi,(%esp)
+     12f:	e8 67 10 00 00       	call   119b <wunmap>
   wunmap(map2);
- 124:	89 3c 24             	mov    %edi,(%esp)
- 127:	e8 1f 0a 00 00       	call   b4b <wunmap>
+     134:	89 3c 24             	mov    %edi,(%esp)
+     137:	e8 5f 10 00 00       	call   119b <wunmap>
   printf(1, "\n\n");
- 12c:	58                   	pop    %eax
- 12d:	5a                   	pop    %edx
- 12e:	68 90 12 00 00       	push   $0x1290
- 133:	6a 01                	push   $0x1
- 135:	e8 e6 0a 00 00       	call   c20 <printf>
+     13c:	58                   	pop    %eax
+     13d:	5a                   	pop    %edx
+     13e:	68 43 1a 00 00       	push   $0x1a43
+     143:	6a 01                	push   $0x1
+     145:	e8 26 11 00 00       	call   1270 <printf>
   return;
- 13a:	83 c4 10             	add    $0x10,%esp
+     14a:	83 c4 10             	add    $0x10,%esp
 }
- 13d:	8d 65 f4             	lea    -0xc(%ebp),%esp
- 140:	5b                   	pop    %ebx
- 141:	5e                   	pop    %esi
- 142:	5f                   	pop    %edi
- 143:	5d                   	pop    %ebp
- 144:	c3                   	ret    
- 145:	8d 76 00             	lea    0x0(%esi),%esi
+     14d:	8d 65 f4             	lea    -0xc(%ebp),%esp
+     150:	5b                   	pop    %ebx
+     151:	5e                   	pop    %esi
+     152:	5f                   	pop    %edi
+     153:	5d                   	pop    %ebp
+     154:	c3                   	ret    
+     155:	8d 76 00             	lea    0x0(%esi),%esi
     printf(1, "PASSED");
- 148:	83 ec 08             	sub    $0x8,%esp
- 14b:	68 42 13 00 00       	push   $0x1342
- 150:	6a 01                	push   $0x1
- 152:	e8 c9 0a 00 00       	call   c20 <printf>
- 157:	83 c4 10             	add    $0x10,%esp
- 15a:	eb b7                	jmp    113 <test_mult_map_diff_touches+0xe3>
- 15c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     158:	83 ec 08             	sub    $0x8,%esp
+     15b:	68 96 19 00 00       	push   $0x1996
+     160:	6a 01                	push   $0x1
+     162:	e8 09 11 00 00       	call   1270 <printf>
+     167:	83 c4 10             	add    $0x10,%esp
+     16a:	eb b7                	jmp    123 <test_mult_map_diff_touches+0xe3>
+     16c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
 
-00000160 <test_out_of_va>:
+00000170 <test_out_of_va>:
 void test_out_of_va(void) {
- 160:	55                   	push   %ebp
- 161:	89 e5                	mov    %esp,%ebp
- 163:	83 ec 10             	sub    $0x10,%esp
+     170:	55                   	push   %ebp
+     171:	89 e5                	mov    %esp,%ebp
+     173:	83 ec 10             	sub    $0x10,%esp
   printf(1, "Testing test_out_of_va\n");
- 166:	68 ea 11 00 00       	push   $0x11ea
- 16b:	6a 01                	push   $0x1
- 16d:	e8 ae 0a 00 00       	call   c20 <printf>
+     176:	68 9d 19 00 00       	push   $0x199d
+     17b:	6a 01                	push   $0x1
+     17d:	e8 ee 10 00 00       	call   1270 <printf>
   printf(1, "\t-wmapping 0 to max size\n");
- 172:	58                   	pop    %eax
- 173:	5a                   	pop    %edx
- 174:	68 02 12 00 00       	push   $0x1202
- 179:	6a 01                	push   $0x1
- 17b:	e8 a0 0a 00 00       	call   c20 <printf>
+     182:	58                   	pop    %eax
+     183:	5a                   	pop    %edx
+     184:	68 b5 19 00 00       	push   $0x19b5
+     189:	6a 01                	push   $0x1
+     18b:	e8 e0 10 00 00       	call   1270 <printf>
   uint map0 = wmap(0x60000000, 0x20000000, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 180:	6a ff                	push   $0xffffffff
- 182:	6a 0e                	push   $0xe
- 184:	68 00 00 00 20       	push   $0x20000000
- 189:	68 00 00 00 60       	push   $0x60000000
- 18e:	e8 b0 09 00 00       	call   b43 <wmap>
+     190:	6a ff                	push   $0xffffffff
+     192:	6a 0e                	push   $0xe
+     194:	68 00 00 00 20       	push   $0x20000000
+     199:	68 00 00 00 60       	push   $0x60000000
+     19e:	e8 f0 0f 00 00       	call   1193 <wmap>
   printf(1, "\t-wmapping 1, so we get error message\n");
- 193:	83 c4 18             	add    $0x18,%esp
- 196:	68 68 0f 00 00       	push   $0xf68
- 19b:	6a 01                	push   $0x1
- 19d:	e8 7e 0a 00 00       	call   c20 <printf>
+     1a3:	83 c4 18             	add    $0x18,%esp
+     1a6:	68 b8 15 00 00       	push   $0x15b8
+     1ab:	6a 01                	push   $0x1
+     1ad:	e8 be 10 00 00       	call   1270 <printf>
   uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 1a2:	6a ff                	push   $0xffffffff
- 1a4:	6a 0e                	push   $0xe
- 1a6:	68 00 10 00 00       	push   $0x1000
- 1ab:	68 00 10 00 60       	push   $0x60001000
- 1b0:	e8 8e 09 00 00       	call   b43 <wmap>
+     1b2:	6a ff                	push   $0xffffffff
+     1b4:	6a 0e                	push   $0xe
+     1b6:	68 00 10 00 00       	push   $0x1000
+     1bb:	68 00 10 00 60       	push   $0x60001000
+     1c0:	e8 ce 0f 00 00       	call   1193 <wmap>
   printf(1, "\nCheck if got error message above\n");
- 1b5:	83 c4 18             	add    $0x18,%esp
- 1b8:	68 90 0f 00 00       	push   $0xf90
- 1bd:	6a 01                	push   $0x1
- 1bf:	e8 5c 0a 00 00       	call   c20 <printf>
+     1c5:	83 c4 18             	add    $0x18,%esp
+     1c8:	68 e0 15 00 00       	push   $0x15e0
+     1cd:	6a 01                	push   $0x1
+     1cf:	e8 9c 10 00 00       	call   1270 <printf>
 }
- 1c4:	83 c4 10             	add    $0x10,%esp
- 1c7:	c9                   	leave  
- 1c8:	c3                   	ret    
- 1c9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     1d4:	83 c4 10             	add    $0x10,%esp
+     1d7:	c9                   	leave  
+     1d8:	c3                   	ret    
+     1d9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
 
-000001d0 <test_map_fixed>:
+000001e0 <test_map_fixed>:
 void test_map_fixed(void) {
- 1d0:	55                   	push   %ebp
- 1d1:	89 e5                	mov    %esp,%ebp
- 1d3:	56                   	push   %esi
- 1d4:	53                   	push   %ebx
+     1e0:	55                   	push   %ebp
+     1e1:	89 e5                	mov    %esp,%ebp
+     1e3:	57                   	push   %edi
+     1e4:	56                   	push   %esi
+     1e5:	53                   	push   %ebx
+     1e6:	83 ec 24             	sub    $0x24,%esp
   printf(1, "Testing test_map_fixed\n");
- 1d5:	83 ec 08             	sub    $0x8,%esp
- 1d8:	68 1c 12 00 00       	push   $0x121c
- 1dd:	6a 01                	push   $0x1
- 1df:	e8 3c 0a 00 00       	call   c20 <printf>
+     1e9:	68 cf 19 00 00       	push   $0x19cf
+     1ee:	6a 01                	push   $0x1
+     1f0:	e8 7b 10 00 00       	call   1270 <printf>
   printf(1, "\t-testing basic functionality\n");
- 1e4:	58                   	pop    %eax
- 1e5:	5a                   	pop    %edx
- 1e6:	68 b4 0f 00 00       	push   $0xfb4
- 1eb:	6a 01                	push   $0x1
- 1ed:	e8 2e 0a 00 00       	call   c20 <printf>
+     1f5:	58                   	pop    %eax
+     1f6:	5a                   	pop    %edx
+     1f7:	68 04 16 00 00       	push   $0x1604
+     1fc:	6a 01                	push   $0x1
+     1fe:	e8 6d 10 00 00       	call   1270 <printf>
   printf(1, "\t-wmapping 0 as fixed\n");
- 1f2:	59                   	pop    %ecx
- 1f3:	5b                   	pop    %ebx
- 1f4:	68 34 12 00 00       	push   $0x1234
- 1f9:	6a 01                	push   $0x1
- 1fb:	e8 20 0a 00 00       	call   c20 <printf>
+     203:	59                   	pop    %ecx
+     204:	5b                   	pop    %ebx
+     205:	68 e7 19 00 00       	push   $0x19e7
+     20a:	6a 01                	push   $0x1
+     20c:	e8 5f 10 00 00       	call   1270 <printf>
   uint map0 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 200:	6a ff                	push   $0xffffffff
- 202:	6a 0e                	push   $0xe
- 204:	68 00 20 00 00       	push   $0x2000
- 209:	68 00 00 00 60       	push   $0x60000000
- 20e:	e8 30 09 00 00       	call   b43 <wmap>
+     211:	6a ff                	push   $0xffffffff
+     213:	6a 0e                	push   $0xe
+     215:	68 00 20 00 00       	push   $0x2000
+     21a:	68 00 00 00 60       	push   $0x60000000
+     21f:	e8 6f 0f 00 00       	call   1193 <wmap>
   printf(1, "\t-wmapping 1 as not fixed, trying to get other addr\n");
- 213:	83 c4 18             	add    $0x18,%esp
- 216:	68 d4 0f 00 00       	push   $0xfd4
+     224:	83 c4 18             	add    $0x18,%esp
+     227:	68 24 16 00 00       	push   $0x1624
   uint map0 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 21b:	89 c6                	mov    %eax,%esi
+     22c:	89 c6                	mov    %eax,%esi
   printf(1, "\t-wmapping 1 as not fixed, trying to get other addr\n");
- 21d:	6a 01                	push   $0x1
- 21f:	e8 fc 09 00 00       	call   c20 <printf>
+     22e:	6a 01                	push   $0x1
+     230:	e8 3b 10 00 00       	call   1270 <printf>
   uint map1 = wmap(0x60000000, 8192, MAP_SHARED | MAP_ANONYMOUS, -1);
- 224:	6a ff                	push   $0xffffffff
- 226:	6a 06                	push   $0x6
- 228:	68 00 20 00 00       	push   $0x2000
- 22d:	68 00 00 00 60       	push   $0x60000000
- 232:	e8 0c 09 00 00       	call   b43 <wmap>
+     235:	6a ff                	push   $0xffffffff
+     237:	6a 06                	push   $0x6
+     239:	68 00 20 00 00       	push   $0x2000
+     23e:	68 00 00 00 60       	push   $0x60000000
+     243:	e8 4b 0f 00 00       	call   1193 <wmap>
   printf(1, "\nShould be 0x60002000\n\n");
- 237:	83 c4 18             	add    $0x18,%esp
- 23a:	68 4b 12 00 00       	push   $0x124b
+     248:	83 c4 18             	add    $0x18,%esp
+     24b:	68 fe 19 00 00       	push   $0x19fe
   uint map1 = wmap(0x60000000, 8192, MAP_SHARED | MAP_ANONYMOUS, -1);
- 23f:	89 c3                	mov    %eax,%ebx
+     250:	89 c3                	mov    %eax,%ebx
   printf(1, "\nShould be 0x60002000\n\n");
- 241:	6a 01                	push   $0x1
- 243:	e8 d8 09 00 00       	call   c20 <printf>
+     252:	6a 01                	push   $0x1
+     254:	e8 17 10 00 00       	call   1270 <printf>
   printf(1, "\t-testing if doesn't break with endpoints\n");
- 248:	58                   	pop    %eax
- 249:	5a                   	pop    %edx
- 24a:	68 0c 10 00 00       	push   $0x100c
- 24f:	6a 01                	push   $0x1
- 251:	e8 ca 09 00 00       	call   c20 <printf>
+     259:	5f                   	pop    %edi
+     25a:	58                   	pop    %eax
+     25b:	68 5c 16 00 00       	push   $0x165c
+     260:	6a 01                	push   $0x1
+     262:	e8 09 10 00 00       	call   1270 <printf>
   wunmap(map0);
- 256:	89 34 24             	mov    %esi,(%esp)
- 259:	e8 ed 08 00 00       	call   b4b <wunmap>
+     267:	89 34 24             	mov    %esi,(%esp)
+     26a:	e8 2c 0f 00 00       	call   119b <wunmap>
   printf(1, "\t-wmapping 0 as not fixed, trying to get other addr\n");
- 25e:	59                   	pop    %ecx
- 25f:	5e                   	pop    %esi
- 260:	68 38 10 00 00       	push   $0x1038
- 265:	6a 01                	push   $0x1
- 267:	e8 b4 09 00 00       	call   c20 <printf>
+     26f:	58                   	pop    %eax
+     270:	5a                   	pop    %edx
+     271:	68 88 16 00 00       	push   $0x1688
+     276:	6a 01                	push   $0x1
+     278:	e8 f3 0f 00 00       	call   1270 <printf>
   map0 = wmap(0x60000000, 4096 * 3, MAP_SHARED | MAP_ANONYMOUS, -1);
- 26c:	6a ff                	push   $0xffffffff
- 26e:	6a 06                	push   $0x6
- 270:	68 00 30 00 00       	push   $0x3000
- 275:	68 00 00 00 60       	push   $0x60000000
- 27a:	e8 c4 08 00 00       	call   b43 <wmap>
+     27d:	6a ff                	push   $0xffffffff
+     27f:	6a 06                	push   $0x6
+     281:	68 00 30 00 00       	push   $0x3000
+     286:	68 00 00 00 60       	push   $0x60000000
+     28b:	e8 03 0f 00 00       	call   1193 <wmap>
   printf(1, "\nShould be 0x60004000\n\n");
- 27f:	83 c4 18             	add    $0x18,%esp
- 282:	68 63 12 00 00       	push   $0x1263
+     290:	83 c4 18             	add    $0x18,%esp
+     293:	68 16 1a 00 00       	push   $0x1a16
   map0 = wmap(0x60000000, 4096 * 3, MAP_SHARED | MAP_ANONYMOUS, -1);
- 287:	89 c6                	mov    %eax,%esi
+     298:	89 c6                	mov    %eax,%esi
   printf(1, "\nShould be 0x60004000\n\n");
- 289:	6a 01                	push   $0x1
- 28b:	e8 90 09 00 00       	call   c20 <printf>
+     29a:	6a 01                	push   $0x1
+     29c:	e8 cf 0f 00 00       	call   1270 <printf>
   printf(1, "\t-testing if doesn't break if exceding 0x80000000\n");
- 290:	58                   	pop    %eax
- 291:	5a                   	pop    %edx
- 292:	68 70 10 00 00       	push   $0x1070
- 297:	6a 01                	push   $0x1
- 299:	e8 82 09 00 00       	call   c20 <printf>
+     2a1:	59                   	pop    %ecx
+     2a2:	5f                   	pop    %edi
+     2a3:	68 c0 16 00 00       	push   $0x16c0
+     2a8:	6a 01                	push   $0x1
+     2aa:	e8 c1 0f 00 00       	call   1270 <printf>
   wunmap(map0);
- 29e:	89 34 24             	mov    %esi,(%esp)
- 2a1:	e8 a5 08 00 00       	call   b4b <wunmap>
+     2af:	89 34 24             	mov    %esi,(%esp)
+     2b2:	e8 e4 0e 00 00       	call   119b <wunmap>
   wunmap(map1);
- 2a6:	89 1c 24             	mov    %ebx,(%esp)
- 2a9:	e8 9d 08 00 00       	call   b4b <wunmap>
+     2b7:	89 1c 24             	mov    %ebx,(%esp)
+     2ba:	e8 dc 0e 00 00       	call   119b <wunmap>
   printf(1, "\t-wmapping 0 as fixed at 0x7fffe000\n");
- 2ae:	59                   	pop    %ecx
- 2af:	5b                   	pop    %ebx
- 2b0:	68 a4 10 00 00       	push   $0x10a4
- 2b5:	6a 01                	push   $0x1
- 2b7:	e8 64 09 00 00       	call   c20 <printf>
+     2bf:	58                   	pop    %eax
+     2c0:	5a                   	pop    %edx
+     2c1:	68 f4 16 00 00       	push   $0x16f4
+     2c6:	6a 01                	push   $0x1
+     2c8:	e8 a3 0f 00 00       	call   1270 <printf>
   map0 = wmap(0x7fffe000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 2bc:	6a ff                	push   $0xffffffff
- 2be:	6a 0e                	push   $0xe
- 2c0:	68 00 10 00 00       	push   $0x1000
- 2c5:	68 00 e0 ff 7f       	push   $0x7fffe000
- 2ca:	e8 74 08 00 00       	call   b43 <wmap>
+     2cd:	6a ff                	push   $0xffffffff
+     2cf:	6a 0e                	push   $0xe
+     2d1:	68 00 10 00 00       	push   $0x1000
+     2d6:	68 00 e0 ff 7f       	push   $0x7fffe000
+     2db:	e8 b3 0e 00 00       	call   1193 <wmap>
   printf(1, "\t-wmapping 1 with 8192, needing to loop\n");
- 2cf:	83 c4 18             	add    $0x18,%esp
- 2d2:	68 cc 10 00 00       	push   $0x10cc
+     2e0:	83 c4 18             	add    $0x18,%esp
+     2e3:	68 1c 17 00 00       	push   $0x171c
   map0 = wmap(0x7fffe000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 2d7:	89 c6                	mov    %eax,%esi
+     2e8:	89 c6                	mov    %eax,%esi
   printf(1, "\t-wmapping 1 with 8192, needing to loop\n");
- 2d9:	6a 01                	push   $0x1
- 2db:	e8 40 09 00 00       	call   c20 <printf>
+     2ea:	6a 01                	push   $0x1
+     2ec:	e8 7f 0f 00 00       	call   1270 <printf>
   map1 = wmap(0x7fffe000, 8192, MAP_SHARED | MAP_ANONYMOUS, -1);
- 2e0:	6a ff                	push   $0xffffffff
- 2e2:	6a 06                	push   $0x6
- 2e4:	68 00 20 00 00       	push   $0x2000
- 2e9:	68 00 e0 ff 7f       	push   $0x7fffe000
- 2ee:	e8 50 08 00 00       	call   b43 <wmap>
+     2f1:	6a ff                	push   $0xffffffff
+     2f3:	6a 06                	push   $0x6
+     2f5:	68 00 20 00 00       	push   $0x2000
+     2fa:	68 00 e0 ff 7f       	push   $0x7fffe000
+     2ff:	e8 8f 0e 00 00       	call   1193 <wmap>
   printf(1, "\nShould be 0x60000000\n\n");
- 2f3:	83 c4 18             	add    $0x18,%esp
- 2f6:	68 7b 12 00 00       	push   $0x127b
+     304:	83 c4 18             	add    $0x18,%esp
+     307:	68 2e 1a 00 00       	push   $0x1a2e
   map1 = wmap(0x7fffe000, 8192, MAP_SHARED | MAP_ANONYMOUS, -1);
- 2fb:	89 c3                	mov    %eax,%ebx
+     30c:	89 c3                	mov    %eax,%ebx
   printf(1, "\nShould be 0x60000000\n\n");
- 2fd:	6a 01                	push   $0x1
- 2ff:	e8 1c 09 00 00       	call   c20 <printf>
+     30e:	6a 01                	push   $0x1
+     310:	e8 5b 0f 00 00       	call   1270 <printf>
   wunmap(map0);
- 304:	89 34 24             	mov    %esi,(%esp)
- 307:	e8 3f 08 00 00       	call   b4b <wunmap>
+     315:	89 34 24             	mov    %esi,(%esp)
+     318:	e8 7e 0e 00 00       	call   119b <wunmap>
   wunmap(map1);
- 30c:	89 1c 24             	mov    %ebx,(%esp)
- 30f:	e8 37 08 00 00       	call   b4b <wunmap>
+     31d:	89 1c 24             	mov    %ebx,(%esp)
+     320:	e8 76 0e 00 00       	call   119b <wunmap>
+  printf(1, "\t-big wmapping aloc\n");
+     325:	59                   	pop    %ecx
+     326:	5b                   	pop    %ebx
+     327:	68 46 1a 00 00       	push   $0x1a46
+     32c:	6a 01                	push   $0x1
+     32e:	e8 3d 0f 00 00       	call   1270 <printf>
+  map0 = wmap(0x60000000, 0x20000000 - 4 * 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     333:	6a ff                	push   $0xffffffff
+     335:	6a 0e                	push   $0xe
+     337:	68 00 c0 ff 1f       	push   $0x1fffc000
+     33c:	68 00 00 00 60       	push   $0x60000000
+     341:	e8 4d 0e 00 00       	call   1193 <wmap>
+  printf(1, "\t-allocing one page, leaving one page in the middle\n");
+     346:	83 c4 18             	add    $0x18,%esp
+     349:	68 48 17 00 00       	push   $0x1748
+     34e:	6a 01                	push   $0x1
+  map0 = wmap(0x60000000, 0x20000000 - 4 * 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     350:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+  printf(1, "\t-allocing one page, leaving one page in the middle\n");
+     353:	e8 18 0f 00 00       	call   1270 <printf>
+  map1 = wmap(0x80000000 - 3 * 4096, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     358:	6a ff                	push   $0xffffffff
+     35a:	6a 0e                	push   $0xe
+     35c:	68 00 10 00 00       	push   $0x1000
+     361:	68 00 d0 ff 7f       	push   $0x7fffd000
+     366:	e8 28 0e 00 00       	call   1193 <wmap>
+  printf(1, "\t-allocing another page, leaving one in the middle\n");
+     36b:	83 c4 18             	add    $0x18,%esp
+     36e:	68 80 17 00 00       	push   $0x1780
+  map1 = wmap(0x80000000 - 3 * 4096, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     373:	89 c7                	mov    %eax,%edi
+  printf(1, "\t-allocing another page, leaving one in the middle\n");
+     375:	6a 01                	push   $0x1
+     377:	e8 f4 0e 00 00       	call   1270 <printf>
+  uint map2 = wmap(0x80000000 - 4096, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     37c:	6a ff                	push   $0xffffffff
+     37e:	6a 0e                	push   $0xe
+     380:	68 00 10 00 00       	push   $0x1000
+     385:	68 00 f0 ff 7f       	push   $0x7ffff000
+     38a:	e8 04 0e 00 00       	call   1193 <wmap>
+  printf(1, "\t-trying to alloc contiguously 2 pages, but should fail\n");
+     38f:	83 c4 18             	add    $0x18,%esp
+     392:	68 b4 17 00 00       	push   $0x17b4
+  uint map2 = wmap(0x80000000 - 4096, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     397:	89 c6                	mov    %eax,%esi
+  printf(1, "\t-trying to alloc contiguously 2 pages, but should fail\n");
+     399:	6a 01                	push   $0x1
+     39b:	e8 d0 0e 00 00       	call   1270 <printf>
+  uint map3 = wmap(0x60000000, 8192, MAP_SHARED | MAP_ANONYMOUS, -1);
+     3a0:	6a ff                	push   $0xffffffff
+     3a2:	6a 06                	push   $0x6
+     3a4:	68 00 20 00 00       	push   $0x2000
+     3a9:	68 00 00 00 60       	push   $0x60000000
+     3ae:	e8 e0 0d 00 00       	call   1193 <wmap>
+  printf(1, "\nShould have failed\n\n");
+     3b3:	83 c4 18             	add    $0x18,%esp
+     3b6:	68 5b 1a 00 00       	push   $0x1a5b
+  uint map3 = wmap(0x60000000, 8192, MAP_SHARED | MAP_ANONYMOUS, -1);
+     3bb:	89 c3                	mov    %eax,%ebx
+  printf(1, "\nShould have failed\n\n");
+     3bd:	6a 01                	push   $0x1
+     3bf:	e8 ac 0e 00 00       	call   1270 <printf>
   printf(1, "\n\n");
- 314:	5e                   	pop    %esi
- 315:	58                   	pop    %eax
- 316:	68 90 12 00 00       	push   $0x1290
- 31b:	6a 01                	push   $0x1
- 31d:	e8 fe 08 00 00       	call   c20 <printf>
-  return;
- 322:	83 c4 10             	add    $0x10,%esp
-}
- 325:	8d 65 f8             	lea    -0x8(%ebp),%esp
- 328:	5b                   	pop    %ebx
- 329:	5e                   	pop    %esi
- 32a:	5d                   	pop    %ebp
- 32b:	c3                   	ret    
- 32c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
-
-00000330 <test_remap>:
-void test_remap(void) {
- 330:	55                   	push   %ebp
- 331:	89 e5                	mov    %esp,%ebp
- 333:	83 ec 10             	sub    $0x10,%esp
-  printf(1, "Testing test_remap\n");
- 336:	68 93 12 00 00       	push   $0x1293
- 33b:	6a 01                	push   $0x1
- 33d:	e8 de 08 00 00       	call   c20 <printf>
-  printf(1, "\t-testing if ifs are right\n");
- 342:	58                   	pop    %eax
- 343:	5a                   	pop    %edx
- 344:	68 a7 12 00 00       	push   $0x12a7
- 349:	6a 01                	push   $0x1
- 34b:	e8 d0 08 00 00       	call   c20 <printf>
-  uint map0 = wmap(0x60000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 350:	6a ff                	push   $0xffffffff
- 352:	6a 0e                	push   $0xe
- 354:	68 00 10 00 00       	push   $0x1000
- 359:	68 00 00 00 60       	push   $0x60000000
- 35e:	e8 e0 07 00 00       	call   b43 <wmap>
-  uint map2 = wmap(0x70000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 363:	83 c4 20             	add    $0x20,%esp
- 366:	6a ff                	push   $0xffffffff
- 368:	6a 0e                	push   $0xe
- 36a:	68 00 10 00 00       	push   $0x1000
- 36f:	68 00 00 00 70       	push   $0x70000000
- 374:	e8 ca 07 00 00       	call   b43 <wmap>
-  wremap(0x60000000, 4096, 8192, 0);
- 379:	6a 00                	push   $0x0
- 37b:	68 00 20 00 00       	push   $0x2000
- 380:	68 00 10 00 00       	push   $0x1000
- 385:	68 00 00 00 60       	push   $0x60000000
- 38a:	e8 c4 07 00 00       	call   b53 <wremap>
-  printf(1, "Should be Valid for in place\n\n");
- 38f:	83 c4 18             	add    $0x18,%esp
- 392:	68 f8 10 00 00       	push   $0x10f8
- 397:	6a 01                	push   $0x1
- 399:	e8 82 08 00 00       	call   c20 <printf>
-  wremap(0x60000000, 4096, 8192, MREMAP_MAYMOVE);
- 39e:	6a 01                	push   $0x1
- 3a0:	68 00 20 00 00       	push   $0x2000
- 3a5:	68 00 10 00 00       	push   $0x1000
- 3aa:	68 00 00 00 60       	push   $0x60000000
- 3af:	e8 9f 07 00 00       	call   b53 <wremap>
-  printf(1, "Should be Valid for in place\n\n");
- 3b4:	83 c4 18             	add    $0x18,%esp
- 3b7:	68 f8 10 00 00       	push   $0x10f8
- 3bc:	6a 01                	push   $0x1
- 3be:	e8 5d 08 00 00       	call   c20 <printf>
-  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 3c3:	6a ff                	push   $0xffffffff
- 3c5:	6a 0e                	push   $0xe
- 3c7:	68 00 10 00 00       	push   $0x1000
- 3cc:	68 00 10 00 60       	push   $0x60001000
- 3d1:	e8 6d 07 00 00       	call   b43 <wmap>
-  uint map3 = wmap(0x70002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 3d6:	83 c4 20             	add    $0x20,%esp
- 3d9:	6a ff                	push   $0xffffffff
- 3db:	6a 0e                	push   $0xe
- 3dd:	68 00 10 00 00       	push   $0x1000
- 3e2:	68 00 20 00 70       	push   $0x70002000
- 3e7:	e8 57 07 00 00       	call   b43 <wmap>
-  wremap(0x60000000, 4096, 8192, 0);
- 3ec:	6a 00                	push   $0x0
- 3ee:	68 00 20 00 00       	push   $0x2000
- 3f3:	68 00 10 00 00       	push   $0x1000
- 3f8:	68 00 00 00 60       	push   $0x60000000
- 3fd:	e8 51 07 00 00       	call   b53 <wremap>
-  printf(1, "Should be Cannot\n\n");
- 402:	83 c4 18             	add    $0x18,%esp
- 405:	68 c3 12 00 00       	push   $0x12c3
- 40a:	6a 01                	push   $0x1
- 40c:	e8 0f 08 00 00       	call   c20 <printf>
-  wremap(0x60000000, 4096, 8192, MREMAP_MAYMOVE);
- 411:	6a 01                	push   $0x1
- 413:	68 00 20 00 00       	push   $0x2000
- 418:	68 00 10 00 00       	push   $0x1000
- 41d:	68 00 00 00 60       	push   $0x60000000
- 422:	e8 2c 07 00 00       	call   b53 <wremap>
-  printf(1, "Should be valid for moving\n\n");
- 427:	83 c4 18             	add    $0x18,%esp
- 42a:	68 d6 12 00 00       	push   $0x12d6
- 42f:	6a 01                	push   $0x1
- 431:	e8 ea 07 00 00       	call   c20 <printf>
-  return;
- 436:	83 c4 10             	add    $0x10,%esp
-}
- 439:	c9                   	leave  
- 43a:	c3                   	ret    
- 43b:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 43f:	90                   	nop
-
-00000440 <test_2_page_map_unmap>:
-{
- 440:	55                   	push   %ebp
- 441:	89 e5                	mov    %esp,%ebp
- 443:	53                   	push   %ebx
- 444:	83 ec 0c             	sub    $0xc,%esp
-  printf(1, "Testing Mapping and unmapping multipages:\n");
- 447:	68 18 11 00 00       	push   $0x1118
- 44c:	6a 01                	push   $0x1
- 44e:	e8 cd 07 00 00       	call   c20 <printf>
-  uint map = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 453:	6a ff                	push   $0xffffffff
- 455:	6a 0e                	push   $0xe
- 457:	68 00 20 00 00       	push   $0x2000
- 45c:	68 00 00 00 60       	push   $0x60000000
- 461:	e8 dd 06 00 00       	call   b43 <wmap>
-  if (map == 0) {
- 466:	83 c4 20             	add    $0x20,%esp
- 469:	85 c0                	test   %eax,%eax
- 46b:	74 5a                	je     4c7 <test_2_page_map_unmap+0x87>
- 46d:	89 c3                	mov    %eax,%ebx
- 46f:	8d 88 00 10 00 00    	lea    0x1000(%eax),%ecx
- 475:	89 c2                	mov    %eax,%edx
- 477:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 47e:	66 90                	xchg   %ax,%ax
-    ptr[i] = 'f';
- 480:	c6 02 66             	movb   $0x66,(%edx)
-  for(int i=0;i<4096;i++){
- 483:	83 c2 01             	add    $0x1,%edx
- 486:	39 d1                	cmp    %edx,%ecx
- 488:	75 f6                	jne    480 <test_2_page_map_unmap+0x40>
-  printf(1, "\t-ptr = %c, map = %x mapped\n", ptr[0], map);
- 48a:	53                   	push   %ebx
- 48b:	0f be 03             	movsbl (%ebx),%eax
- 48e:	50                   	push   %eax
- 48f:	68 1c 13 00 00       	push   $0x131c
- 494:	6a 01                	push   $0x1
- 496:	e8 85 07 00 00       	call   c20 <printf>
-  wunmap(map);
- 49b:	89 1c 24             	mov    %ebx,(%esp)
- 49e:	e8 a8 06 00 00       	call   b4b <wunmap>
-  printf(1, "\nRESULT: PASSED");
- 4a3:	59                   	pop    %ecx
- 4a4:	5b                   	pop    %ebx
- 4a5:	68 39 13 00 00       	push   $0x1339
- 4aa:	6a 01                	push   $0x1
- 4ac:	e8 6f 07 00 00       	call   c20 <printf>
-  printf(1, "\n\n");
- 4b1:	58                   	pop    %eax
- 4b2:	5a                   	pop    %edx
- 4b3:	68 90 12 00 00       	push   $0x1290
- 4b8:	6a 01                	push   $0x1
- 4ba:	e8 61 07 00 00       	call   c20 <printf>
-}
- 4bf:	8b 5d fc             	mov    -0x4(%ebp),%ebx
-  return;
- 4c2:	83 c4 10             	add    $0x10,%esp
-}
- 4c5:	c9                   	leave  
- 4c6:	c3                   	ret    
-    printf(1, "\t-Error mapping memory.\n");
- 4c7:	83 ec 08             	sub    $0x8,%esp
- 4ca:	68 f3 12 00 00       	push   $0x12f3
- 4cf:	6a 01                	push   $0x1
- 4d1:	e8 4a 07 00 00       	call   c20 <printf>
-    printf(1, "\nRESULT: FAILED");
- 4d6:	58                   	pop    %eax
- 4d7:	5a                   	pop    %edx
- 4d8:	68 0c 13 00 00       	push   $0x130c
- 4dd:	eb cb                	jmp    4aa <test_2_page_map_unmap+0x6a>
- 4df:	90                   	nop
-
-000004e0 <test_wmapinfo>:
-void test_wmapinfo(void){
- 4e0:	55                   	push   %ebp
- 4e1:	89 e5                	mov    %esp,%ebp
- 4e3:	57                   	push   %edi
- 4e4:	56                   	push   %esi
- 4e5:	53                   	push   %ebx
- 4e6:	81 ec f4 00 00 00    	sub    $0xf4,%esp
-  printf(1, "Testing wmapinfo\n");
- 4ec:	68 49 13 00 00       	push   $0x1349
- 4f1:	6a 01                	push   $0x1
- 4f3:	e8 28 07 00 00       	call   c20 <printf>
-  uint map = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 4f8:	6a ff                	push   $0xffffffff
- 4fa:	6a 0e                	push   $0xe
- 4fc:	68 00 20 00 00       	push   $0x2000
- 501:	68 00 00 00 60       	push   $0x60000000
- 506:	e8 38 06 00 00       	call   b43 <wmap>
-  if(getwmapinfo(&wminfo) < 0){
- 50b:	83 c4 14             	add    $0x14,%esp
-  uint map = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 50e:	89 85 14 ff ff ff    	mov    %eax,-0xec(%ebp)
-  if(getwmapinfo(&wminfo) < 0){
- 514:	8d 85 24 ff ff ff    	lea    -0xdc(%ebp),%eax
- 51a:	50                   	push   %eax
- 51b:	e8 43 06 00 00       	call   b63 <getwmapinfo>
- 520:	83 c4 10             	add    $0x10,%esp
- 523:	85 c0                	test   %eax,%eax
- 525:	0f 88 fd 02 00 00    	js     828 <test_wmapinfo+0x348>
-  printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[0]);
- 52b:	83 ec 04             	sub    $0x4,%esp
- 52e:	ff 75 a8             	push   -0x58(%ebp)
- 531:	68 5b 13 00 00       	push   $0x135b
- 536:	6a 01                	push   $0x1
- 538:	e8 e3 06 00 00       	call   c20 <printf>
-  ptr0[0] = 'a';
- 53d:	8b 85 14 ff ff ff    	mov    -0xec(%ebp),%eax
- 543:	c6 00 61             	movb   $0x61,(%eax)
-  if(getwmapinfo(&wminfo) < 0){
- 546:	8d 85 24 ff ff ff    	lea    -0xdc(%ebp),%eax
- 54c:	89 04 24             	mov    %eax,(%esp)
- 54f:	e8 0f 06 00 00       	call   b63 <getwmapinfo>
- 554:	83 c4 10             	add    $0x10,%esp
- 557:	85 c0                	test   %eax,%eax
- 559:	0f 88 c9 02 00 00    	js     828 <test_wmapinfo+0x348>
-  printf(1, "\t-Total mmaps: %d\n", wminfo.total_mmaps);
- 55f:	83 ec 04             	sub    $0x4,%esp
- 562:	ff b5 24 ff ff ff    	push   -0xdc(%ebp)
- 568:	8d 9d 28 ff ff ff    	lea    -0xd8(%ebp),%ebx
- 56e:	8d b5 68 ff ff ff    	lea    -0x98(%ebp),%esi
- 574:	68 6f 13 00 00       	push   $0x136f
- 579:	89 df                	mov    %ebx,%edi
- 57b:	6a 01                	push   $0x1
- 57d:	e8 9e 06 00 00       	call   c20 <printf>
-  for(int i = 0; i < 16; ++i){
- 582:	83 c4 10             	add    $0x10,%esp
- 585:	eb 10                	jmp    597 <test_wmapinfo+0xb7>
- 587:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 58e:	66 90                	xchg   %ax,%ax
- 590:	83 c7 04             	add    $0x4,%edi
- 593:	39 f7                	cmp    %esi,%edi
- 595:	74 57                	je     5ee <test_wmapinfo+0x10e>
-    if(wminfo.addr[i]!=0){
- 597:	8b 0f                	mov    (%edi),%ecx
- 599:	85 c9                	test   %ecx,%ecx
- 59b:	74 f3                	je     590 <test_wmapinfo+0xb0>
-      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
- 59d:	83 ec 04             	sub    $0x4,%esp
- 5a0:	ff b7 80 00 00 00    	push   0x80(%edi)
-  for(int i = 0; i < 16; ++i){
- 5a6:	83 c7 04             	add    $0x4,%edi
-      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
- 5a9:	68 5b 13 00 00       	push   $0x135b
- 5ae:	6a 01                	push   $0x1
- 5b0:	e8 6b 06 00 00       	call   c20 <printf>
-      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
- 5b5:	83 c4 0c             	add    $0xc,%esp
- 5b8:	ff 77 fc             	push   -0x4(%edi)
- 5bb:	68 82 13 00 00       	push   $0x1382
- 5c0:	6a 01                	push   $0x1
- 5c2:	e8 59 06 00 00       	call   c20 <printf>
-      printf(1, "\t-map length: %x\n", wminfo.length[i]);
- 5c7:	83 c4 0c             	add    $0xc,%esp
- 5ca:	ff 77 3c             	push   0x3c(%edi)
- 5cd:	68 97 13 00 00       	push   $0x1397
- 5d2:	6a 01                	push   $0x1
- 5d4:	e8 47 06 00 00       	call   c20 <printf>
-      printf(1, "\n");
- 5d9:	58                   	pop    %eax
- 5da:	5a                   	pop    %edx
- 5db:	68 91 12 00 00       	push   $0x1291
- 5e0:	6a 01                	push   $0x1
- 5e2:	e8 39 06 00 00       	call   c20 <printf>
- 5e7:	83 c4 10             	add    $0x10,%esp
-  for(int i = 0; i < 16; ++i){
- 5ea:	39 f7                	cmp    %esi,%edi
- 5ec:	75 a9                	jne    597 <test_wmapinfo+0xb7>
-  wunmap(map);
- 5ee:	83 ec 0c             	sub    $0xc,%esp
- 5f1:	ff b5 14 ff ff ff    	push   -0xec(%ebp)
- 5f7:	e8 4f 05 00 00       	call   b4b <wunmap>
-  if(getwmapinfo(&wminfo) < 0){
- 5fc:	8d 85 24 ff ff ff    	lea    -0xdc(%ebp),%eax
- 602:	89 04 24             	mov    %eax,(%esp)
- 605:	e8 59 05 00 00       	call   b63 <getwmapinfo>
- 60a:	83 c4 10             	add    $0x10,%esp
- 60d:	85 c0                	test   %eax,%eax
- 60f:	0f 88 13 02 00 00    	js     828 <test_wmapinfo+0x348>
-  printf(1, "\t-Total mmaps after unmap: %d\n", wminfo.total_mmaps);
- 615:	83 ec 04             	sub    $0x4,%esp
- 618:	ff b5 24 ff ff ff    	push   -0xdc(%ebp)
- 61e:	89 df                	mov    %ebx,%edi
- 620:	68 44 11 00 00       	push   $0x1144
- 625:	6a 01                	push   $0x1
- 627:	e8 f4 05 00 00       	call   c20 <printf>
- 62c:	83 c4 10             	add    $0x10,%esp
- 62f:	eb 0e                	jmp    63f <test_wmapinfo+0x15f>
- 631:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
-  for(int i = 0; i < 16; ++i){
- 638:	83 c7 04             	add    $0x4,%edi
- 63b:	39 f7                	cmp    %esi,%edi
- 63d:	74 52                	je     691 <test_wmapinfo+0x1b1>
-    if(wminfo.addr[i]!=0){
- 63f:	8b 07                	mov    (%edi),%eax
- 641:	85 c0                	test   %eax,%eax
- 643:	74 f3                	je     638 <test_wmapinfo+0x158>
-      printf(1, "\t-Starting addr: %xn", wminfo.addr[i]);
- 645:	83 ec 04             	sub    $0x4,%esp
-  for(int i = 0; i < 16; ++i){
- 648:	83 c7 04             	add    $0x4,%edi
-      printf(1, "\t-Starting addr: %xn", wminfo.addr[i]);
- 64b:	50                   	push   %eax
- 64c:	68 a9 13 00 00       	push   $0x13a9
- 651:	6a 01                	push   $0x1
- 653:	e8 c8 05 00 00       	call   c20 <printf>
-      printf(1, "\t-map length: %x\n", wminfo.length[i]);
- 658:	83 c4 0c             	add    $0xc,%esp
- 65b:	ff 77 3c             	push   0x3c(%edi)
- 65e:	68 97 13 00 00       	push   $0x1397
- 663:	6a 01                	push   $0x1
- 665:	e8 b6 05 00 00       	call   c20 <printf>
-       printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
- 66a:	83 c4 0c             	add    $0xc,%esp
- 66d:	ff 77 7c             	push   0x7c(%edi)
- 670:	68 5b 13 00 00       	push   $0x135b
- 675:	6a 01                	push   $0x1
- 677:	e8 a4 05 00 00       	call   c20 <printf>
-       printf(1, "\n");
- 67c:	59                   	pop    %ecx
- 67d:	58                   	pop    %eax
- 67e:	68 91 12 00 00       	push   $0x1291
- 683:	6a 01                	push   $0x1
- 685:	e8 96 05 00 00       	call   c20 <printf>
- 68a:	83 c4 10             	add    $0x10,%esp
-  for(int i = 0; i < 16; ++i){
- 68d:	39 f7                	cmp    %esi,%edi
- 68f:	75 ae                	jne    63f <test_wmapinfo+0x15f>
-  printf(1,"\n");
- 691:	83 ec 08             	sub    $0x8,%esp
- 694:	68 91 12 00 00       	push   $0x1291
- 699:	6a 01                	push   $0x1
- 69b:	e8 80 05 00 00       	call   c20 <printf>
-  uint map2 = wmap(0x60002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6a0:	6a ff                	push   $0xffffffff
- 6a2:	6a 0e                	push   $0xe
- 6a4:	68 00 10 00 00       	push   $0x1000
- 6a9:	68 00 20 00 60       	push   $0x60002000
- 6ae:	e8 90 04 00 00       	call   b43 <wmap>
-  uint map3 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6b3:	83 c4 20             	add    $0x20,%esp
- 6b6:	6a ff                	push   $0xffffffff
-  uint map2 = wmap(0x60002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6b8:	89 c7                	mov    %eax,%edi
-  uint map3 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6ba:	6a 0e                	push   $0xe
- 6bc:	68 00 20 00 00       	push   $0x2000
- 6c1:	68 00 00 00 60       	push   $0x60000000
-  uint map2 = wmap(0x60002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6c6:	89 85 14 ff ff ff    	mov    %eax,-0xec(%ebp)
-  uint map3 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6cc:	e8 72 04 00 00       	call   b43 <wmap>
-  ptr2[0] = 'b';
- 6d1:	c6 07 62             	movb   $0x62,(%edi)
- 6d4:	83 c4 10             	add    $0x10,%esp
-  uint map3 = wmap(0x60000000, 8192, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
- 6d7:	89 85 10 ff ff ff    	mov    %eax,-0xf0(%ebp)
-  for (int i = 0; i < 10; ++i){
- 6dd:	8d 48 0a             	lea    0xa(%eax),%ecx
-    ptr3[i] = 'a';
- 6e0:	c6 00 61             	movb   $0x61,(%eax)
-  for (int i = 0; i < 10; ++i){
- 6e3:	83 c0 01             	add    $0x1,%eax
- 6e6:	39 c8                	cmp    %ecx,%eax
- 6e8:	75 f6                	jne    6e0 <test_wmapinfo+0x200>
-  if(getwmapinfo(&wminfo) < 0){
- 6ea:	83 ec 0c             	sub    $0xc,%esp
- 6ed:	8d 85 24 ff ff ff    	lea    -0xdc(%ebp),%eax
- 6f3:	50                   	push   %eax
- 6f4:	e8 6a 04 00 00       	call   b63 <getwmapinfo>
- 6f9:	83 c4 10             	add    $0x10,%esp
- 6fc:	85 c0                	test   %eax,%eax
- 6fe:	0f 88 24 01 00 00    	js     828 <test_wmapinfo+0x348>
-  printf(1, "\t-Total mmaps after more maps: %d\n", wminfo.total_mmaps);
- 704:	83 ec 04             	sub    $0x4,%esp
- 707:	ff b5 24 ff ff ff    	push   -0xdc(%ebp)
- 70d:	89 df                	mov    %ebx,%edi
- 70f:	68 64 11 00 00       	push   $0x1164
- 714:	6a 01                	push   $0x1
- 716:	e8 05 05 00 00       	call   c20 <printf>
- 71b:	83 c4 10             	add    $0x10,%esp
- 71e:	eb 07                	jmp    727 <test_wmapinfo+0x247>
-  for(int i = 0; i < 16; ++i){
- 720:	83 c7 04             	add    $0x4,%edi
- 723:	39 f7                	cmp    %esi,%edi
- 725:	74 52                	je     779 <test_wmapinfo+0x299>
-    if(wminfo.addr[i]!=0){
- 727:	8b 07                	mov    (%edi),%eax
- 729:	85 c0                	test   %eax,%eax
- 72b:	74 f3                	je     720 <test_wmapinfo+0x240>
-      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
- 72d:	83 ec 04             	sub    $0x4,%esp
-  for(int i = 0; i < 16; ++i){
- 730:	83 c7 04             	add    $0x4,%edi
-      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
- 733:	50                   	push   %eax
- 734:	68 82 13 00 00       	push   $0x1382
- 739:	6a 01                	push   $0x1
- 73b:	e8 e0 04 00 00       	call   c20 <printf>
-      printf(1, "\t-map length: %x\n", wminfo.length[i]);
- 740:	83 c4 0c             	add    $0xc,%esp
- 743:	ff 77 3c             	push   0x3c(%edi)
- 746:	68 97 13 00 00       	push   $0x1397
- 74b:	6a 01                	push   $0x1
- 74d:	e8 ce 04 00 00       	call   c20 <printf>
-      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
- 752:	83 c4 0c             	add    $0xc,%esp
- 755:	ff 77 7c             	push   0x7c(%edi)
- 758:	68 5b 13 00 00       	push   $0x135b
- 75d:	6a 01                	push   $0x1
- 75f:	e8 bc 04 00 00       	call   c20 <printf>
-      printf(1, "\n");
- 764:	58                   	pop    %eax
- 765:	5a                   	pop    %edx
- 766:	68 91 12 00 00       	push   $0x1291
- 76b:	6a 01                	push   $0x1
- 76d:	e8 ae 04 00 00       	call   c20 <printf>
- 772:	83 c4 10             	add    $0x10,%esp
-  for(int i = 0; i < 16; ++i){
- 775:	39 f7                	cmp    %esi,%edi
- 777:	75 ae                	jne    727 <test_wmapinfo+0x247>
+     3c4:	58                   	pop    %eax
+     3c5:	5a                   	pop    %edx
+     3c6:	68 43 1a 00 00       	push   $0x1a43
+     3cb:	6a 01                	push   $0x1
+     3cd:	e8 9e 0e 00 00       	call   1270 <printf>
+  wunmap(map0);
+     3d2:	8b 55 e4             	mov    -0x1c(%ebp),%edx
+     3d5:	89 14 24             	mov    %edx,(%esp)
+     3d8:	e8 be 0d 00 00       	call   119b <wunmap>
+  wunmap(map1);
+     3dd:	89 3c 24             	mov    %edi,(%esp)
+     3e0:	e8 b6 0d 00 00       	call   119b <wunmap>
   wunmap(map2);
- 779:	83 ec 0c             	sub    $0xc,%esp
- 77c:	ff b5 14 ff ff ff    	push   -0xec(%ebp)
- 782:	e8 c4 03 00 00       	call   b4b <wunmap>
+     3e5:	89 34 24             	mov    %esi,(%esp)
+     3e8:	e8 ae 0d 00 00       	call   119b <wunmap>
   wunmap(map3);
- 787:	59                   	pop    %ecx
- 788:	ff b5 10 ff ff ff    	push   -0xf0(%ebp)
- 78e:	e8 b8 03 00 00       	call   b4b <wunmap>
-  if(getwmapinfo(&wminfo) < 0){
- 793:	8d 85 24 ff ff ff    	lea    -0xdc(%ebp),%eax
- 799:	89 04 24             	mov    %eax,(%esp)
- 79c:	e8 c2 03 00 00       	call   b63 <getwmapinfo>
- 7a1:	83 c4 10             	add    $0x10,%esp
- 7a4:	85 c0                	test   %eax,%eax
- 7a6:	79 0f                	jns    7b7 <test_wmapinfo+0x2d7>
- 7a8:	eb 7e                	jmp    828 <test_wmapinfo+0x348>
- 7aa:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
-  for(int i = 0; i < 16; ++i){
- 7b0:	83 c3 04             	add    $0x4,%ebx
- 7b3:	39 f3                	cmp    %esi,%ebx
- 7b5:	74 52                	je     809 <test_wmapinfo+0x329>
-    if(wminfo.addr[i]!=0){
- 7b7:	8b 03                	mov    (%ebx),%eax
- 7b9:	85 c0                	test   %eax,%eax
- 7bb:	74 f3                	je     7b0 <test_wmapinfo+0x2d0>
-      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
- 7bd:	83 ec 04             	sub    $0x4,%esp
-  for(int i = 0; i < 16; ++i){
- 7c0:	83 c3 04             	add    $0x4,%ebx
-      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
- 7c3:	50                   	push   %eax
- 7c4:	68 82 13 00 00       	push   $0x1382
- 7c9:	6a 01                	push   $0x1
- 7cb:	e8 50 04 00 00       	call   c20 <printf>
-      printf(1, "\t-map length: %x\n", wminfo.length[i]);
- 7d0:	83 c4 0c             	add    $0xc,%esp
- 7d3:	ff 73 3c             	push   0x3c(%ebx)
- 7d6:	68 97 13 00 00       	push   $0x1397
- 7db:	6a 01                	push   $0x1
- 7dd:	e8 3e 04 00 00       	call   c20 <printf>
-      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
- 7e2:	83 c4 0c             	add    $0xc,%esp
- 7e5:	ff 73 7c             	push   0x7c(%ebx)
- 7e8:	68 5b 13 00 00       	push   $0x135b
- 7ed:	6a 01                	push   $0x1
- 7ef:	e8 2c 04 00 00       	call   c20 <printf>
-      printf(1, "\n");
- 7f4:	58                   	pop    %eax
- 7f5:	5a                   	pop    %edx
- 7f6:	68 91 12 00 00       	push   $0x1291
- 7fb:	6a 01                	push   $0x1
- 7fd:	e8 1e 04 00 00       	call   c20 <printf>
- 802:	83 c4 10             	add    $0x10,%esp
-  for(int i = 0; i < 16; ++i){
- 805:	39 f3                	cmp    %esi,%ebx
- 807:	75 ae                	jne    7b7 <test_wmapinfo+0x2d7>
-  printf(1, "\nRESULT: SUCCESS\n\n");
- 809:	83 ec 08             	sub    $0x8,%esp
- 80c:	68 be 13 00 00       	push   $0x13be
- 811:	6a 01                	push   $0x1
- 813:	e8 08 04 00 00       	call   c20 <printf>
+     3ed:	89 1c 24             	mov    %ebx,(%esp)
+     3f0:	e8 a6 0d 00 00       	call   119b <wunmap>
   return;
- 818:	83 c4 10             	add    $0x10,%esp
+     3f5:	83 c4 10             	add    $0x10,%esp
 }
- 81b:	8d 65 f4             	lea    -0xc(%ebp),%esp
- 81e:	5b                   	pop    %ebx
- 81f:	5e                   	pop    %esi
- 820:	5f                   	pop    %edi
- 821:	5d                   	pop    %ebp
- 822:	c3                   	ret    
- 823:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 827:	90                   	nop
+     3f8:	8d 65 f4             	lea    -0xc(%ebp),%esp
+     3fb:	5b                   	pop    %ebx
+     3fc:	5e                   	pop    %esi
+     3fd:	5f                   	pop    %edi
+     3fe:	5d                   	pop    %ebp
+     3ff:	c3                   	ret    
+
+00000400 <test_remap>:
+void test_remap(void) {
+     400:	55                   	push   %ebp
+     401:	89 e5                	mov    %esp,%ebp
+     403:	57                   	push   %edi
+     404:	56                   	push   %esi
+     405:	53                   	push   %ebx
+     406:	81 ec f4 00 00 00    	sub    $0xf4,%esp
+  printf(1, "Testing test_remap\n");
+     40c:	68 71 1a 00 00       	push   $0x1a71
+     411:	6a 01                	push   $0x1
+     413:	e8 58 0e 00 00       	call   1270 <printf>
+  printf(1, "\t-testing if ifs are right\n");
+     418:	5b                   	pop    %ebx
+     419:	5e                   	pop    %esi
+     41a:	68 85 1a 00 00       	push   $0x1a85
+     41f:	6a 01                	push   $0x1
+  if(getwmapinfo(&wminfo) < 0){
+     421:	8d 9d 24 ff ff ff    	lea    -0xdc(%ebp),%ebx
+     427:	31 f6                	xor    %esi,%esi
+  printf(1, "\t-testing if ifs are right\n");
+     429:	e8 42 0e 00 00       	call   1270 <printf>
+  uint map0 = wmap(0x60000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     42e:	6a ff                	push   $0xffffffff
+     430:	6a 0e                	push   $0xe
+     432:	68 00 10 00 00       	push   $0x1000
+     437:	68 00 00 00 60       	push   $0x60000000
+     43c:	e8 52 0d 00 00       	call   1193 <wmap>
+  printf(1, "mapinfo 1:\n");
+     441:	83 c4 18             	add    $0x18,%esp
+     444:	68 a1 1a 00 00       	push   $0x1aa1
+  uint map0 = wmap(0x60000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     449:	89 c7                	mov    %eax,%edi
+  printf(1, "mapinfo 1:\n");
+     44b:	6a 01                	push   $0x1
+     44d:	e8 1e 0e 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     452:	89 1c 24             	mov    %ebx,(%esp)
+     455:	e8 59 0d 00 00       	call   11b3 <getwmapinfo>
+     45a:	83 c4 10             	add    $0x10,%esp
+     45d:	85 c0                	test   %eax,%eax
+     45f:	79 17                	jns    478 <test_remap+0x78>
+     461:	e9 2a 07 00 00       	jmp    b90 <test_remap+0x790>
+     466:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     46d:	8d 76 00             	lea    0x0(%esi),%esi
+  for(int i = 0; i < 16; ++i){
+     470:	83 c6 01             	add    $0x1,%esi
+     473:	83 fe 10             	cmp    $0x10,%esi
+     476:	74 6d                	je     4e5 <test_remap+0xe5>
+    if(wminfo.addr[i]!=0){
+     478:	8b 4c b3 04          	mov    0x4(%ebx,%esi,4),%ecx
+     47c:	85 c9                	test   %ecx,%ecx
+     47e:	74 f0                	je     470 <test_remap+0x70>
+      printf(1, "\t-i=%d\n", i);
+     480:	83 ec 04             	sub    $0x4,%esp
+     483:	56                   	push   %esi
+     484:	68 bd 1a 00 00       	push   $0x1abd
+     489:	6a 01                	push   $0x1
+     48b:	e8 e0 0d 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     490:	83 c4 0c             	add    $0xc,%esp
+     493:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     49a:	68 c5 1a 00 00       	push   $0x1ac5
+     49f:	6a 01                	push   $0x1
+     4a1:	e8 ca 0d 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     4a6:	83 c4 0c             	add    $0xc,%esp
+     4a9:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     4ad:	68 d9 1a 00 00       	push   $0x1ad9
+     4b2:	6a 01                	push   $0x1
+     4b4:	e8 b7 0d 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     4b9:	83 c4 0c             	add    $0xc,%esp
+     4bc:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+  for(int i = 0; i < 16; ++i){
+     4c0:	83 c6 01             	add    $0x1,%esi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     4c3:	68 ee 1a 00 00       	push   $0x1aee
+     4c8:	6a 01                	push   $0x1
+     4ca:	e8 a1 0d 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     4cf:	58                   	pop    %eax
+     4d0:	5a                   	pop    %edx
+     4d1:	68 44 1a 00 00       	push   $0x1a44
+     4d6:	6a 01                	push   $0x1
+     4d8:	e8 93 0d 00 00       	call   1270 <printf>
+     4dd:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     4e0:	83 fe 10             	cmp    $0x10,%esi
+     4e3:	75 93                	jne    478 <test_remap+0x78>
+  uint map2 = wmap(0x70000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     4e5:	6a ff                	push   $0xffffffff
+     4e7:	6a 0e                	push   $0xe
+     4e9:	68 00 10 00 00       	push   $0x1000
+     4ee:	68 00 00 00 70       	push   $0x70000000
+     4f3:	e8 9b 0c 00 00       	call   1193 <wmap>
+  if(getwmapinfo(&wminfo) < 0){
+     4f8:	89 1c 24             	mov    %ebx,(%esp)
+  uint map2 = wmap(0x70000000, 4096,  MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     4fb:	89 85 14 ff ff ff    	mov    %eax,-0xec(%ebp)
+  if(getwmapinfo(&wminfo) < 0){
+     501:	e8 ad 0c 00 00       	call   11b3 <getwmapinfo>
+     506:	83 c4 10             	add    $0x10,%esp
+     509:	85 c0                	test   %eax,%eax
+     50b:	0f 88 7f 06 00 00    	js     b90 <test_remap+0x790>
+  printf(1, "mapinfo 2:\n");
+     511:	83 ec 08             	sub    $0x8,%esp
+  for(int i = 0; i < 16; ++i){
+     514:	31 f6                	xor    %esi,%esi
+  printf(1, "mapinfo 2:\n");
+     516:	68 00 1b 00 00       	push   $0x1b00
+     51b:	6a 01                	push   $0x1
+     51d:	e8 4e 0d 00 00       	call   1270 <printf>
+     522:	83 c4 10             	add    $0x10,%esp
+     525:	eb 11                	jmp    538 <test_remap+0x138>
+     527:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     52e:	66 90                	xchg   %ax,%ax
+  for(int i = 0; i < 16; ++i){
+     530:	83 c6 01             	add    $0x1,%esi
+     533:	83 fe 10             	cmp    $0x10,%esi
+     536:	74 6d                	je     5a5 <test_remap+0x1a5>
+    if(wminfo.addr[i]!=0){
+     538:	8b 4c b3 04          	mov    0x4(%ebx,%esi,4),%ecx
+     53c:	85 c9                	test   %ecx,%ecx
+     53e:	74 f0                	je     530 <test_remap+0x130>
+      printf(1, "\t-i=%d\n", i);
+     540:	83 ec 04             	sub    $0x4,%esp
+     543:	56                   	push   %esi
+     544:	68 bd 1a 00 00       	push   $0x1abd
+     549:	6a 01                	push   $0x1
+     54b:	e8 20 0d 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     550:	83 c4 0c             	add    $0xc,%esp
+     553:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     55a:	68 c5 1a 00 00       	push   $0x1ac5
+     55f:	6a 01                	push   $0x1
+     561:	e8 0a 0d 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     566:	83 c4 0c             	add    $0xc,%esp
+     569:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     56d:	68 d9 1a 00 00       	push   $0x1ad9
+     572:	6a 01                	push   $0x1
+     574:	e8 f7 0c 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     579:	83 c4 0c             	add    $0xc,%esp
+     57c:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+  for(int i = 0; i < 16; ++i){
+     580:	83 c6 01             	add    $0x1,%esi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     583:	68 ee 1a 00 00       	push   $0x1aee
+     588:	6a 01                	push   $0x1
+     58a:	e8 e1 0c 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     58f:	58                   	pop    %eax
+     590:	5a                   	pop    %edx
+     591:	68 44 1a 00 00       	push   $0x1a44
+     596:	6a 01                	push   $0x1
+     598:	e8 d3 0c 00 00       	call   1270 <printf>
+     59d:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     5a0:	83 fe 10             	cmp    $0x10,%esi
+     5a3:	75 93                	jne    538 <test_remap+0x138>
+  map0 = wremap(map0, 4096, 8192, 0);
+     5a5:	6a 00                	push   $0x0
+     5a7:	68 00 20 00 00       	push   $0x2000
+     5ac:	68 00 10 00 00       	push   $0x1000
+     5b1:	57                   	push   %edi
+     5b2:	e8 ec 0b 00 00       	call   11a3 <wremap>
+     5b7:	89 c7                	mov    %eax,%edi
+  printf(1, "Should be Valid for in place\n\n");
+     5b9:	58                   	pop    %eax
+     5ba:	5a                   	pop    %edx
+     5bb:	68 f0 17 00 00       	push   $0x17f0
+     5c0:	6a 01                	push   $0x1
+     5c2:	e8 a9 0c 00 00       	call   1270 <printf>
+  printf(1, "mapinfo 3 after first remap:\n");
+     5c7:	59                   	pop    %ecx
+     5c8:	5e                   	pop    %esi
+     5c9:	68 0c 1b 00 00       	push   $0x1b0c
+     5ce:	6a 01                	push   $0x1
+     5d0:	e8 9b 0c 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     5d5:	89 1c 24             	mov    %ebx,(%esp)
+     5d8:	e8 d6 0b 00 00       	call   11b3 <getwmapinfo>
+     5dd:	83 c4 10             	add    $0x10,%esp
+     5e0:	85 c0                	test   %eax,%eax
+     5e2:	0f 88 a8 05 00 00    	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     5e8:	31 f6                	xor    %esi,%esi
+     5ea:	eb 0c                	jmp    5f8 <test_remap+0x1f8>
+     5ec:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     5f0:	83 c6 01             	add    $0x1,%esi
+     5f3:	83 fe 10             	cmp    $0x10,%esi
+     5f6:	74 6d                	je     665 <test_remap+0x265>
+    if(wminfo.addr[i]!=0){
+     5f8:	8b 44 b3 04          	mov    0x4(%ebx,%esi,4),%eax
+     5fc:	85 c0                	test   %eax,%eax
+     5fe:	74 f0                	je     5f0 <test_remap+0x1f0>
+      printf(1, "\t-i=%d\n", i);
+     600:	83 ec 04             	sub    $0x4,%esp
+     603:	56                   	push   %esi
+     604:	68 bd 1a 00 00       	push   $0x1abd
+     609:	6a 01                	push   $0x1
+     60b:	e8 60 0c 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     610:	83 c4 0c             	add    $0xc,%esp
+     613:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     61a:	68 c5 1a 00 00       	push   $0x1ac5
+     61f:	6a 01                	push   $0x1
+     621:	e8 4a 0c 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     626:	83 c4 0c             	add    $0xc,%esp
+     629:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     62d:	68 d9 1a 00 00       	push   $0x1ad9
+     632:	6a 01                	push   $0x1
+     634:	e8 37 0c 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     639:	83 c4 0c             	add    $0xc,%esp
+     63c:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+  for(int i = 0; i < 16; ++i){
+     640:	83 c6 01             	add    $0x1,%esi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     643:	68 ee 1a 00 00       	push   $0x1aee
+     648:	6a 01                	push   $0x1
+     64a:	e8 21 0c 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     64f:	59                   	pop    %ecx
+     650:	58                   	pop    %eax
+     651:	68 44 1a 00 00       	push   $0x1a44
+     656:	6a 01                	push   $0x1
+     658:	e8 13 0c 00 00       	call   1270 <printf>
+     65d:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     660:	83 fe 10             	cmp    $0x10,%esi
+     663:	75 93                	jne    5f8 <test_remap+0x1f8>
+  map0 = wremap(map0, 8192, 4096 * 3, MREMAP_MAYMOVE);
+     665:	6a 01                	push   $0x1
+     667:	68 00 30 00 00       	push   $0x3000
+     66c:	68 00 20 00 00       	push   $0x2000
+     671:	57                   	push   %edi
+     672:	e8 2c 0b 00 00       	call   11a3 <wremap>
+  printf(1, "Should be Valid for in place\n\n");
+     677:	5e                   	pop    %esi
+  map0 = wremap(map0, 8192, 4096 * 3, MREMAP_MAYMOVE);
+     678:	89 c7                	mov    %eax,%edi
+  printf(1, "Should be Valid for in place\n\n");
+     67a:	58                   	pop    %eax
+     67b:	68 f0 17 00 00       	push   $0x17f0
+     680:	6a 01                	push   $0x1
+     682:	e8 e9 0b 00 00       	call   1270 <printf>
+  printf(1, "mapinfo 4 after second remap:\n");
+     687:	58                   	pop    %eax
+     688:	5a                   	pop    %edx
+     689:	68 10 18 00 00       	push   $0x1810
+     68e:	6a 01                	push   $0x1
+     690:	e8 db 0b 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     695:	89 1c 24             	mov    %ebx,(%esp)
+     698:	e8 16 0b 00 00       	call   11b3 <getwmapinfo>
+     69d:	83 c4 10             	add    $0x10,%esp
+     6a0:	85 c0                	test   %eax,%eax
+     6a2:	0f 88 e8 04 00 00    	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     6a8:	31 f6                	xor    %esi,%esi
+     6aa:	eb 0c                	jmp    6b8 <test_remap+0x2b8>
+     6ac:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     6b0:	83 c6 01             	add    $0x1,%esi
+     6b3:	83 fe 10             	cmp    $0x10,%esi
+     6b6:	74 6d                	je     725 <test_remap+0x325>
+    if(wminfo.addr[i]!=0){
+     6b8:	8b 4c b3 04          	mov    0x4(%ebx,%esi,4),%ecx
+     6bc:	85 c9                	test   %ecx,%ecx
+     6be:	74 f0                	je     6b0 <test_remap+0x2b0>
+      printf(1, "\t-i=%d\n", i);
+     6c0:	83 ec 04             	sub    $0x4,%esp
+     6c3:	56                   	push   %esi
+     6c4:	68 bd 1a 00 00       	push   $0x1abd
+     6c9:	6a 01                	push   $0x1
+     6cb:	e8 a0 0b 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     6d0:	83 c4 0c             	add    $0xc,%esp
+     6d3:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     6da:	68 c5 1a 00 00       	push   $0x1ac5
+     6df:	6a 01                	push   $0x1
+     6e1:	e8 8a 0b 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     6e6:	83 c4 0c             	add    $0xc,%esp
+     6e9:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     6ed:	68 d9 1a 00 00       	push   $0x1ad9
+     6f2:	6a 01                	push   $0x1
+     6f4:	e8 77 0b 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     6f9:	83 c4 0c             	add    $0xc,%esp
+     6fc:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+  for(int i = 0; i < 16; ++i){
+     700:	83 c6 01             	add    $0x1,%esi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     703:	68 ee 1a 00 00       	push   $0x1aee
+     708:	6a 01                	push   $0x1
+     70a:	e8 61 0b 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     70f:	58                   	pop    %eax
+     710:	5a                   	pop    %edx
+     711:	68 44 1a 00 00       	push   $0x1a44
+     716:	6a 01                	push   $0x1
+     718:	e8 53 0b 00 00       	call   1270 <printf>
+     71d:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     720:	83 fe 10             	cmp    $0x10,%esi
+     723:	75 93                	jne    6b8 <test_remap+0x2b8>
+  uint map1 = wmap(0x60003000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     725:	6a ff                	push   $0xffffffff
+     727:	6a 0e                	push   $0xe
+     729:	68 00 10 00 00       	push   $0x1000
+     72e:	68 00 30 00 60       	push   $0x60003000
+     733:	e8 5b 0a 00 00       	call   1193 <wmap>
+  uint map3 = wmap(0x70002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     738:	6a ff                	push   $0xffffffff
+     73a:	6a 0e                	push   $0xe
+     73c:	68 00 10 00 00       	push   $0x1000
+     741:	68 00 20 00 70       	push   $0x70002000
+  uint map1 = wmap(0x60003000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     746:	89 85 10 ff ff ff    	mov    %eax,-0xf0(%ebp)
+  uint map3 = wmap(0x70002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     74c:	e8 42 0a 00 00       	call   1193 <wmap>
+  printf(1, "mapinfo 5 after two more maps:\n");
+     751:	83 c4 18             	add    $0x18,%esp
+     754:	68 30 18 00 00       	push   $0x1830
+     759:	6a 01                	push   $0x1
+  uint map3 = wmap(0x70002000, 4096, MAP_FIXED | MAP_SHARED | MAP_ANONYMOUS, -1);
+     75b:	89 85 0c ff ff ff    	mov    %eax,-0xf4(%ebp)
+  printf(1, "mapinfo 5 after two more maps:\n");
+     761:	e8 0a 0b 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     766:	89 1c 24             	mov    %ebx,(%esp)
+     769:	e8 45 0a 00 00       	call   11b3 <getwmapinfo>
+     76e:	83 c4 10             	add    $0x10,%esp
+     771:	85 c0                	test   %eax,%eax
+     773:	0f 88 17 04 00 00    	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     779:	31 f6                	xor    %esi,%esi
+     77b:	eb 0b                	jmp    788 <test_remap+0x388>
+     77d:	8d 76 00             	lea    0x0(%esi),%esi
+     780:	83 c6 01             	add    $0x1,%esi
+     783:	83 fe 10             	cmp    $0x10,%esi
+     786:	74 6d                	je     7f5 <test_remap+0x3f5>
+    if(wminfo.addr[i]!=0){
+     788:	8b 44 b3 04          	mov    0x4(%ebx,%esi,4),%eax
+     78c:	85 c0                	test   %eax,%eax
+     78e:	74 f0                	je     780 <test_remap+0x380>
+      printf(1, "\t-i=%d\n", i);
+     790:	83 ec 04             	sub    $0x4,%esp
+     793:	56                   	push   %esi
+     794:	68 bd 1a 00 00       	push   $0x1abd
+     799:	6a 01                	push   $0x1
+     79b:	e8 d0 0a 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     7a0:	83 c4 0c             	add    $0xc,%esp
+     7a3:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     7aa:	68 c5 1a 00 00       	push   $0x1ac5
+     7af:	6a 01                	push   $0x1
+     7b1:	e8 ba 0a 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     7b6:	83 c4 0c             	add    $0xc,%esp
+     7b9:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     7bd:	68 d9 1a 00 00       	push   $0x1ad9
+     7c2:	6a 01                	push   $0x1
+     7c4:	e8 a7 0a 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     7c9:	83 c4 0c             	add    $0xc,%esp
+     7cc:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+  for(int i = 0; i < 16; ++i){
+     7d0:	83 c6 01             	add    $0x1,%esi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     7d3:	68 ee 1a 00 00       	push   $0x1aee
+     7d8:	6a 01                	push   $0x1
+     7da:	e8 91 0a 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     7df:	59                   	pop    %ecx
+     7e0:	58                   	pop    %eax
+     7e1:	68 44 1a 00 00       	push   $0x1a44
+     7e6:	6a 01                	push   $0x1
+     7e8:	e8 83 0a 00 00       	call   1270 <printf>
+     7ed:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     7f0:	83 fe 10             	cmp    $0x10,%esi
+     7f3:	75 93                	jne    788 <test_remap+0x388>
+  wremap(map0, 4096 * 3, 4096 * 4, 0);
+     7f5:	6a 00                	push   $0x0
+     7f7:	68 00 40 00 00       	push   $0x4000
+     7fc:	68 00 30 00 00       	push   $0x3000
+     801:	57                   	push   %edi
+     802:	e8 9c 09 00 00       	call   11a3 <wremap>
+  printf(1, "Should be Cannot\tmap0= %x\n\n",map0);
+     807:	83 c4 0c             	add    $0xc,%esp
+     80a:	57                   	push   %edi
+     80b:	68 2a 1b 00 00       	push   $0x1b2a
+     810:	6a 01                	push   $0x1
+     812:	e8 59 0a 00 00       	call   1270 <printf>
+  printf(1, "mapinfo 6 after attempted remaps:\n");
+     817:	58                   	pop    %eax
+     818:	5a                   	pop    %edx
+     819:	68 50 18 00 00       	push   $0x1850
+     81e:	6a 01                	push   $0x1
+     820:	e8 4b 0a 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     825:	89 1c 24             	mov    %ebx,(%esp)
+     828:	e8 86 09 00 00       	call   11b3 <getwmapinfo>
+     82d:	83 c4 10             	add    $0x10,%esp
+     830:	85 c0                	test   %eax,%eax
+     832:	0f 88 58 03 00 00    	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     838:	31 f6                	xor    %esi,%esi
+     83a:	eb 0c                	jmp    848 <test_remap+0x448>
+     83c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     840:	83 c6 01             	add    $0x1,%esi
+     843:	83 fe 10             	cmp    $0x10,%esi
+     846:	74 6d                	je     8b5 <test_remap+0x4b5>
+    if(wminfo.addr[i]!=0){
+     848:	8b 44 b3 04          	mov    0x4(%ebx,%esi,4),%eax
+     84c:	85 c0                	test   %eax,%eax
+     84e:	74 f0                	je     840 <test_remap+0x440>
+      printf(1, "\t-i=%d\n", i);
+     850:	83 ec 04             	sub    $0x4,%esp
+     853:	56                   	push   %esi
+     854:	68 bd 1a 00 00       	push   $0x1abd
+     859:	6a 01                	push   $0x1
+     85b:	e8 10 0a 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     860:	83 c4 0c             	add    $0xc,%esp
+     863:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     86a:	68 c5 1a 00 00       	push   $0x1ac5
+     86f:	6a 01                	push   $0x1
+     871:	e8 fa 09 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     876:	83 c4 0c             	add    $0xc,%esp
+     879:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     87d:	68 d9 1a 00 00       	push   $0x1ad9
+     882:	6a 01                	push   $0x1
+     884:	e8 e7 09 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     889:	83 c4 0c             	add    $0xc,%esp
+     88c:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+  for(int i = 0; i < 16; ++i){
+     890:	83 c6 01             	add    $0x1,%esi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     893:	68 ee 1a 00 00       	push   $0x1aee
+     898:	6a 01                	push   $0x1
+     89a:	e8 d1 09 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     89f:	59                   	pop    %ecx
+     8a0:	58                   	pop    %eax
+     8a1:	68 44 1a 00 00       	push   $0x1a44
+     8a6:	6a 01                	push   $0x1
+     8a8:	e8 c3 09 00 00       	call   1270 <printf>
+     8ad:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     8b0:	83 fe 10             	cmp    $0x10,%esi
+     8b3:	75 93                	jne    848 <test_remap+0x448>
+  map0 = wremap(map0, 4096 * 3, 4096 * 4, MREMAP_MAYMOVE);
+     8b5:	6a 01                	push   $0x1
+     8b7:	68 00 40 00 00       	push   $0x4000
+     8bc:	68 00 30 00 00       	push   $0x3000
+     8c1:	57                   	push   %edi
+     8c2:	e8 dc 08 00 00       	call   11a3 <wremap>
+  printf(1, "map0 = %x\n",map0);
+     8c7:	83 c4 0c             	add    $0xc,%esp
+     8ca:	50                   	push   %eax
+  map0 = wremap(map0, 4096 * 3, 4096 * 4, MREMAP_MAYMOVE);
+     8cb:	89 c6                	mov    %eax,%esi
+  printf(1, "map0 = %x\n",map0);
+     8cd:	68 46 1b 00 00       	push   $0x1b46
+     8d2:	6a 01                	push   $0x1
+     8d4:	e8 97 09 00 00       	call   1270 <printf>
+  printf(1, "Should be valid for moving\n\n");
+     8d9:	5f                   	pop    %edi
+     8da:	58                   	pop    %eax
+     8db:	68 51 1b 00 00       	push   $0x1b51
+     8e0:	6a 01                	push   $0x1
+     8e2:	e8 89 09 00 00       	call   1270 <printf>
+  printf(1, "mapinfo 7 after attempted remaps:\n");
+     8e7:	58                   	pop    %eax
+     8e8:	5a                   	pop    %edx
+     8e9:	68 74 18 00 00       	push   $0x1874
+     8ee:	6a 01                	push   $0x1
+     8f0:	e8 7b 09 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     8f5:	89 1c 24             	mov    %ebx,(%esp)
+     8f8:	e8 b6 08 00 00       	call   11b3 <getwmapinfo>
+     8fd:	83 c4 10             	add    $0x10,%esp
+     900:	85 c0                	test   %eax,%eax
+     902:	0f 88 88 02 00 00    	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     908:	31 ff                	xor    %edi,%edi
+     90a:	eb 0c                	jmp    918 <test_remap+0x518>
+     90c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     910:	83 c7 01             	add    $0x1,%edi
+     913:	83 ff 10             	cmp    $0x10,%edi
+     916:	74 6d                	je     985 <test_remap+0x585>
+    if(wminfo.addr[i]!=0){
+     918:	8b 4c bb 04          	mov    0x4(%ebx,%edi,4),%ecx
+     91c:	85 c9                	test   %ecx,%ecx
+     91e:	74 f0                	je     910 <test_remap+0x510>
+      printf(1, "\t-i=%d\n", i);
+     920:	83 ec 04             	sub    $0x4,%esp
+     923:	57                   	push   %edi
+     924:	68 bd 1a 00 00       	push   $0x1abd
+     929:	6a 01                	push   $0x1
+     92b:	e8 40 09 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     930:	83 c4 0c             	add    $0xc,%esp
+     933:	ff b4 bb 84 00 00 00 	push   0x84(%ebx,%edi,4)
+     93a:	68 c5 1a 00 00       	push   $0x1ac5
+     93f:	6a 01                	push   $0x1
+     941:	e8 2a 09 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     946:	83 c4 0c             	add    $0xc,%esp
+     949:	ff 74 bb 04          	push   0x4(%ebx,%edi,4)
+     94d:	68 d9 1a 00 00       	push   $0x1ad9
+     952:	6a 01                	push   $0x1
+     954:	e8 17 09 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     959:	83 c4 0c             	add    $0xc,%esp
+     95c:	ff 74 bb 44          	push   0x44(%ebx,%edi,4)
+  for(int i = 0; i < 16; ++i){
+     960:	83 c7 01             	add    $0x1,%edi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     963:	68 ee 1a 00 00       	push   $0x1aee
+     968:	6a 01                	push   $0x1
+     96a:	e8 01 09 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     96f:	58                   	pop    %eax
+     970:	5a                   	pop    %edx
+     971:	68 44 1a 00 00       	push   $0x1a44
+     976:	6a 01                	push   $0x1
+     978:	e8 f3 08 00 00       	call   1270 <printf>
+     97d:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     980:	83 ff 10             	cmp    $0x10,%edi
+     983:	75 93                	jne    918 <test_remap+0x518>
+  map0 = wremap(map0, 4096 * 4, 4096 * 3, 0);
+     985:	6a 00                	push   $0x0
+     987:	68 00 30 00 00       	push   $0x3000
+     98c:	68 00 40 00 00       	push   $0x4000
+     991:	56                   	push   %esi
+     992:	e8 0c 08 00 00       	call   11a3 <wremap>
+  printf(1, "map0 = %x\n",map0);
+     997:	83 c4 0c             	add    $0xc,%esp
+     99a:	50                   	push   %eax
+  map0 = wremap(map0, 4096 * 4, 4096 * 3, 0);
+     99b:	89 c6                	mov    %eax,%esi
+  printf(1, "map0 = %x\n",map0);
+     99d:	68 46 1b 00 00       	push   $0x1b46
+     9a2:	6a 01                	push   $0x1
+     9a4:	e8 c7 08 00 00       	call   1270 <printf>
+  printf(1, "\t-just remapped removing memory\n");
+     9a9:	58                   	pop    %eax
+     9aa:	5a                   	pop    %edx
+     9ab:	68 98 18 00 00       	push   $0x1898
+     9b0:	6a 01                	push   $0x1
+     9b2:	e8 b9 08 00 00       	call   1270 <printf>
+  printf(1, "mapinfo 8 after attempted shrinking remap:\n");
+     9b7:	59                   	pop    %ecx
+     9b8:	5f                   	pop    %edi
+     9b9:	68 bc 18 00 00       	push   $0x18bc
+     9be:	6a 01                	push   $0x1
+     9c0:	e8 ab 08 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     9c5:	89 1c 24             	mov    %ebx,(%esp)
+     9c8:	e8 e6 07 00 00       	call   11b3 <getwmapinfo>
+     9cd:	83 c4 10             	add    $0x10,%esp
+     9d0:	85 c0                	test   %eax,%eax
+     9d2:	0f 88 b8 01 00 00    	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     9d8:	31 ff                	xor    %edi,%edi
+     9da:	eb 0c                	jmp    9e8 <test_remap+0x5e8>
+     9dc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     9e0:	83 c7 01             	add    $0x1,%edi
+     9e3:	83 ff 10             	cmp    $0x10,%edi
+     9e6:	74 6d                	je     a55 <test_remap+0x655>
+    if(wminfo.addr[i]!=0){
+     9e8:	8b 44 bb 04          	mov    0x4(%ebx,%edi,4),%eax
+     9ec:	85 c0                	test   %eax,%eax
+     9ee:	74 f0                	je     9e0 <test_remap+0x5e0>
+      printf(1, "\t-i=%d\n", i);
+     9f0:	83 ec 04             	sub    $0x4,%esp
+     9f3:	57                   	push   %edi
+     9f4:	68 bd 1a 00 00       	push   $0x1abd
+     9f9:	6a 01                	push   $0x1
+     9fb:	e8 70 08 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     a00:	83 c4 0c             	add    $0xc,%esp
+     a03:	ff b4 bb 84 00 00 00 	push   0x84(%ebx,%edi,4)
+     a0a:	68 c5 1a 00 00       	push   $0x1ac5
+     a0f:	6a 01                	push   $0x1
+     a11:	e8 5a 08 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     a16:	83 c4 0c             	add    $0xc,%esp
+     a19:	ff 74 bb 04          	push   0x4(%ebx,%edi,4)
+     a1d:	68 d9 1a 00 00       	push   $0x1ad9
+     a22:	6a 01                	push   $0x1
+     a24:	e8 47 08 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     a29:	83 c4 0c             	add    $0xc,%esp
+     a2c:	ff 74 bb 44          	push   0x44(%ebx,%edi,4)
+  for(int i = 0; i < 16; ++i){
+     a30:	83 c7 01             	add    $0x1,%edi
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     a33:	68 ee 1a 00 00       	push   $0x1aee
+     a38:	6a 01                	push   $0x1
+     a3a:	e8 31 08 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     a3f:	59                   	pop    %ecx
+     a40:	58                   	pop    %eax
+     a41:	68 44 1a 00 00       	push   $0x1a44
+     a46:	6a 01                	push   $0x1
+     a48:	e8 23 08 00 00       	call   1270 <printf>
+     a4d:	83 c4 10             	add    $0x10,%esp
+  for(int i = 0; i < 16; ++i){
+     a50:	83 ff 10             	cmp    $0x10,%edi
+     a53:	75 93                	jne    9e8 <test_remap+0x5e8>
+  printf(1, "\t-unmapping 0: %x\n", map0);
+     a55:	83 ec 04             	sub    $0x4,%esp
+     a58:	56                   	push   %esi
+     a59:	68 6e 1b 00 00       	push   $0x1b6e
+     a5e:	6a 01                	push   $0x1
+     a60:	e8 0b 08 00 00       	call   1270 <printf>
+  wunmap(map0);
+     a65:	89 34 24             	mov    %esi,(%esp)
+     a68:	e8 2e 07 00 00       	call   119b <wunmap>
+  printf(1, "\t-unmapped 0\n");
+     a6d:	5e                   	pop    %esi
+     a6e:	5f                   	pop    %edi
+     a6f:	68 81 1b 00 00       	push   $0x1b81
+     a74:	6a 01                	push   $0x1
+     a76:	e8 f5 07 00 00       	call   1270 <printf>
+  printf(1, "\t-unmapping 1: %x\n", map1);
+     a7b:	8b bd 10 ff ff ff    	mov    -0xf0(%ebp),%edi
+     a81:	83 c4 0c             	add    $0xc,%esp
+     a84:	57                   	push   %edi
+     a85:	68 8f 1b 00 00       	push   $0x1b8f
+     a8a:	6a 01                	push   $0x1
+     a8c:	e8 df 07 00 00       	call   1270 <printf>
+  wunmap(map1);
+     a91:	89 3c 24             	mov    %edi,(%esp)
+     a94:	e8 02 07 00 00       	call   119b <wunmap>
+  printf(1, "\t-unmapped 1\n");
+     a99:	58                   	pop    %eax
+     a9a:	5a                   	pop    %edx
+     a9b:	68 a2 1b 00 00       	push   $0x1ba2
+     aa0:	6a 01                	push   $0x1
+     aa2:	e8 c9 07 00 00       	call   1270 <printf>
+  printf(1, "\t-unmapping 2: %x\n", map2);
+     aa7:	8b bd 14 ff ff ff    	mov    -0xec(%ebp),%edi
+     aad:	83 c4 0c             	add    $0xc,%esp
+     ab0:	57                   	push   %edi
+     ab1:	68 b0 1b 00 00       	push   $0x1bb0
+     ab6:	6a 01                	push   $0x1
+     ab8:	e8 b3 07 00 00       	call   1270 <printf>
+  wunmap(map2);
+     abd:	89 3c 24             	mov    %edi,(%esp)
+     ac0:	e8 d6 06 00 00       	call   119b <wunmap>
+  printf(1, "\t-unmapped 2\n");
+     ac5:	59                   	pop    %ecx
+     ac6:	5e                   	pop    %esi
+     ac7:	68 c3 1b 00 00       	push   $0x1bc3
+     acc:	6a 01                	push   $0x1
+     ace:	e8 9d 07 00 00       	call   1270 <printf>
+  printf(1, "\t-unmapping 3: %x\n", map3);
+     ad3:	8b bd 0c ff ff ff    	mov    -0xf4(%ebp),%edi
+     ad9:	83 c4 0c             	add    $0xc,%esp
+     adc:	57                   	push   %edi
+     add:	68 d1 1b 00 00       	push   $0x1bd1
+     ae2:	6a 01                	push   $0x1
+     ae4:	e8 87 07 00 00       	call   1270 <printf>
+  wunmap(map3);
+     ae9:	89 3c 24             	mov    %edi,(%esp)
+     aec:	e8 aa 06 00 00       	call   119b <wunmap>
+  printf(1, "\t-unmapped 3\n");
+     af1:	5f                   	pop    %edi
+     af2:	58                   	pop    %eax
+     af3:	68 e4 1b 00 00       	push   $0x1be4
+     af8:	6a 01                	push   $0x1
+     afa:	e8 71 07 00 00       	call   1270 <printf>
+  printf(1, "\t-testing if it is actually working\n");
+     aff:	58                   	pop    %eax
+     b00:	5a                   	pop    %edx
+     b01:	68 e8 18 00 00       	push   $0x18e8
+     b06:	6a 01                	push   $0x1
+     b08:	e8 63 07 00 00       	call   1270 <printf>
+  if(getwmapinfo(&wminfo) < 0){
+     b0d:	89 1c 24             	mov    %ebx,(%esp)
+     b10:	e8 9e 06 00 00       	call   11b3 <getwmapinfo>
+     b15:	83 c4 10             	add    $0x10,%esp
+     b18:	85 c0                	test   %eax,%eax
+     b1a:	78 74                	js     b90 <test_remap+0x790>
+  for(int i = 0; i < 16; ++i){
+     b1c:	31 f6                	xor    %esi,%esi
+     b1e:	eb 08                	jmp    b28 <test_remap+0x728>
+     b20:	83 c6 01             	add    $0x1,%esi
+     b23:	83 fe 10             	cmp    $0x10,%esi
+     b26:	74 7a                	je     ba2 <test_remap+0x7a2>
+    if(wminfo.addr[i]!=0){
+     b28:	8b 4c b3 04          	mov    0x4(%ebx,%esi,4),%ecx
+     b2c:	85 c9                	test   %ecx,%ecx
+     b2e:	74 f0                	je     b20 <test_remap+0x720>
+      printf(1, "\t-i=%d\n", i);
+     b30:	83 ec 04             	sub    $0x4,%esp
+     b33:	56                   	push   %esi
+     b34:	68 bd 1a 00 00       	push   $0x1abd
+     b39:	6a 01                	push   $0x1
+     b3b:	e8 30 07 00 00       	call   1270 <printf>
+      printf(1, "\t-loaded pages: %d\n", wminfo.n_loaded_pages[i]);
+     b40:	83 c4 0c             	add    $0xc,%esp
+     b43:	ff b4 b3 84 00 00 00 	push   0x84(%ebx,%esi,4)
+     b4a:	68 c5 1a 00 00       	push   $0x1ac5
+     b4f:	6a 01                	push   $0x1
+     b51:	e8 1a 07 00 00       	call   1270 <printf>
+      printf(1, "\t-Starting addr: %x\n", wminfo.addr[i]);
+     b56:	83 c4 0c             	add    $0xc,%esp
+     b59:	ff 74 b3 04          	push   0x4(%ebx,%esi,4)
+     b5d:	68 d9 1a 00 00       	push   $0x1ad9
+     b62:	6a 01                	push   $0x1
+     b64:	e8 07 07 00 00       	call   1270 <printf>
+      printf(1, "\t-map length: %x\n", wminfo.length[i]);
+     b69:	83 c4 0c             	add    $0xc,%esp
+     b6c:	ff 74 b3 44          	push   0x44(%ebx,%esi,4)
+     b70:	68 ee 1a 00 00       	push   $0x1aee
+     b75:	6a 01                	push   $0x1
+     b77:	e8 f4 06 00 00       	call   1270 <printf>
+      printf(1, "\n");
+     b7c:	58                   	pop    %eax
+     b7d:	5a                   	pop    %edx
+     b7e:	68 44 1a 00 00       	push   $0x1a44
+     b83:	6a 01                	push   $0x1
+     b85:	e8 e6 06 00 00       	call   1270 <printf>
+     b8a:	83 c4 10             	add    $0x10,%esp
+     b8d:	eb 91                	jmp    b20 <test_remap+0x720>
+     b8f:	90                   	nop
     printf(1, "\nRESULT: FAILED");
- 828:	83 ec 08             	sub    $0x8,%esp
- 82b:	68 0c 13 00 00       	push   $0x130c
- 830:	6a 01                	push   $0x1
- 832:	e8 e9 03 00 00       	call   c20 <printf>
+     b90:	83 ec 08             	sub    $0x8,%esp
+     b93:	68 ad 1a 00 00       	push   $0x1aad
+     b98:	6a 01                	push   $0x1
+     b9a:	e8 d1 06 00 00       	call   1270 <printf>
     return;
- 837:	83 c4 10             	add    $0x10,%esp
+     b9f:	83 c4 10             	add    $0x10,%esp
 }
- 83a:	8d 65 f4             	lea    -0xc(%ebp),%esp
- 83d:	5b                   	pop    %ebx
- 83e:	5e                   	pop    %esi
- 83f:	5f                   	pop    %edi
- 840:	5d                   	pop    %ebp
- 841:	c3                   	ret    
- 842:	66 90                	xchg   %ax,%ax
- 844:	66 90                	xchg   %ax,%ax
- 846:	66 90                	xchg   %ax,%ax
- 848:	66 90                	xchg   %ax,%ax
- 84a:	66 90                	xchg   %ax,%ax
- 84c:	66 90                	xchg   %ax,%ax
- 84e:	66 90                	xchg   %ax,%ax
+     ba2:	8d 65 f4             	lea    -0xc(%ebp),%esp
+     ba5:	5b                   	pop    %ebx
+     ba6:	5e                   	pop    %esi
+     ba7:	5f                   	pop    %edi
+     ba8:	5d                   	pop    %ebp
+     ba9:	c3                   	ret    
+     baa:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
 
-00000850 <strcpy>:
- 850:	55                   	push   %ebp
- 851:	31 c0                	xor    %eax,%eax
- 853:	89 e5                	mov    %esp,%ebp
- 855:	53                   	push   %ebx
- 856:	8b 4d 08             	mov    0x8(%ebp),%ecx
- 859:	8b 5d 0c             	mov    0xc(%ebp),%ebx
- 85c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 860:	0f b6 14 03          	movzbl (%ebx,%eax,1),%edx
- 864:	88 14 01             	mov    %dl,(%ecx,%eax,1)
- 867:	83 c0 01             	add    $0x1,%eax
- 86a:	84 d2                	test   %dl,%dl
- 86c:	75 f2                	jne    860 <strcpy+0x10>
- 86e:	8b 5d fc             	mov    -0x4(%ebp),%ebx
- 871:	89 c8                	mov    %ecx,%eax
- 873:	c9                   	leave  
- 874:	c3                   	ret    
- 875:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 87c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+00000bb0 <test_fork>:
+void test_fork(void) {
+     bb0:	55                   	push   %ebp
+     bb1:	89 e5                	mov    %esp,%ebp
+     bb3:	56                   	push   %esi
+     bb4:	53                   	push   %ebx
+     bb5:	81 ec 18 01 00 00    	sub    $0x118,%esp
+  printf(1, "Testing fork:\n");
+     bbb:	68 f2 1b 00 00       	push   $0x1bf2
+     bc0:	6a 01                	push   $0x1
+     bc2:	e8 a9 06 00 00       	call   1270 <printf>
+  printf(1, "\t-0x60000000 is shared\n");
+     bc7:	58                   	pop    %eax
+     bc8:	5a                   	pop    %edx
+     bc9:	68 01 1c 00 00       	push   $0x1c01
+     bce:	6a 01                	push   $0x1
+     bd0:	e8 9b 06 00 00       	call   1270 <printf>
+  uint map0 = wmap(0x60000000, 4096, MAP_FIXED | MAP_SHARED, -1);
+     bd5:	6a ff                	push   $0xffffffff
+     bd7:	6a 0a                	push   $0xa
+     bd9:	68 00 10 00 00       	push   $0x1000
+     bde:	68 00 00 00 60       	push   $0x60000000
+     be3:	e8 ab 05 00 00       	call   1193 <wmap>
+  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_PRIVATE, -1);
+     be8:	83 c4 20             	add    $0x20,%esp
+  *(int*)map0 = 1;
+     beb:	c7 00 01 00 00 00    	movl   $0x1,(%eax)
+  uint map0 = wmap(0x60000000, 4096, MAP_FIXED | MAP_SHARED, -1);
+     bf1:	89 c6                	mov    %eax,%esi
+  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_PRIVATE, -1);
+     bf3:	6a ff                	push   $0xffffffff
+     bf5:	6a 09                	push   $0x9
+     bf7:	68 00 10 00 00       	push   $0x1000
+     bfc:	68 00 10 00 60       	push   $0x60001000
+     c01:	e8 8d 05 00 00       	call   1193 <wmap>
+  printf(1, "\t-0x60001000 is private\n");
+     c06:	59                   	pop    %ecx
+  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_PRIVATE, -1);
+     c07:	89 c3                	mov    %eax,%ebx
+  printf(1, "\t-0x60001000 is private\n");
+     c09:	58                   	pop    %eax
+     c0a:	68 19 1c 00 00       	push   $0x1c19
+     c0f:	6a 01                	push   $0x1
+     c11:	e8 5a 06 00 00       	call   1270 <printf>
+  *(int*)map1 = 2;
+     c16:	c7 03 02 00 00 00    	movl   $0x2,(%ebx)
+  pid = fork();
+     c1c:	e8 ca 04 00 00       	call   10eb <fork>
+  if (pid == 0) { //child
+     c21:	83 c4 10             	add    $0x10,%esp
+     c24:	85 c0                	test   %eax,%eax
+     c26:	75 48                	jne    c70 <test_fork+0xc0>
+    getpgdirinfo(&pd);
+     c28:	83 ec 0c             	sub    $0xc,%esp
+     c2b:	8d 85 f4 fe ff ff    	lea    -0x10c(%ebp),%eax
+     c31:	50                   	push   %eax
+     c32:	e8 74 05 00 00       	call   11ab <getpgdirinfo>
+    *(int*)map1 = 3;
+     c37:	c7 03 03 00 00 00    	movl   $0x3,(%ebx)
+    *(int*)map0 = 4;
+     c3d:	c7 06 04 00 00 00    	movl   $0x4,(%esi)
+    printf(1, "CHILD:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     c43:	ff 33                	push   (%ebx)
+     c45:	6a 04                	push   $0x4
+     c47:	68 32 1c 00 00       	push   $0x1c32
+     c4c:	6a 01                	push   $0x1
+     c4e:	e8 1d 06 00 00       	call   1270 <printf>
+    printf(1, "finished\n");
+     c53:	83 c4 18             	add    $0x18,%esp
+     c56:	68 7f 1c 00 00       	push   $0x1c7f
+     c5b:	6a 01                	push   $0x1
+     c5d:	e8 0e 06 00 00       	call   1270 <printf>
+     c62:	83 c4 10             	add    $0x10,%esp
+}
+     c65:	8d 65 f8             	lea    -0x8(%ebp),%esp
+     c68:	5b                   	pop    %ebx
+     c69:	5e                   	pop    %esi
+     c6a:	5d                   	pop    %ebp
+     c6b:	c3                   	ret    
+     c6c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    getpgdirinfo(&pd);
+     c70:	83 ec 0c             	sub    $0xc,%esp
+     c73:	8d 85 f4 fe ff ff    	lea    -0x10c(%ebp),%eax
+     c79:	50                   	push   %eax
+     c7a:	e8 2c 05 00 00       	call   11ab <getpgdirinfo>
+    *(int*)map1 = 5;
+     c7f:	c7 03 05 00 00 00    	movl   $0x5,(%ebx)
+    *(int*)map0 = 6;
+     c85:	c7 06 06 00 00 00    	movl   $0x6,(%esi)
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     c8b:	ff 33                	push   (%ebx)
+     c8d:	6a 06                	push   $0x6
+     c8f:	68 4c 1c 00 00       	push   $0x1c4c
+     c94:	6a 01                	push   $0x1
+     c96:	e8 d5 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     c9b:	83 c4 20             	add    $0x20,%esp
+     c9e:	ff 33                	push   (%ebx)
+     ca0:	ff 36                	push   (%esi)
+     ca2:	68 4c 1c 00 00       	push   $0x1c4c
+     ca7:	6a 01                	push   $0x1
+     ca9:	e8 c2 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     cae:	ff 33                	push   (%ebx)
+     cb0:	ff 36                	push   (%esi)
+     cb2:	68 4c 1c 00 00       	push   $0x1c4c
+     cb7:	6a 01                	push   $0x1
+     cb9:	e8 b2 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     cbe:	83 c4 20             	add    $0x20,%esp
+     cc1:	ff 33                	push   (%ebx)
+     cc3:	ff 36                	push   (%esi)
+     cc5:	68 4c 1c 00 00       	push   $0x1c4c
+     cca:	6a 01                	push   $0x1
+     ccc:	e8 9f 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     cd1:	ff 33                	push   (%ebx)
+     cd3:	ff 36                	push   (%esi)
+     cd5:	68 4c 1c 00 00       	push   $0x1c4c
+     cda:	6a 01                	push   $0x1
+     cdc:	e8 8f 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     ce1:	83 c4 20             	add    $0x20,%esp
+     ce4:	ff 33                	push   (%ebx)
+     ce6:	ff 36                	push   (%esi)
+     ce8:	68 4c 1c 00 00       	push   $0x1c4c
+     ced:	6a 01                	push   $0x1
+     cef:	e8 7c 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     cf4:	ff 33                	push   (%ebx)
+     cf6:	ff 36                	push   (%esi)
+     cf8:	68 4c 1c 00 00       	push   $0x1c4c
+     cfd:	6a 01                	push   $0x1
+     cff:	e8 6c 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d04:	83 c4 20             	add    $0x20,%esp
+     d07:	ff 33                	push   (%ebx)
+     d09:	ff 36                	push   (%esi)
+     d0b:	68 4c 1c 00 00       	push   $0x1c4c
+     d10:	6a 01                	push   $0x1
+     d12:	e8 59 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d17:	ff 33                	push   (%ebx)
+     d19:	ff 36                	push   (%esi)
+     d1b:	68 4c 1c 00 00       	push   $0x1c4c
+     d20:	6a 01                	push   $0x1
+     d22:	e8 49 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d27:	83 c4 20             	add    $0x20,%esp
+     d2a:	ff 33                	push   (%ebx)
+     d2c:	ff 36                	push   (%esi)
+     d2e:	68 4c 1c 00 00       	push   $0x1c4c
+     d33:	6a 01                	push   $0x1
+     d35:	e8 36 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d3a:	ff 33                	push   (%ebx)
+     d3c:	ff 36                	push   (%esi)
+     d3e:	68 4c 1c 00 00       	push   $0x1c4c
+     d43:	6a 01                	push   $0x1
+     d45:	e8 26 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d4a:	83 c4 20             	add    $0x20,%esp
+     d4d:	ff 33                	push   (%ebx)
+     d4f:	ff 36                	push   (%esi)
+     d51:	68 4c 1c 00 00       	push   $0x1c4c
+     d56:	6a 01                	push   $0x1
+     d58:	e8 13 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d5d:	ff 33                	push   (%ebx)
+     d5f:	ff 36                	push   (%esi)
+     d61:	68 4c 1c 00 00       	push   $0x1c4c
+     d66:	6a 01                	push   $0x1
+     d68:	e8 03 05 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d6d:	83 c4 20             	add    $0x20,%esp
+     d70:	ff 33                	push   (%ebx)
+     d72:	ff 36                	push   (%esi)
+     d74:	68 4c 1c 00 00       	push   $0x1c4c
+     d79:	6a 01                	push   $0x1
+     d7b:	e8 f0 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d80:	ff 33                	push   (%ebx)
+     d82:	ff 36                	push   (%esi)
+     d84:	68 4c 1c 00 00       	push   $0x1c4c
+     d89:	6a 01                	push   $0x1
+     d8b:	e8 e0 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     d90:	83 c4 20             	add    $0x20,%esp
+     d93:	ff 33                	push   (%ebx)
+     d95:	ff 36                	push   (%esi)
+     d97:	68 4c 1c 00 00       	push   $0x1c4c
+     d9c:	6a 01                	push   $0x1
+     d9e:	e8 cd 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     da3:	ff 33                	push   (%ebx)
+     da5:	ff 36                	push   (%esi)
+     da7:	68 4c 1c 00 00       	push   $0x1c4c
+     dac:	6a 01                	push   $0x1
+     dae:	e8 bd 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     db3:	83 c4 20             	add    $0x20,%esp
+     db6:	ff 33                	push   (%ebx)
+     db8:	ff 36                	push   (%esi)
+     dba:	68 4c 1c 00 00       	push   $0x1c4c
+     dbf:	6a 01                	push   $0x1
+     dc1:	e8 aa 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     dc6:	ff 33                	push   (%ebx)
+     dc8:	ff 36                	push   (%esi)
+     dca:	68 4c 1c 00 00       	push   $0x1c4c
+     dcf:	6a 01                	push   $0x1
+     dd1:	e8 9a 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     dd6:	83 c4 20             	add    $0x20,%esp
+     dd9:	ff 33                	push   (%ebx)
+     ddb:	ff 36                	push   (%esi)
+     ddd:	68 4c 1c 00 00       	push   $0x1c4c
+     de2:	6a 01                	push   $0x1
+     de4:	e8 87 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     de9:	ff 33                	push   (%ebx)
+     deb:	ff 36                	push   (%esi)
+     ded:	68 4c 1c 00 00       	push   $0x1c4c
+     df2:	6a 01                	push   $0x1
+     df4:	e8 77 04 00 00       	call   1270 <printf>
+    printf(1, "PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     df9:	83 c4 20             	add    $0x20,%esp
+     dfc:	ff 33                	push   (%ebx)
+     dfe:	ff 36                	push   (%esi)
+     e00:	68 4c 1c 00 00       	push   $0x1c4c
+     e05:	6a 01                	push   $0x1
+     e07:	e8 64 04 00 00       	call   1270 <printf>
+    wait();
+     e0c:	e8 ea 02 00 00       	call   10fb <wait>
+    printf(1, "LAST __ PARENT:: map0 %d, map1 %d\n", *(int*)map0, *(int*)map1);
+     e11:	ff 33                	push   (%ebx)
+     e13:	ff 36                	push   (%esi)
+     e15:	68 10 19 00 00       	push   $0x1910
+     e1a:	6a 01                	push   $0x1
+     e1c:	e8 4f 04 00 00       	call   1270 <printf>
+     e21:	83 c4 20             	add    $0x20,%esp
+}
+     e24:	8d 65 f8             	lea    -0x8(%ebp),%esp
+     e27:	5b                   	pop    %ebx
+     e28:	5e                   	pop    %esi
+     e29:	5d                   	pop    %ebp
+     e2a:	c3                   	ret    
+     e2b:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     e2f:	90                   	nop
 
-00000880 <strcmp>:
- 880:	55                   	push   %ebp
- 881:	89 e5                	mov    %esp,%ebp
- 883:	53                   	push   %ebx
- 884:	8b 55 08             	mov    0x8(%ebp),%edx
- 887:	8b 4d 0c             	mov    0xc(%ebp),%ecx
- 88a:	0f b6 02             	movzbl (%edx),%eax
- 88d:	84 c0                	test   %al,%al
- 88f:	75 17                	jne    8a8 <strcmp+0x28>
- 891:	eb 3a                	jmp    8cd <strcmp+0x4d>
- 893:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 897:	90                   	nop
- 898:	0f b6 42 01          	movzbl 0x1(%edx),%eax
- 89c:	83 c2 01             	add    $0x1,%edx
- 89f:	8d 59 01             	lea    0x1(%ecx),%ebx
- 8a2:	84 c0                	test   %al,%al
- 8a4:	74 1a                	je     8c0 <strcmp+0x40>
- 8a6:	89 d9                	mov    %ebx,%ecx
- 8a8:	0f b6 19             	movzbl (%ecx),%ebx
- 8ab:	38 c3                	cmp    %al,%bl
- 8ad:	74 e9                	je     898 <strcmp+0x18>
- 8af:	29 d8                	sub    %ebx,%eax
- 8b1:	8b 5d fc             	mov    -0x4(%ebp),%ebx
- 8b4:	c9                   	leave  
- 8b5:	c3                   	ret    
- 8b6:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 8bd:	8d 76 00             	lea    0x0(%esi),%esi
- 8c0:	0f b6 59 01          	movzbl 0x1(%ecx),%ebx
- 8c4:	31 c0                	xor    %eax,%eax
- 8c6:	29 d8                	sub    %ebx,%eax
- 8c8:	8b 5d fc             	mov    -0x4(%ebp),%ebx
- 8cb:	c9                   	leave  
- 8cc:	c3                   	ret    
- 8cd:	0f b6 19             	movzbl (%ecx),%ebx
- 8d0:	31 c0                	xor    %eax,%eax
- 8d2:	eb db                	jmp    8af <strcmp+0x2f>
- 8d4:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 8db:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 8df:	90                   	nop
+00000e30 <test_pg>:
+void test_pg() {
+     e30:	55                   	push   %ebp
+     e31:	89 e5                	mov    %esp,%ebp
+     e33:	81 ec 20 01 00 00    	sub    $0x120,%esp
+  printf(1, "\t-0x60000000 is shared\n");
+     e39:	68 01 1c 00 00       	push   $0x1c01
+     e3e:	6a 01                	push   $0x1
+     e40:	e8 2b 04 00 00       	call   1270 <printf>
+  uint map0 = wmap(0x60000000, 4096, MAP_FIXED | MAP_SHARED, -1);
+     e45:	6a ff                	push   $0xffffffff
+     e47:	6a 0a                	push   $0xa
+     e49:	68 00 10 00 00       	push   $0x1000
+     e4e:	68 00 00 00 60       	push   $0x60000000
+     e53:	e8 3b 03 00 00       	call   1193 <wmap>
+  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_PRIVATE, -1);
+     e58:	83 c4 20             	add    $0x20,%esp
+  *(char*)map0 = 'a';
+     e5b:	c6 00 61             	movb   $0x61,(%eax)
+  uint map1 = wmap(0x60001000, 4096, MAP_FIXED | MAP_PRIVATE, -1);
+     e5e:	6a ff                	push   $0xffffffff
+     e60:	6a 09                	push   $0x9
+     e62:	68 00 10 00 00       	push   $0x1000
+     e67:	68 00 10 00 60       	push   $0x60001000
+     e6c:	e8 22 03 00 00       	call   1193 <wmap>
+  printf(1, "\t-0x60001000 is private\n");
+     e71:	58                   	pop    %eax
+     e72:	5a                   	pop    %edx
+     e73:	68 19 1c 00 00       	push   $0x1c19
+     e78:	6a 01                	push   $0x1
+     e7a:	e8 f1 03 00 00       	call   1270 <printf>
+    getpgdirinfo(&pd);
+     e7f:	8d 85 f4 fe ff ff    	lea    -0x10c(%ebp),%eax
+     e85:	89 04 24             	mov    %eax,(%esp)
+     e88:	e8 1e 03 00 00       	call   11ab <getpgdirinfo>
+    exit();
+     e8d:	e8 61 02 00 00       	call   10f3 <exit>
+     e92:	66 90                	xchg   %ax,%ax
+     e94:	66 90                	xchg   %ax,%ax
+     e96:	66 90                	xchg   %ax,%ax
+     e98:	66 90                	xchg   %ax,%ax
+     e9a:	66 90                	xchg   %ax,%ax
+     e9c:	66 90                	xchg   %ax,%ax
+     e9e:	66 90                	xchg   %ax,%ax
 
-000008e0 <strlen>:
- 8e0:	55                   	push   %ebp
- 8e1:	89 e5                	mov    %esp,%ebp
- 8e3:	8b 55 08             	mov    0x8(%ebp),%edx
- 8e6:	80 3a 00             	cmpb   $0x0,(%edx)
- 8e9:	74 15                	je     900 <strlen+0x20>
- 8eb:	31 c0                	xor    %eax,%eax
- 8ed:	8d 76 00             	lea    0x0(%esi),%esi
- 8f0:	83 c0 01             	add    $0x1,%eax
- 8f3:	80 3c 02 00          	cmpb   $0x0,(%edx,%eax,1)
- 8f7:	89 c1                	mov    %eax,%ecx
- 8f9:	75 f5                	jne    8f0 <strlen+0x10>
- 8fb:	89 c8                	mov    %ecx,%eax
- 8fd:	5d                   	pop    %ebp
- 8fe:	c3                   	ret    
- 8ff:	90                   	nop
- 900:	31 c9                	xor    %ecx,%ecx
- 902:	5d                   	pop    %ebp
- 903:	89 c8                	mov    %ecx,%eax
- 905:	c3                   	ret    
- 906:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 90d:	8d 76 00             	lea    0x0(%esi),%esi
+00000ea0 <strcpy>:
+     ea0:	55                   	push   %ebp
+     ea1:	31 c0                	xor    %eax,%eax
+     ea3:	89 e5                	mov    %esp,%ebp
+     ea5:	53                   	push   %ebx
+     ea6:	8b 4d 08             	mov    0x8(%ebp),%ecx
+     ea9:	8b 5d 0c             	mov    0xc(%ebp),%ebx
+     eac:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     eb0:	0f b6 14 03          	movzbl (%ebx,%eax,1),%edx
+     eb4:	88 14 01             	mov    %dl,(%ecx,%eax,1)
+     eb7:	83 c0 01             	add    $0x1,%eax
+     eba:	84 d2                	test   %dl,%dl
+     ebc:	75 f2                	jne    eb0 <strcpy+0x10>
+     ebe:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+     ec1:	89 c8                	mov    %ecx,%eax
+     ec3:	c9                   	leave  
+     ec4:	c3                   	ret    
+     ec5:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     ecc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
 
-00000910 <memset>:
- 910:	55                   	push   %ebp
- 911:	89 e5                	mov    %esp,%ebp
- 913:	57                   	push   %edi
- 914:	8b 55 08             	mov    0x8(%ebp),%edx
- 917:	8b 4d 10             	mov    0x10(%ebp),%ecx
- 91a:	8b 45 0c             	mov    0xc(%ebp),%eax
- 91d:	89 d7                	mov    %edx,%edi
- 91f:	fc                   	cld    
- 920:	f3 aa                	rep stos %al,%es:(%edi)
- 922:	8b 7d fc             	mov    -0x4(%ebp),%edi
- 925:	89 d0                	mov    %edx,%eax
- 927:	c9                   	leave  
- 928:	c3                   	ret    
- 929:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+00000ed0 <strcmp>:
+     ed0:	55                   	push   %ebp
+     ed1:	89 e5                	mov    %esp,%ebp
+     ed3:	53                   	push   %ebx
+     ed4:	8b 55 08             	mov    0x8(%ebp),%edx
+     ed7:	8b 4d 0c             	mov    0xc(%ebp),%ecx
+     eda:	0f b6 02             	movzbl (%edx),%eax
+     edd:	84 c0                	test   %al,%al
+     edf:	75 17                	jne    ef8 <strcmp+0x28>
+     ee1:	eb 3a                	jmp    f1d <strcmp+0x4d>
+     ee3:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     ee7:	90                   	nop
+     ee8:	0f b6 42 01          	movzbl 0x1(%edx),%eax
+     eec:	83 c2 01             	add    $0x1,%edx
+     eef:	8d 59 01             	lea    0x1(%ecx),%ebx
+     ef2:	84 c0                	test   %al,%al
+     ef4:	74 1a                	je     f10 <strcmp+0x40>
+     ef6:	89 d9                	mov    %ebx,%ecx
+     ef8:	0f b6 19             	movzbl (%ecx),%ebx
+     efb:	38 c3                	cmp    %al,%bl
+     efd:	74 e9                	je     ee8 <strcmp+0x18>
+     eff:	29 d8                	sub    %ebx,%eax
+     f01:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+     f04:	c9                   	leave  
+     f05:	c3                   	ret    
+     f06:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     f0d:	8d 76 00             	lea    0x0(%esi),%esi
+     f10:	0f b6 59 01          	movzbl 0x1(%ecx),%ebx
+     f14:	31 c0                	xor    %eax,%eax
+     f16:	29 d8                	sub    %ebx,%eax
+     f18:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+     f1b:	c9                   	leave  
+     f1c:	c3                   	ret    
+     f1d:	0f b6 19             	movzbl (%ecx),%ebx
+     f20:	31 c0                	xor    %eax,%eax
+     f22:	eb db                	jmp    eff <strcmp+0x2f>
+     f24:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     f2b:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     f2f:	90                   	nop
 
-00000930 <strchr>:
- 930:	55                   	push   %ebp
- 931:	89 e5                	mov    %esp,%ebp
- 933:	8b 45 08             	mov    0x8(%ebp),%eax
- 936:	0f b6 4d 0c          	movzbl 0xc(%ebp),%ecx
- 93a:	0f b6 10             	movzbl (%eax),%edx
- 93d:	84 d2                	test   %dl,%dl
- 93f:	75 12                	jne    953 <strchr+0x23>
- 941:	eb 1d                	jmp    960 <strchr+0x30>
- 943:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 947:	90                   	nop
- 948:	0f b6 50 01          	movzbl 0x1(%eax),%edx
- 94c:	83 c0 01             	add    $0x1,%eax
- 94f:	84 d2                	test   %dl,%dl
- 951:	74 0d                	je     960 <strchr+0x30>
- 953:	38 d1                	cmp    %dl,%cl
- 955:	75 f1                	jne    948 <strchr+0x18>
- 957:	5d                   	pop    %ebp
- 958:	c3                   	ret    
- 959:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 960:	31 c0                	xor    %eax,%eax
- 962:	5d                   	pop    %ebp
- 963:	c3                   	ret    
- 964:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 96b:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- 96f:	90                   	nop
+00000f30 <strlen>:
+     f30:	55                   	push   %ebp
+     f31:	89 e5                	mov    %esp,%ebp
+     f33:	8b 55 08             	mov    0x8(%ebp),%edx
+     f36:	80 3a 00             	cmpb   $0x0,(%edx)
+     f39:	74 15                	je     f50 <strlen+0x20>
+     f3b:	31 c0                	xor    %eax,%eax
+     f3d:	8d 76 00             	lea    0x0(%esi),%esi
+     f40:	83 c0 01             	add    $0x1,%eax
+     f43:	80 3c 02 00          	cmpb   $0x0,(%edx,%eax,1)
+     f47:	89 c1                	mov    %eax,%ecx
+     f49:	75 f5                	jne    f40 <strlen+0x10>
+     f4b:	89 c8                	mov    %ecx,%eax
+     f4d:	5d                   	pop    %ebp
+     f4e:	c3                   	ret    
+     f4f:	90                   	nop
+     f50:	31 c9                	xor    %ecx,%ecx
+     f52:	5d                   	pop    %ebp
+     f53:	89 c8                	mov    %ecx,%eax
+     f55:	c3                   	ret    
+     f56:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     f5d:	8d 76 00             	lea    0x0(%esi),%esi
 
-00000970 <gets>:
- 970:	55                   	push   %ebp
- 971:	89 e5                	mov    %esp,%ebp
- 973:	57                   	push   %edi
- 974:	56                   	push   %esi
- 975:	8d 7d e7             	lea    -0x19(%ebp),%edi
- 978:	53                   	push   %ebx
- 979:	31 db                	xor    %ebx,%ebx
- 97b:	83 ec 1c             	sub    $0x1c,%esp
- 97e:	eb 27                	jmp    9a7 <gets+0x37>
- 980:	83 ec 04             	sub    $0x4,%esp
- 983:	6a 01                	push   $0x1
- 985:	57                   	push   %edi
- 986:	6a 00                	push   $0x0
- 988:	e8 2e 01 00 00       	call   abb <read>
- 98d:	83 c4 10             	add    $0x10,%esp
- 990:	85 c0                	test   %eax,%eax
- 992:	7e 1d                	jle    9b1 <gets+0x41>
- 994:	0f b6 45 e7          	movzbl -0x19(%ebp),%eax
- 998:	8b 55 08             	mov    0x8(%ebp),%edx
- 99b:	88 44 1a ff          	mov    %al,-0x1(%edx,%ebx,1)
- 99f:	3c 0a                	cmp    $0xa,%al
- 9a1:	74 1d                	je     9c0 <gets+0x50>
- 9a3:	3c 0d                	cmp    $0xd,%al
- 9a5:	74 19                	je     9c0 <gets+0x50>
- 9a7:	89 de                	mov    %ebx,%esi
- 9a9:	83 c3 01             	add    $0x1,%ebx
- 9ac:	3b 5d 0c             	cmp    0xc(%ebp),%ebx
- 9af:	7c cf                	jl     980 <gets+0x10>
- 9b1:	8b 45 08             	mov    0x8(%ebp),%eax
- 9b4:	c6 04 30 00          	movb   $0x0,(%eax,%esi,1)
- 9b8:	8d 65 f4             	lea    -0xc(%ebp),%esp
- 9bb:	5b                   	pop    %ebx
- 9bc:	5e                   	pop    %esi
- 9bd:	5f                   	pop    %edi
- 9be:	5d                   	pop    %ebp
- 9bf:	c3                   	ret    
- 9c0:	8b 45 08             	mov    0x8(%ebp),%eax
- 9c3:	89 de                	mov    %ebx,%esi
- 9c5:	c6 04 30 00          	movb   $0x0,(%eax,%esi,1)
- 9c9:	8d 65 f4             	lea    -0xc(%ebp),%esp
- 9cc:	5b                   	pop    %ebx
- 9cd:	5e                   	pop    %esi
- 9ce:	5f                   	pop    %edi
- 9cf:	5d                   	pop    %ebp
- 9d0:	c3                   	ret    
- 9d1:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 9d8:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- 9df:	90                   	nop
+00000f60 <memset>:
+     f60:	55                   	push   %ebp
+     f61:	89 e5                	mov    %esp,%ebp
+     f63:	57                   	push   %edi
+     f64:	8b 55 08             	mov    0x8(%ebp),%edx
+     f67:	8b 4d 10             	mov    0x10(%ebp),%ecx
+     f6a:	8b 45 0c             	mov    0xc(%ebp),%eax
+     f6d:	89 d7                	mov    %edx,%edi
+     f6f:	fc                   	cld    
+     f70:	f3 aa                	rep stos %al,%es:(%edi)
+     f72:	8b 7d fc             	mov    -0x4(%ebp),%edi
+     f75:	89 d0                	mov    %edx,%eax
+     f77:	c9                   	leave  
+     f78:	c3                   	ret    
+     f79:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
 
-000009e0 <stat>:
- 9e0:	55                   	push   %ebp
- 9e1:	89 e5                	mov    %esp,%ebp
- 9e3:	56                   	push   %esi
- 9e4:	53                   	push   %ebx
- 9e5:	83 ec 08             	sub    $0x8,%esp
- 9e8:	6a 00                	push   $0x0
- 9ea:	ff 75 08             	push   0x8(%ebp)
- 9ed:	e8 f1 00 00 00       	call   ae3 <open>
- 9f2:	83 c4 10             	add    $0x10,%esp
- 9f5:	85 c0                	test   %eax,%eax
- 9f7:	78 27                	js     a20 <stat+0x40>
- 9f9:	83 ec 08             	sub    $0x8,%esp
- 9fc:	ff 75 0c             	push   0xc(%ebp)
- 9ff:	89 c3                	mov    %eax,%ebx
- a01:	50                   	push   %eax
- a02:	e8 f4 00 00 00       	call   afb <fstat>
- a07:	89 1c 24             	mov    %ebx,(%esp)
- a0a:	89 c6                	mov    %eax,%esi
- a0c:	e8 ba 00 00 00       	call   acb <close>
- a11:	83 c4 10             	add    $0x10,%esp
- a14:	8d 65 f8             	lea    -0x8(%ebp),%esp
- a17:	89 f0                	mov    %esi,%eax
- a19:	5b                   	pop    %ebx
- a1a:	5e                   	pop    %esi
- a1b:	5d                   	pop    %ebp
- a1c:	c3                   	ret    
- a1d:	8d 76 00             	lea    0x0(%esi),%esi
- a20:	be ff ff ff ff       	mov    $0xffffffff,%esi
- a25:	eb ed                	jmp    a14 <stat+0x34>
- a27:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- a2e:	66 90                	xchg   %ax,%ax
+00000f80 <strchr>:
+     f80:	55                   	push   %ebp
+     f81:	89 e5                	mov    %esp,%ebp
+     f83:	8b 45 08             	mov    0x8(%ebp),%eax
+     f86:	0f b6 4d 0c          	movzbl 0xc(%ebp),%ecx
+     f8a:	0f b6 10             	movzbl (%eax),%edx
+     f8d:	84 d2                	test   %dl,%dl
+     f8f:	75 12                	jne    fa3 <strchr+0x23>
+     f91:	eb 1d                	jmp    fb0 <strchr+0x30>
+     f93:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     f97:	90                   	nop
+     f98:	0f b6 50 01          	movzbl 0x1(%eax),%edx
+     f9c:	83 c0 01             	add    $0x1,%eax
+     f9f:	84 d2                	test   %dl,%dl
+     fa1:	74 0d                	je     fb0 <strchr+0x30>
+     fa3:	38 d1                	cmp    %dl,%cl
+     fa5:	75 f1                	jne    f98 <strchr+0x18>
+     fa7:	5d                   	pop    %ebp
+     fa8:	c3                   	ret    
+     fa9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     fb0:	31 c0                	xor    %eax,%eax
+     fb2:	5d                   	pop    %ebp
+     fb3:	c3                   	ret    
+     fb4:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+     fbb:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+     fbf:	90                   	nop
 
-00000a30 <atoi>:
- a30:	55                   	push   %ebp
- a31:	89 e5                	mov    %esp,%ebp
- a33:	53                   	push   %ebx
- a34:	8b 55 08             	mov    0x8(%ebp),%edx
- a37:	0f be 02             	movsbl (%edx),%eax
- a3a:	8d 48 d0             	lea    -0x30(%eax),%ecx
- a3d:	80 f9 09             	cmp    $0x9,%cl
- a40:	b9 00 00 00 00       	mov    $0x0,%ecx
- a45:	77 1e                	ja     a65 <atoi+0x35>
- a47:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- a4e:	66 90                	xchg   %ax,%ax
- a50:	83 c2 01             	add    $0x1,%edx
- a53:	8d 0c 89             	lea    (%ecx,%ecx,4),%ecx
- a56:	8d 4c 48 d0          	lea    -0x30(%eax,%ecx,2),%ecx
- a5a:	0f be 02             	movsbl (%edx),%eax
- a5d:	8d 58 d0             	lea    -0x30(%eax),%ebx
- a60:	80 fb 09             	cmp    $0x9,%bl
- a63:	76 eb                	jbe    a50 <atoi+0x20>
- a65:	8b 5d fc             	mov    -0x4(%ebp),%ebx
- a68:	89 c8                	mov    %ecx,%eax
- a6a:	c9                   	leave  
- a6b:	c3                   	ret    
- a6c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+00000fc0 <gets>:
+     fc0:	55                   	push   %ebp
+     fc1:	89 e5                	mov    %esp,%ebp
+     fc3:	57                   	push   %edi
+     fc4:	56                   	push   %esi
+     fc5:	8d 7d e7             	lea    -0x19(%ebp),%edi
+     fc8:	53                   	push   %ebx
+     fc9:	31 db                	xor    %ebx,%ebx
+     fcb:	83 ec 1c             	sub    $0x1c,%esp
+     fce:	eb 27                	jmp    ff7 <gets+0x37>
+     fd0:	83 ec 04             	sub    $0x4,%esp
+     fd3:	6a 01                	push   $0x1
+     fd5:	57                   	push   %edi
+     fd6:	6a 00                	push   $0x0
+     fd8:	e8 2e 01 00 00       	call   110b <read>
+     fdd:	83 c4 10             	add    $0x10,%esp
+     fe0:	85 c0                	test   %eax,%eax
+     fe2:	7e 1d                	jle    1001 <gets+0x41>
+     fe4:	0f b6 45 e7          	movzbl -0x19(%ebp),%eax
+     fe8:	8b 55 08             	mov    0x8(%ebp),%edx
+     feb:	88 44 1a ff          	mov    %al,-0x1(%edx,%ebx,1)
+     fef:	3c 0a                	cmp    $0xa,%al
+     ff1:	74 1d                	je     1010 <gets+0x50>
+     ff3:	3c 0d                	cmp    $0xd,%al
+     ff5:	74 19                	je     1010 <gets+0x50>
+     ff7:	89 de                	mov    %ebx,%esi
+     ff9:	83 c3 01             	add    $0x1,%ebx
+     ffc:	3b 5d 0c             	cmp    0xc(%ebp),%ebx
+     fff:	7c cf                	jl     fd0 <gets+0x10>
+    1001:	8b 45 08             	mov    0x8(%ebp),%eax
+    1004:	c6 04 30 00          	movb   $0x0,(%eax,%esi,1)
+    1008:	8d 65 f4             	lea    -0xc(%ebp),%esp
+    100b:	5b                   	pop    %ebx
+    100c:	5e                   	pop    %esi
+    100d:	5f                   	pop    %edi
+    100e:	5d                   	pop    %ebp
+    100f:	c3                   	ret    
+    1010:	8b 45 08             	mov    0x8(%ebp),%eax
+    1013:	89 de                	mov    %ebx,%esi
+    1015:	c6 04 30 00          	movb   $0x0,(%eax,%esi,1)
+    1019:	8d 65 f4             	lea    -0xc(%ebp),%esp
+    101c:	5b                   	pop    %ebx
+    101d:	5e                   	pop    %esi
+    101e:	5f                   	pop    %edi
+    101f:	5d                   	pop    %ebp
+    1020:	c3                   	ret    
+    1021:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    1028:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    102f:	90                   	nop
 
-00000a70 <memmove>:
- a70:	55                   	push   %ebp
- a71:	89 e5                	mov    %esp,%ebp
- a73:	57                   	push   %edi
- a74:	8b 45 10             	mov    0x10(%ebp),%eax
- a77:	8b 55 08             	mov    0x8(%ebp),%edx
- a7a:	56                   	push   %esi
- a7b:	8b 75 0c             	mov    0xc(%ebp),%esi
- a7e:	85 c0                	test   %eax,%eax
- a80:	7e 13                	jle    a95 <memmove+0x25>
- a82:	01 d0                	add    %edx,%eax
- a84:	89 d7                	mov    %edx,%edi
- a86:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- a8d:	8d 76 00             	lea    0x0(%esi),%esi
- a90:	a4                   	movsb  %ds:(%esi),%es:(%edi)
- a91:	39 f8                	cmp    %edi,%eax
- a93:	75 fb                	jne    a90 <memmove+0x20>
- a95:	5e                   	pop    %esi
- a96:	89 d0                	mov    %edx,%eax
- a98:	5f                   	pop    %edi
- a99:	5d                   	pop    %ebp
- a9a:	c3                   	ret    
+00001030 <stat>:
+    1030:	55                   	push   %ebp
+    1031:	89 e5                	mov    %esp,%ebp
+    1033:	56                   	push   %esi
+    1034:	53                   	push   %ebx
+    1035:	83 ec 08             	sub    $0x8,%esp
+    1038:	6a 00                	push   $0x0
+    103a:	ff 75 08             	push   0x8(%ebp)
+    103d:	e8 f1 00 00 00       	call   1133 <open>
+    1042:	83 c4 10             	add    $0x10,%esp
+    1045:	85 c0                	test   %eax,%eax
+    1047:	78 27                	js     1070 <stat+0x40>
+    1049:	83 ec 08             	sub    $0x8,%esp
+    104c:	ff 75 0c             	push   0xc(%ebp)
+    104f:	89 c3                	mov    %eax,%ebx
+    1051:	50                   	push   %eax
+    1052:	e8 f4 00 00 00       	call   114b <fstat>
+    1057:	89 1c 24             	mov    %ebx,(%esp)
+    105a:	89 c6                	mov    %eax,%esi
+    105c:	e8 ba 00 00 00       	call   111b <close>
+    1061:	83 c4 10             	add    $0x10,%esp
+    1064:	8d 65 f8             	lea    -0x8(%ebp),%esp
+    1067:	89 f0                	mov    %esi,%eax
+    1069:	5b                   	pop    %ebx
+    106a:	5e                   	pop    %esi
+    106b:	5d                   	pop    %ebp
+    106c:	c3                   	ret    
+    106d:	8d 76 00             	lea    0x0(%esi),%esi
+    1070:	be ff ff ff ff       	mov    $0xffffffff,%esi
+    1075:	eb ed                	jmp    1064 <stat+0x34>
+    1077:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    107e:	66 90                	xchg   %ax,%ax
 
-00000a9b <fork>:
- a9b:	b8 01 00 00 00       	mov    $0x1,%eax
- aa0:	cd 40                	int    $0x40
- aa2:	c3                   	ret    
+00001080 <atoi>:
+    1080:	55                   	push   %ebp
+    1081:	89 e5                	mov    %esp,%ebp
+    1083:	53                   	push   %ebx
+    1084:	8b 55 08             	mov    0x8(%ebp),%edx
+    1087:	0f be 02             	movsbl (%edx),%eax
+    108a:	8d 48 d0             	lea    -0x30(%eax),%ecx
+    108d:	80 f9 09             	cmp    $0x9,%cl
+    1090:	b9 00 00 00 00       	mov    $0x0,%ecx
+    1095:	77 1e                	ja     10b5 <atoi+0x35>
+    1097:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    109e:	66 90                	xchg   %ax,%ax
+    10a0:	83 c2 01             	add    $0x1,%edx
+    10a3:	8d 0c 89             	lea    (%ecx,%ecx,4),%ecx
+    10a6:	8d 4c 48 d0          	lea    -0x30(%eax,%ecx,2),%ecx
+    10aa:	0f be 02             	movsbl (%edx),%eax
+    10ad:	8d 58 d0             	lea    -0x30(%eax),%ebx
+    10b0:	80 fb 09             	cmp    $0x9,%bl
+    10b3:	76 eb                	jbe    10a0 <atoi+0x20>
+    10b5:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+    10b8:	89 c8                	mov    %ecx,%eax
+    10ba:	c9                   	leave  
+    10bb:	c3                   	ret    
+    10bc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
 
-00000aa3 <exit>:
- aa3:	b8 02 00 00 00       	mov    $0x2,%eax
- aa8:	cd 40                	int    $0x40
- aaa:	c3                   	ret    
+000010c0 <memmove>:
+    10c0:	55                   	push   %ebp
+    10c1:	89 e5                	mov    %esp,%ebp
+    10c3:	57                   	push   %edi
+    10c4:	8b 45 10             	mov    0x10(%ebp),%eax
+    10c7:	8b 55 08             	mov    0x8(%ebp),%edx
+    10ca:	56                   	push   %esi
+    10cb:	8b 75 0c             	mov    0xc(%ebp),%esi
+    10ce:	85 c0                	test   %eax,%eax
+    10d0:	7e 13                	jle    10e5 <memmove+0x25>
+    10d2:	01 d0                	add    %edx,%eax
+    10d4:	89 d7                	mov    %edx,%edi
+    10d6:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    10dd:	8d 76 00             	lea    0x0(%esi),%esi
+    10e0:	a4                   	movsb  %ds:(%esi),%es:(%edi)
+    10e1:	39 f8                	cmp    %edi,%eax
+    10e3:	75 fb                	jne    10e0 <memmove+0x20>
+    10e5:	5e                   	pop    %esi
+    10e6:	89 d0                	mov    %edx,%eax
+    10e8:	5f                   	pop    %edi
+    10e9:	5d                   	pop    %ebp
+    10ea:	c3                   	ret    
 
-00000aab <wait>:
- aab:	b8 03 00 00 00       	mov    $0x3,%eax
- ab0:	cd 40                	int    $0x40
- ab2:	c3                   	ret    
+000010eb <fork>:
+    10eb:	b8 01 00 00 00       	mov    $0x1,%eax
+    10f0:	cd 40                	int    $0x40
+    10f2:	c3                   	ret    
 
-00000ab3 <pipe>:
- ab3:	b8 04 00 00 00       	mov    $0x4,%eax
- ab8:	cd 40                	int    $0x40
- aba:	c3                   	ret    
+000010f3 <exit>:
+    10f3:	b8 02 00 00 00       	mov    $0x2,%eax
+    10f8:	cd 40                	int    $0x40
+    10fa:	c3                   	ret    
 
-00000abb <read>:
- abb:	b8 05 00 00 00       	mov    $0x5,%eax
- ac0:	cd 40                	int    $0x40
- ac2:	c3                   	ret    
+000010fb <wait>:
+    10fb:	b8 03 00 00 00       	mov    $0x3,%eax
+    1100:	cd 40                	int    $0x40
+    1102:	c3                   	ret    
 
-00000ac3 <write>:
- ac3:	b8 10 00 00 00       	mov    $0x10,%eax
- ac8:	cd 40                	int    $0x40
- aca:	c3                   	ret    
+00001103 <pipe>:
+    1103:	b8 04 00 00 00       	mov    $0x4,%eax
+    1108:	cd 40                	int    $0x40
+    110a:	c3                   	ret    
 
-00000acb <close>:
- acb:	b8 15 00 00 00       	mov    $0x15,%eax
- ad0:	cd 40                	int    $0x40
- ad2:	c3                   	ret    
+0000110b <read>:
+    110b:	b8 05 00 00 00       	mov    $0x5,%eax
+    1110:	cd 40                	int    $0x40
+    1112:	c3                   	ret    
 
-00000ad3 <kill>:
- ad3:	b8 06 00 00 00       	mov    $0x6,%eax
- ad8:	cd 40                	int    $0x40
- ada:	c3                   	ret    
+00001113 <write>:
+    1113:	b8 10 00 00 00       	mov    $0x10,%eax
+    1118:	cd 40                	int    $0x40
+    111a:	c3                   	ret    
 
-00000adb <exec>:
- adb:	b8 07 00 00 00       	mov    $0x7,%eax
- ae0:	cd 40                	int    $0x40
- ae2:	c3                   	ret    
+0000111b <close>:
+    111b:	b8 15 00 00 00       	mov    $0x15,%eax
+    1120:	cd 40                	int    $0x40
+    1122:	c3                   	ret    
 
-00000ae3 <open>:
- ae3:	b8 0f 00 00 00       	mov    $0xf,%eax
- ae8:	cd 40                	int    $0x40
- aea:	c3                   	ret    
+00001123 <kill>:
+    1123:	b8 06 00 00 00       	mov    $0x6,%eax
+    1128:	cd 40                	int    $0x40
+    112a:	c3                   	ret    
 
-00000aeb <mknod>:
- aeb:	b8 11 00 00 00       	mov    $0x11,%eax
- af0:	cd 40                	int    $0x40
- af2:	c3                   	ret    
+0000112b <exec>:
+    112b:	b8 07 00 00 00       	mov    $0x7,%eax
+    1130:	cd 40                	int    $0x40
+    1132:	c3                   	ret    
 
-00000af3 <unlink>:
- af3:	b8 12 00 00 00       	mov    $0x12,%eax
- af8:	cd 40                	int    $0x40
- afa:	c3                   	ret    
+00001133 <open>:
+    1133:	b8 0f 00 00 00       	mov    $0xf,%eax
+    1138:	cd 40                	int    $0x40
+    113a:	c3                   	ret    
 
-00000afb <fstat>:
- afb:	b8 08 00 00 00       	mov    $0x8,%eax
- b00:	cd 40                	int    $0x40
- b02:	c3                   	ret    
+0000113b <mknod>:
+    113b:	b8 11 00 00 00       	mov    $0x11,%eax
+    1140:	cd 40                	int    $0x40
+    1142:	c3                   	ret    
 
-00000b03 <link>:
- b03:	b8 13 00 00 00       	mov    $0x13,%eax
- b08:	cd 40                	int    $0x40
- b0a:	c3                   	ret    
+00001143 <unlink>:
+    1143:	b8 12 00 00 00       	mov    $0x12,%eax
+    1148:	cd 40                	int    $0x40
+    114a:	c3                   	ret    
 
-00000b0b <mkdir>:
- b0b:	b8 14 00 00 00       	mov    $0x14,%eax
- b10:	cd 40                	int    $0x40
- b12:	c3                   	ret    
+0000114b <fstat>:
+    114b:	b8 08 00 00 00       	mov    $0x8,%eax
+    1150:	cd 40                	int    $0x40
+    1152:	c3                   	ret    
 
-00000b13 <chdir>:
- b13:	b8 09 00 00 00       	mov    $0x9,%eax
- b18:	cd 40                	int    $0x40
- b1a:	c3                   	ret    
+00001153 <link>:
+    1153:	b8 13 00 00 00       	mov    $0x13,%eax
+    1158:	cd 40                	int    $0x40
+    115a:	c3                   	ret    
 
-00000b1b <dup>:
- b1b:	b8 0a 00 00 00       	mov    $0xa,%eax
- b20:	cd 40                	int    $0x40
- b22:	c3                   	ret    
+0000115b <mkdir>:
+    115b:	b8 14 00 00 00       	mov    $0x14,%eax
+    1160:	cd 40                	int    $0x40
+    1162:	c3                   	ret    
 
-00000b23 <getpid>:
- b23:	b8 0b 00 00 00       	mov    $0xb,%eax
- b28:	cd 40                	int    $0x40
- b2a:	c3                   	ret    
+00001163 <chdir>:
+    1163:	b8 09 00 00 00       	mov    $0x9,%eax
+    1168:	cd 40                	int    $0x40
+    116a:	c3                   	ret    
 
-00000b2b <sbrk>:
- b2b:	b8 0c 00 00 00       	mov    $0xc,%eax
- b30:	cd 40                	int    $0x40
- b32:	c3                   	ret    
+0000116b <dup>:
+    116b:	b8 0a 00 00 00       	mov    $0xa,%eax
+    1170:	cd 40                	int    $0x40
+    1172:	c3                   	ret    
 
-00000b33 <sleep>:
- b33:	b8 0d 00 00 00       	mov    $0xd,%eax
- b38:	cd 40                	int    $0x40
- b3a:	c3                   	ret    
+00001173 <getpid>:
+    1173:	b8 0b 00 00 00       	mov    $0xb,%eax
+    1178:	cd 40                	int    $0x40
+    117a:	c3                   	ret    
 
-00000b3b <uptime>:
- b3b:	b8 0e 00 00 00       	mov    $0xe,%eax
- b40:	cd 40                	int    $0x40
- b42:	c3                   	ret    
+0000117b <sbrk>:
+    117b:	b8 0c 00 00 00       	mov    $0xc,%eax
+    1180:	cd 40                	int    $0x40
+    1182:	c3                   	ret    
 
-00000b43 <wmap>:
- b43:	b8 16 00 00 00       	mov    $0x16,%eax
- b48:	cd 40                	int    $0x40
- b4a:	c3                   	ret    
+00001183 <sleep>:
+    1183:	b8 0d 00 00 00       	mov    $0xd,%eax
+    1188:	cd 40                	int    $0x40
+    118a:	c3                   	ret    
 
-00000b4b <wunmap>:
- b4b:	b8 17 00 00 00       	mov    $0x17,%eax
- b50:	cd 40                	int    $0x40
- b52:	c3                   	ret    
+0000118b <uptime>:
+    118b:	b8 0e 00 00 00       	mov    $0xe,%eax
+    1190:	cd 40                	int    $0x40
+    1192:	c3                   	ret    
 
-00000b53 <wremap>:
- b53:	b8 18 00 00 00       	mov    $0x18,%eax
- b58:	cd 40                	int    $0x40
- b5a:	c3                   	ret    
+00001193 <wmap>:
+    1193:	b8 16 00 00 00       	mov    $0x16,%eax
+    1198:	cd 40                	int    $0x40
+    119a:	c3                   	ret    
 
-00000b5b <getpgdirinfo>:
- b5b:	b8 19 00 00 00       	mov    $0x19,%eax
- b60:	cd 40                	int    $0x40
- b62:	c3                   	ret    
+0000119b <wunmap>:
+    119b:	b8 17 00 00 00       	mov    $0x17,%eax
+    11a0:	cd 40                	int    $0x40
+    11a2:	c3                   	ret    
 
-00000b63 <getwmapinfo>:
- b63:	b8 1a 00 00 00       	mov    $0x1a,%eax
- b68:	cd 40                	int    $0x40
- b6a:	c3                   	ret    
- b6b:	66 90                	xchg   %ax,%ax
- b6d:	66 90                	xchg   %ax,%ax
- b6f:	90                   	nop
+000011a3 <wremap>:
+    11a3:	b8 18 00 00 00       	mov    $0x18,%eax
+    11a8:	cd 40                	int    $0x40
+    11aa:	c3                   	ret    
 
-00000b70 <printint>:
- b70:	55                   	push   %ebp
- b71:	89 e5                	mov    %esp,%ebp
- b73:	57                   	push   %edi
- b74:	56                   	push   %esi
- b75:	53                   	push   %ebx
- b76:	83 ec 3c             	sub    $0x3c,%esp
- b79:	89 4d c4             	mov    %ecx,-0x3c(%ebp)
- b7c:	89 d1                	mov    %edx,%ecx
- b7e:	89 45 b8             	mov    %eax,-0x48(%ebp)
- b81:	85 d2                	test   %edx,%edx
- b83:	0f 89 7f 00 00 00    	jns    c08 <printint+0x98>
- b89:	f6 45 08 01          	testb  $0x1,0x8(%ebp)
- b8d:	74 79                	je     c08 <printint+0x98>
- b8f:	c7 45 bc 01 00 00 00 	movl   $0x1,-0x44(%ebp)
- b96:	f7 d9                	neg    %ecx
- b98:	31 db                	xor    %ebx,%ebx
- b9a:	8d 75 d7             	lea    -0x29(%ebp),%esi
- b9d:	8d 76 00             	lea    0x0(%esi),%esi
- ba0:	89 c8                	mov    %ecx,%eax
- ba2:	31 d2                	xor    %edx,%edx
- ba4:	89 cf                	mov    %ecx,%edi
- ba6:	f7 75 c4             	divl   -0x3c(%ebp)
- ba9:	0f b6 92 44 14 00 00 	movzbl 0x1444(%edx),%edx
- bb0:	89 45 c0             	mov    %eax,-0x40(%ebp)
- bb3:	89 d8                	mov    %ebx,%eax
- bb5:	8d 5b 01             	lea    0x1(%ebx),%ebx
- bb8:	8b 4d c0             	mov    -0x40(%ebp),%ecx
- bbb:	88 14 1e             	mov    %dl,(%esi,%ebx,1)
- bbe:	39 7d c4             	cmp    %edi,-0x3c(%ebp)
- bc1:	76 dd                	jbe    ba0 <printint+0x30>
- bc3:	8b 4d bc             	mov    -0x44(%ebp),%ecx
- bc6:	85 c9                	test   %ecx,%ecx
- bc8:	74 0c                	je     bd6 <printint+0x66>
- bca:	c6 44 1d d8 2d       	movb   $0x2d,-0x28(%ebp,%ebx,1)
- bcf:	89 d8                	mov    %ebx,%eax
- bd1:	ba 2d 00 00 00       	mov    $0x2d,%edx
- bd6:	8b 7d b8             	mov    -0x48(%ebp),%edi
- bd9:	8d 5c 05 d7          	lea    -0x29(%ebp,%eax,1),%ebx
- bdd:	eb 07                	jmp    be6 <printint+0x76>
- bdf:	90                   	nop
- be0:	0f b6 13             	movzbl (%ebx),%edx
- be3:	83 eb 01             	sub    $0x1,%ebx
- be6:	83 ec 04             	sub    $0x4,%esp
- be9:	88 55 d7             	mov    %dl,-0x29(%ebp)
- bec:	6a 01                	push   $0x1
- bee:	56                   	push   %esi
- bef:	57                   	push   %edi
- bf0:	e8 ce fe ff ff       	call   ac3 <write>
- bf5:	83 c4 10             	add    $0x10,%esp
- bf8:	39 de                	cmp    %ebx,%esi
- bfa:	75 e4                	jne    be0 <printint+0x70>
- bfc:	8d 65 f4             	lea    -0xc(%ebp),%esp
- bff:	5b                   	pop    %ebx
- c00:	5e                   	pop    %esi
- c01:	5f                   	pop    %edi
- c02:	5d                   	pop    %ebp
- c03:	c3                   	ret    
- c04:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- c08:	c7 45 bc 00 00 00 00 	movl   $0x0,-0x44(%ebp)
- c0f:	eb 87                	jmp    b98 <printint+0x28>
- c11:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- c18:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- c1f:	90                   	nop
+000011ab <getpgdirinfo>:
+    11ab:	b8 19 00 00 00       	mov    $0x19,%eax
+    11b0:	cd 40                	int    $0x40
+    11b2:	c3                   	ret    
 
-00000c20 <printf>:
- c20:	55                   	push   %ebp
- c21:	89 e5                	mov    %esp,%ebp
- c23:	57                   	push   %edi
- c24:	56                   	push   %esi
- c25:	53                   	push   %ebx
- c26:	83 ec 2c             	sub    $0x2c,%esp
- c29:	8b 5d 0c             	mov    0xc(%ebp),%ebx
- c2c:	8b 75 08             	mov    0x8(%ebp),%esi
- c2f:	0f b6 13             	movzbl (%ebx),%edx
- c32:	84 d2                	test   %dl,%dl
- c34:	74 6a                	je     ca0 <printf+0x80>
- c36:	8d 45 10             	lea    0x10(%ebp),%eax
- c39:	83 c3 01             	add    $0x1,%ebx
- c3c:	8d 7d e7             	lea    -0x19(%ebp),%edi
- c3f:	31 c9                	xor    %ecx,%ecx
- c41:	89 45 d0             	mov    %eax,-0x30(%ebp)
- c44:	eb 36                	jmp    c7c <printf+0x5c>
- c46:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- c4d:	8d 76 00             	lea    0x0(%esi),%esi
- c50:	89 4d d4             	mov    %ecx,-0x2c(%ebp)
- c53:	b9 25 00 00 00       	mov    $0x25,%ecx
- c58:	83 f8 25             	cmp    $0x25,%eax
- c5b:	74 15                	je     c72 <printf+0x52>
- c5d:	83 ec 04             	sub    $0x4,%esp
- c60:	88 55 e7             	mov    %dl,-0x19(%ebp)
- c63:	6a 01                	push   $0x1
- c65:	57                   	push   %edi
- c66:	56                   	push   %esi
- c67:	e8 57 fe ff ff       	call   ac3 <write>
- c6c:	8b 4d d4             	mov    -0x2c(%ebp),%ecx
- c6f:	83 c4 10             	add    $0x10,%esp
- c72:	0f b6 13             	movzbl (%ebx),%edx
- c75:	83 c3 01             	add    $0x1,%ebx
- c78:	84 d2                	test   %dl,%dl
- c7a:	74 24                	je     ca0 <printf+0x80>
- c7c:	0f b6 c2             	movzbl %dl,%eax
- c7f:	85 c9                	test   %ecx,%ecx
- c81:	74 cd                	je     c50 <printf+0x30>
- c83:	83 f9 25             	cmp    $0x25,%ecx
- c86:	75 ea                	jne    c72 <printf+0x52>
- c88:	83 f8 25             	cmp    $0x25,%eax
- c8b:	0f 84 07 01 00 00    	je     d98 <printf+0x178>
- c91:	83 e8 63             	sub    $0x63,%eax
- c94:	83 f8 15             	cmp    $0x15,%eax
- c97:	77 17                	ja     cb0 <printf+0x90>
- c99:	ff 24 85 ec 13 00 00 	jmp    *0x13ec(,%eax,4)
- ca0:	8d 65 f4             	lea    -0xc(%ebp),%esp
- ca3:	5b                   	pop    %ebx
- ca4:	5e                   	pop    %esi
- ca5:	5f                   	pop    %edi
- ca6:	5d                   	pop    %ebp
- ca7:	c3                   	ret    
- ca8:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- caf:	90                   	nop
- cb0:	83 ec 04             	sub    $0x4,%esp
- cb3:	88 55 d4             	mov    %dl,-0x2c(%ebp)
- cb6:	6a 01                	push   $0x1
- cb8:	57                   	push   %edi
- cb9:	56                   	push   %esi
- cba:	c6 45 e7 25          	movb   $0x25,-0x19(%ebp)
- cbe:	e8 00 fe ff ff       	call   ac3 <write>
- cc3:	0f b6 55 d4          	movzbl -0x2c(%ebp),%edx
- cc7:	83 c4 0c             	add    $0xc,%esp
- cca:	88 55 e7             	mov    %dl,-0x19(%ebp)
- ccd:	6a 01                	push   $0x1
- ccf:	57                   	push   %edi
- cd0:	56                   	push   %esi
- cd1:	e8 ed fd ff ff       	call   ac3 <write>
- cd6:	83 c4 10             	add    $0x10,%esp
- cd9:	31 c9                	xor    %ecx,%ecx
- cdb:	eb 95                	jmp    c72 <printf+0x52>
- cdd:	8d 76 00             	lea    0x0(%esi),%esi
- ce0:	83 ec 0c             	sub    $0xc,%esp
- ce3:	b9 10 00 00 00       	mov    $0x10,%ecx
- ce8:	6a 00                	push   $0x0
- cea:	8b 45 d0             	mov    -0x30(%ebp),%eax
- ced:	8b 10                	mov    (%eax),%edx
- cef:	89 f0                	mov    %esi,%eax
- cf1:	e8 7a fe ff ff       	call   b70 <printint>
- cf6:	83 45 d0 04          	addl   $0x4,-0x30(%ebp)
- cfa:	83 c4 10             	add    $0x10,%esp
- cfd:	31 c9                	xor    %ecx,%ecx
- cff:	e9 6e ff ff ff       	jmp    c72 <printf+0x52>
- d04:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- d08:	8b 45 d0             	mov    -0x30(%ebp),%eax
- d0b:	8b 10                	mov    (%eax),%edx
- d0d:	83 c0 04             	add    $0x4,%eax
- d10:	89 45 d0             	mov    %eax,-0x30(%ebp)
- d13:	85 d2                	test   %edx,%edx
- d15:	0f 84 8d 00 00 00    	je     da8 <printf+0x188>
- d1b:	0f b6 02             	movzbl (%edx),%eax
- d1e:	31 c9                	xor    %ecx,%ecx
- d20:	84 c0                	test   %al,%al
- d22:	0f 84 4a ff ff ff    	je     c72 <printf+0x52>
- d28:	89 5d d4             	mov    %ebx,-0x2c(%ebp)
- d2b:	89 d3                	mov    %edx,%ebx
- d2d:	8d 76 00             	lea    0x0(%esi),%esi
- d30:	83 ec 04             	sub    $0x4,%esp
- d33:	83 c3 01             	add    $0x1,%ebx
- d36:	88 45 e7             	mov    %al,-0x19(%ebp)
- d39:	6a 01                	push   $0x1
- d3b:	57                   	push   %edi
- d3c:	56                   	push   %esi
- d3d:	e8 81 fd ff ff       	call   ac3 <write>
- d42:	0f b6 03             	movzbl (%ebx),%eax
- d45:	83 c4 10             	add    $0x10,%esp
- d48:	84 c0                	test   %al,%al
- d4a:	75 e4                	jne    d30 <printf+0x110>
- d4c:	8b 5d d4             	mov    -0x2c(%ebp),%ebx
- d4f:	31 c9                	xor    %ecx,%ecx
- d51:	e9 1c ff ff ff       	jmp    c72 <printf+0x52>
- d56:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- d5d:	8d 76 00             	lea    0x0(%esi),%esi
- d60:	83 ec 0c             	sub    $0xc,%esp
- d63:	b9 0a 00 00 00       	mov    $0xa,%ecx
- d68:	6a 01                	push   $0x1
- d6a:	e9 7b ff ff ff       	jmp    cea <printf+0xca>
- d6f:	90                   	nop
- d70:	8b 45 d0             	mov    -0x30(%ebp),%eax
- d73:	83 ec 04             	sub    $0x4,%esp
- d76:	8b 00                	mov    (%eax),%eax
- d78:	6a 01                	push   $0x1
- d7a:	57                   	push   %edi
- d7b:	56                   	push   %esi
- d7c:	88 45 e7             	mov    %al,-0x19(%ebp)
- d7f:	e8 3f fd ff ff       	call   ac3 <write>
- d84:	83 45 d0 04          	addl   $0x4,-0x30(%ebp)
- d88:	83 c4 10             	add    $0x10,%esp
- d8b:	31 c9                	xor    %ecx,%ecx
- d8d:	e9 e0 fe ff ff       	jmp    c72 <printf+0x52>
- d92:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
- d98:	88 55 e7             	mov    %dl,-0x19(%ebp)
- d9b:	83 ec 04             	sub    $0x4,%esp
- d9e:	e9 2a ff ff ff       	jmp    ccd <printf+0xad>
- da3:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- da7:	90                   	nop
- da8:	ba e4 13 00 00       	mov    $0x13e4,%edx
- dad:	89 5d d4             	mov    %ebx,-0x2c(%ebp)
- db0:	b8 28 00 00 00       	mov    $0x28,%eax
- db5:	89 d3                	mov    %edx,%ebx
- db7:	e9 74 ff ff ff       	jmp    d30 <printf+0x110>
- dbc:	66 90                	xchg   %ax,%ax
- dbe:	66 90                	xchg   %ax,%ax
+000011b3 <getwmapinfo>:
+    11b3:	b8 1a 00 00 00       	mov    $0x1a,%eax
+    11b8:	cd 40                	int    $0x40
+    11ba:	c3                   	ret    
+    11bb:	66 90                	xchg   %ax,%ax
+    11bd:	66 90                	xchg   %ax,%ax
+    11bf:	90                   	nop
 
-00000dc0 <free>:
- dc0:	55                   	push   %ebp
- dc1:	a1 ec 17 00 00       	mov    0x17ec,%eax
- dc6:	89 e5                	mov    %esp,%ebp
- dc8:	57                   	push   %edi
- dc9:	56                   	push   %esi
- dca:	53                   	push   %ebx
- dcb:	8b 5d 08             	mov    0x8(%ebp),%ebx
- dce:	8d 4b f8             	lea    -0x8(%ebx),%ecx
- dd1:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
- dd8:	89 c2                	mov    %eax,%edx
- dda:	8b 00                	mov    (%eax),%eax
- ddc:	39 ca                	cmp    %ecx,%edx
- dde:	73 30                	jae    e10 <free+0x50>
- de0:	39 c1                	cmp    %eax,%ecx
- de2:	72 04                	jb     de8 <free+0x28>
- de4:	39 c2                	cmp    %eax,%edx
- de6:	72 f0                	jb     dd8 <free+0x18>
- de8:	8b 73 fc             	mov    -0x4(%ebx),%esi
- deb:	8d 3c f1             	lea    (%ecx,%esi,8),%edi
- dee:	39 f8                	cmp    %edi,%eax
- df0:	74 30                	je     e22 <free+0x62>
- df2:	89 43 f8             	mov    %eax,-0x8(%ebx)
- df5:	8b 42 04             	mov    0x4(%edx),%eax
- df8:	8d 34 c2             	lea    (%edx,%eax,8),%esi
- dfb:	39 f1                	cmp    %esi,%ecx
- dfd:	74 3a                	je     e39 <free+0x79>
- dff:	89 0a                	mov    %ecx,(%edx)
- e01:	5b                   	pop    %ebx
- e02:	89 15 ec 17 00 00    	mov    %edx,0x17ec
- e08:	5e                   	pop    %esi
- e09:	5f                   	pop    %edi
- e0a:	5d                   	pop    %ebp
- e0b:	c3                   	ret    
- e0c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
- e10:	39 c2                	cmp    %eax,%edx
- e12:	72 c4                	jb     dd8 <free+0x18>
- e14:	39 c1                	cmp    %eax,%ecx
- e16:	73 c0                	jae    dd8 <free+0x18>
- e18:	8b 73 fc             	mov    -0x4(%ebx),%esi
- e1b:	8d 3c f1             	lea    (%ecx,%esi,8),%edi
- e1e:	39 f8                	cmp    %edi,%eax
- e20:	75 d0                	jne    df2 <free+0x32>
- e22:	03 70 04             	add    0x4(%eax),%esi
- e25:	89 73 fc             	mov    %esi,-0x4(%ebx)
- e28:	8b 02                	mov    (%edx),%eax
- e2a:	8b 00                	mov    (%eax),%eax
- e2c:	89 43 f8             	mov    %eax,-0x8(%ebx)
- e2f:	8b 42 04             	mov    0x4(%edx),%eax
- e32:	8d 34 c2             	lea    (%edx,%eax,8),%esi
- e35:	39 f1                	cmp    %esi,%ecx
- e37:	75 c6                	jne    dff <free+0x3f>
- e39:	03 43 fc             	add    -0x4(%ebx),%eax
- e3c:	89 15 ec 17 00 00    	mov    %edx,0x17ec
- e42:	89 42 04             	mov    %eax,0x4(%edx)
- e45:	8b 4b f8             	mov    -0x8(%ebx),%ecx
- e48:	89 0a                	mov    %ecx,(%edx)
- e4a:	5b                   	pop    %ebx
- e4b:	5e                   	pop    %esi
- e4c:	5f                   	pop    %edi
- e4d:	5d                   	pop    %ebp
- e4e:	c3                   	ret    
- e4f:	90                   	nop
+000011c0 <printint>:
+    11c0:	55                   	push   %ebp
+    11c1:	89 e5                	mov    %esp,%ebp
+    11c3:	57                   	push   %edi
+    11c4:	56                   	push   %esi
+    11c5:	53                   	push   %ebx
+    11c6:	83 ec 3c             	sub    $0x3c,%esp
+    11c9:	89 4d c4             	mov    %ecx,-0x3c(%ebp)
+    11cc:	89 d1                	mov    %edx,%ecx
+    11ce:	89 45 b8             	mov    %eax,-0x48(%ebp)
+    11d1:	85 d2                	test   %edx,%edx
+    11d3:	0f 89 7f 00 00 00    	jns    1258 <printint+0x98>
+    11d9:	f6 45 08 01          	testb  $0x1,0x8(%ebp)
+    11dd:	74 79                	je     1258 <printint+0x98>
+    11df:	c7 45 bc 01 00 00 00 	movl   $0x1,-0x44(%ebp)
+    11e6:	f7 d9                	neg    %ecx
+    11e8:	31 db                	xor    %ebx,%ebx
+    11ea:	8d 75 d7             	lea    -0x29(%ebp),%esi
+    11ed:	8d 76 00             	lea    0x0(%esi),%esi
+    11f0:	89 c8                	mov    %ecx,%eax
+    11f2:	31 d2                	xor    %edx,%edx
+    11f4:	89 cf                	mov    %ecx,%edi
+    11f6:	f7 75 c4             	divl   -0x3c(%ebp)
+    11f9:	0f b6 92 e8 1c 00 00 	movzbl 0x1ce8(%edx),%edx
+    1200:	89 45 c0             	mov    %eax,-0x40(%ebp)
+    1203:	89 d8                	mov    %ebx,%eax
+    1205:	8d 5b 01             	lea    0x1(%ebx),%ebx
+    1208:	8b 4d c0             	mov    -0x40(%ebp),%ecx
+    120b:	88 14 1e             	mov    %dl,(%esi,%ebx,1)
+    120e:	39 7d c4             	cmp    %edi,-0x3c(%ebp)
+    1211:	76 dd                	jbe    11f0 <printint+0x30>
+    1213:	8b 4d bc             	mov    -0x44(%ebp),%ecx
+    1216:	85 c9                	test   %ecx,%ecx
+    1218:	74 0c                	je     1226 <printint+0x66>
+    121a:	c6 44 1d d8 2d       	movb   $0x2d,-0x28(%ebp,%ebx,1)
+    121f:	89 d8                	mov    %ebx,%eax
+    1221:	ba 2d 00 00 00       	mov    $0x2d,%edx
+    1226:	8b 7d b8             	mov    -0x48(%ebp),%edi
+    1229:	8d 5c 05 d7          	lea    -0x29(%ebp,%eax,1),%ebx
+    122d:	eb 07                	jmp    1236 <printint+0x76>
+    122f:	90                   	nop
+    1230:	0f b6 13             	movzbl (%ebx),%edx
+    1233:	83 eb 01             	sub    $0x1,%ebx
+    1236:	83 ec 04             	sub    $0x4,%esp
+    1239:	88 55 d7             	mov    %dl,-0x29(%ebp)
+    123c:	6a 01                	push   $0x1
+    123e:	56                   	push   %esi
+    123f:	57                   	push   %edi
+    1240:	e8 ce fe ff ff       	call   1113 <write>
+    1245:	83 c4 10             	add    $0x10,%esp
+    1248:	39 de                	cmp    %ebx,%esi
+    124a:	75 e4                	jne    1230 <printint+0x70>
+    124c:	8d 65 f4             	lea    -0xc(%ebp),%esp
+    124f:	5b                   	pop    %ebx
+    1250:	5e                   	pop    %esi
+    1251:	5f                   	pop    %edi
+    1252:	5d                   	pop    %ebp
+    1253:	c3                   	ret    
+    1254:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    1258:	c7 45 bc 00 00 00 00 	movl   $0x0,-0x44(%ebp)
+    125f:	eb 87                	jmp    11e8 <printint+0x28>
+    1261:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    1268:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    126f:	90                   	nop
 
-00000e50 <malloc>:
- e50:	55                   	push   %ebp
- e51:	89 e5                	mov    %esp,%ebp
- e53:	57                   	push   %edi
- e54:	56                   	push   %esi
- e55:	53                   	push   %ebx
- e56:	83 ec 1c             	sub    $0x1c,%esp
- e59:	8b 45 08             	mov    0x8(%ebp),%eax
- e5c:	8b 3d ec 17 00 00    	mov    0x17ec,%edi
- e62:	8d 70 07             	lea    0x7(%eax),%esi
- e65:	c1 ee 03             	shr    $0x3,%esi
- e68:	83 c6 01             	add    $0x1,%esi
- e6b:	85 ff                	test   %edi,%edi
- e6d:	0f 84 9d 00 00 00    	je     f10 <malloc+0xc0>
- e73:	8b 17                	mov    (%edi),%edx
- e75:	8b 4a 04             	mov    0x4(%edx),%ecx
- e78:	39 f1                	cmp    %esi,%ecx
- e7a:	73 6a                	jae    ee6 <malloc+0x96>
- e7c:	bb 00 10 00 00       	mov    $0x1000,%ebx
- e81:	39 de                	cmp    %ebx,%esi
- e83:	0f 43 de             	cmovae %esi,%ebx
- e86:	8d 04 dd 00 00 00 00 	lea    0x0(,%ebx,8),%eax
- e8d:	89 45 e4             	mov    %eax,-0x1c(%ebp)
- e90:	eb 17                	jmp    ea9 <malloc+0x59>
- e92:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
- e98:	8b 02                	mov    (%edx),%eax
- e9a:	8b 48 04             	mov    0x4(%eax),%ecx
- e9d:	39 f1                	cmp    %esi,%ecx
- e9f:	73 4f                	jae    ef0 <malloc+0xa0>
- ea1:	8b 3d ec 17 00 00    	mov    0x17ec,%edi
- ea7:	89 c2                	mov    %eax,%edx
- ea9:	39 d7                	cmp    %edx,%edi
- eab:	75 eb                	jne    e98 <malloc+0x48>
- ead:	83 ec 0c             	sub    $0xc,%esp
- eb0:	ff 75 e4             	push   -0x1c(%ebp)
- eb3:	e8 73 fc ff ff       	call   b2b <sbrk>
- eb8:	83 c4 10             	add    $0x10,%esp
- ebb:	83 f8 ff             	cmp    $0xffffffff,%eax
- ebe:	74 1c                	je     edc <malloc+0x8c>
- ec0:	89 58 04             	mov    %ebx,0x4(%eax)
- ec3:	83 ec 0c             	sub    $0xc,%esp
- ec6:	83 c0 08             	add    $0x8,%eax
- ec9:	50                   	push   %eax
- eca:	e8 f1 fe ff ff       	call   dc0 <free>
- ecf:	8b 15 ec 17 00 00    	mov    0x17ec,%edx
- ed5:	83 c4 10             	add    $0x10,%esp
- ed8:	85 d2                	test   %edx,%edx
- eda:	75 bc                	jne    e98 <malloc+0x48>
- edc:	8d 65 f4             	lea    -0xc(%ebp),%esp
- edf:	31 c0                	xor    %eax,%eax
- ee1:	5b                   	pop    %ebx
- ee2:	5e                   	pop    %esi
- ee3:	5f                   	pop    %edi
- ee4:	5d                   	pop    %ebp
- ee5:	c3                   	ret    
- ee6:	89 d0                	mov    %edx,%eax
- ee8:	89 fa                	mov    %edi,%edx
- eea:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
- ef0:	39 ce                	cmp    %ecx,%esi
- ef2:	74 4c                	je     f40 <malloc+0xf0>
- ef4:	29 f1                	sub    %esi,%ecx
- ef6:	89 48 04             	mov    %ecx,0x4(%eax)
- ef9:	8d 04 c8             	lea    (%eax,%ecx,8),%eax
- efc:	89 70 04             	mov    %esi,0x4(%eax)
- eff:	89 15 ec 17 00 00    	mov    %edx,0x17ec
- f05:	8d 65 f4             	lea    -0xc(%ebp),%esp
- f08:	83 c0 08             	add    $0x8,%eax
- f0b:	5b                   	pop    %ebx
- f0c:	5e                   	pop    %esi
- f0d:	5f                   	pop    %edi
- f0e:	5d                   	pop    %ebp
- f0f:	c3                   	ret    
- f10:	c7 05 ec 17 00 00 f0 	movl   $0x17f0,0x17ec
- f17:	17 00 00 
- f1a:	bf f0 17 00 00       	mov    $0x17f0,%edi
- f1f:	c7 05 f0 17 00 00 f0 	movl   $0x17f0,0x17f0
- f26:	17 00 00 
- f29:	89 fa                	mov    %edi,%edx
- f2b:	c7 05 f4 17 00 00 00 	movl   $0x0,0x17f4
- f32:	00 00 00 
- f35:	e9 42 ff ff ff       	jmp    e7c <malloc+0x2c>
- f3a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
- f40:	8b 08                	mov    (%eax),%ecx
- f42:	89 0a                	mov    %ecx,(%edx)
- f44:	eb b9                	jmp    eff <malloc+0xaf>
+00001270 <printf>:
+    1270:	55                   	push   %ebp
+    1271:	89 e5                	mov    %esp,%ebp
+    1273:	57                   	push   %edi
+    1274:	56                   	push   %esi
+    1275:	53                   	push   %ebx
+    1276:	83 ec 2c             	sub    $0x2c,%esp
+    1279:	8b 5d 0c             	mov    0xc(%ebp),%ebx
+    127c:	8b 75 08             	mov    0x8(%ebp),%esi
+    127f:	0f b6 13             	movzbl (%ebx),%edx
+    1282:	84 d2                	test   %dl,%dl
+    1284:	74 6a                	je     12f0 <printf+0x80>
+    1286:	8d 45 10             	lea    0x10(%ebp),%eax
+    1289:	83 c3 01             	add    $0x1,%ebx
+    128c:	8d 7d e7             	lea    -0x19(%ebp),%edi
+    128f:	31 c9                	xor    %ecx,%ecx
+    1291:	89 45 d0             	mov    %eax,-0x30(%ebp)
+    1294:	eb 36                	jmp    12cc <printf+0x5c>
+    1296:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    129d:	8d 76 00             	lea    0x0(%esi),%esi
+    12a0:	89 4d d4             	mov    %ecx,-0x2c(%ebp)
+    12a3:	b9 25 00 00 00       	mov    $0x25,%ecx
+    12a8:	83 f8 25             	cmp    $0x25,%eax
+    12ab:	74 15                	je     12c2 <printf+0x52>
+    12ad:	83 ec 04             	sub    $0x4,%esp
+    12b0:	88 55 e7             	mov    %dl,-0x19(%ebp)
+    12b3:	6a 01                	push   $0x1
+    12b5:	57                   	push   %edi
+    12b6:	56                   	push   %esi
+    12b7:	e8 57 fe ff ff       	call   1113 <write>
+    12bc:	8b 4d d4             	mov    -0x2c(%ebp),%ecx
+    12bf:	83 c4 10             	add    $0x10,%esp
+    12c2:	0f b6 13             	movzbl (%ebx),%edx
+    12c5:	83 c3 01             	add    $0x1,%ebx
+    12c8:	84 d2                	test   %dl,%dl
+    12ca:	74 24                	je     12f0 <printf+0x80>
+    12cc:	0f b6 c2             	movzbl %dl,%eax
+    12cf:	85 c9                	test   %ecx,%ecx
+    12d1:	74 cd                	je     12a0 <printf+0x30>
+    12d3:	83 f9 25             	cmp    $0x25,%ecx
+    12d6:	75 ea                	jne    12c2 <printf+0x52>
+    12d8:	83 f8 25             	cmp    $0x25,%eax
+    12db:	0f 84 07 01 00 00    	je     13e8 <printf+0x178>
+    12e1:	83 e8 63             	sub    $0x63,%eax
+    12e4:	83 f8 15             	cmp    $0x15,%eax
+    12e7:	77 17                	ja     1300 <printf+0x90>
+    12e9:	ff 24 85 90 1c 00 00 	jmp    *0x1c90(,%eax,4)
+    12f0:	8d 65 f4             	lea    -0xc(%ebp),%esp
+    12f3:	5b                   	pop    %ebx
+    12f4:	5e                   	pop    %esi
+    12f5:	5f                   	pop    %edi
+    12f6:	5d                   	pop    %ebp
+    12f7:	c3                   	ret    
+    12f8:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    12ff:	90                   	nop
+    1300:	83 ec 04             	sub    $0x4,%esp
+    1303:	88 55 d4             	mov    %dl,-0x2c(%ebp)
+    1306:	6a 01                	push   $0x1
+    1308:	57                   	push   %edi
+    1309:	56                   	push   %esi
+    130a:	c6 45 e7 25          	movb   $0x25,-0x19(%ebp)
+    130e:	e8 00 fe ff ff       	call   1113 <write>
+    1313:	0f b6 55 d4          	movzbl -0x2c(%ebp),%edx
+    1317:	83 c4 0c             	add    $0xc,%esp
+    131a:	88 55 e7             	mov    %dl,-0x19(%ebp)
+    131d:	6a 01                	push   $0x1
+    131f:	57                   	push   %edi
+    1320:	56                   	push   %esi
+    1321:	e8 ed fd ff ff       	call   1113 <write>
+    1326:	83 c4 10             	add    $0x10,%esp
+    1329:	31 c9                	xor    %ecx,%ecx
+    132b:	eb 95                	jmp    12c2 <printf+0x52>
+    132d:	8d 76 00             	lea    0x0(%esi),%esi
+    1330:	83 ec 0c             	sub    $0xc,%esp
+    1333:	b9 10 00 00 00       	mov    $0x10,%ecx
+    1338:	6a 00                	push   $0x0
+    133a:	8b 45 d0             	mov    -0x30(%ebp),%eax
+    133d:	8b 10                	mov    (%eax),%edx
+    133f:	89 f0                	mov    %esi,%eax
+    1341:	e8 7a fe ff ff       	call   11c0 <printint>
+    1346:	83 45 d0 04          	addl   $0x4,-0x30(%ebp)
+    134a:	83 c4 10             	add    $0x10,%esp
+    134d:	31 c9                	xor    %ecx,%ecx
+    134f:	e9 6e ff ff ff       	jmp    12c2 <printf+0x52>
+    1354:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    1358:	8b 45 d0             	mov    -0x30(%ebp),%eax
+    135b:	8b 10                	mov    (%eax),%edx
+    135d:	83 c0 04             	add    $0x4,%eax
+    1360:	89 45 d0             	mov    %eax,-0x30(%ebp)
+    1363:	85 d2                	test   %edx,%edx
+    1365:	0f 84 8d 00 00 00    	je     13f8 <printf+0x188>
+    136b:	0f b6 02             	movzbl (%edx),%eax
+    136e:	31 c9                	xor    %ecx,%ecx
+    1370:	84 c0                	test   %al,%al
+    1372:	0f 84 4a ff ff ff    	je     12c2 <printf+0x52>
+    1378:	89 5d d4             	mov    %ebx,-0x2c(%ebp)
+    137b:	89 d3                	mov    %edx,%ebx
+    137d:	8d 76 00             	lea    0x0(%esi),%esi
+    1380:	83 ec 04             	sub    $0x4,%esp
+    1383:	83 c3 01             	add    $0x1,%ebx
+    1386:	88 45 e7             	mov    %al,-0x19(%ebp)
+    1389:	6a 01                	push   $0x1
+    138b:	57                   	push   %edi
+    138c:	56                   	push   %esi
+    138d:	e8 81 fd ff ff       	call   1113 <write>
+    1392:	0f b6 03             	movzbl (%ebx),%eax
+    1395:	83 c4 10             	add    $0x10,%esp
+    1398:	84 c0                	test   %al,%al
+    139a:	75 e4                	jne    1380 <printf+0x110>
+    139c:	8b 5d d4             	mov    -0x2c(%ebp),%ebx
+    139f:	31 c9                	xor    %ecx,%ecx
+    13a1:	e9 1c ff ff ff       	jmp    12c2 <printf+0x52>
+    13a6:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    13ad:	8d 76 00             	lea    0x0(%esi),%esi
+    13b0:	83 ec 0c             	sub    $0xc,%esp
+    13b3:	b9 0a 00 00 00       	mov    $0xa,%ecx
+    13b8:	6a 01                	push   $0x1
+    13ba:	e9 7b ff ff ff       	jmp    133a <printf+0xca>
+    13bf:	90                   	nop
+    13c0:	8b 45 d0             	mov    -0x30(%ebp),%eax
+    13c3:	83 ec 04             	sub    $0x4,%esp
+    13c6:	8b 00                	mov    (%eax),%eax
+    13c8:	6a 01                	push   $0x1
+    13ca:	57                   	push   %edi
+    13cb:	56                   	push   %esi
+    13cc:	88 45 e7             	mov    %al,-0x19(%ebp)
+    13cf:	e8 3f fd ff ff       	call   1113 <write>
+    13d4:	83 45 d0 04          	addl   $0x4,-0x30(%ebp)
+    13d8:	83 c4 10             	add    $0x10,%esp
+    13db:	31 c9                	xor    %ecx,%ecx
+    13dd:	e9 e0 fe ff ff       	jmp    12c2 <printf+0x52>
+    13e2:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    13e8:	88 55 e7             	mov    %dl,-0x19(%ebp)
+    13eb:	83 ec 04             	sub    $0x4,%esp
+    13ee:	e9 2a ff ff ff       	jmp    131d <printf+0xad>
+    13f3:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    13f7:	90                   	nop
+    13f8:	ba 89 1c 00 00       	mov    $0x1c89,%edx
+    13fd:	89 5d d4             	mov    %ebx,-0x2c(%ebp)
+    1400:	b8 28 00 00 00       	mov    $0x28,%eax
+    1405:	89 d3                	mov    %edx,%ebx
+    1407:	e9 74 ff ff ff       	jmp    1380 <printf+0x110>
+    140c:	66 90                	xchg   %ax,%ax
+    140e:	66 90                	xchg   %ax,%ax
+
+00001410 <free>:
+    1410:	55                   	push   %ebp
+    1411:	a1 94 20 00 00       	mov    0x2094,%eax
+    1416:	89 e5                	mov    %esp,%ebp
+    1418:	57                   	push   %edi
+    1419:	56                   	push   %esi
+    141a:	53                   	push   %ebx
+    141b:	8b 5d 08             	mov    0x8(%ebp),%ebx
+    141e:	8d 4b f8             	lea    -0x8(%ebx),%ecx
+    1421:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+    1428:	89 c2                	mov    %eax,%edx
+    142a:	8b 00                	mov    (%eax),%eax
+    142c:	39 ca                	cmp    %ecx,%edx
+    142e:	73 30                	jae    1460 <free+0x50>
+    1430:	39 c1                	cmp    %eax,%ecx
+    1432:	72 04                	jb     1438 <free+0x28>
+    1434:	39 c2                	cmp    %eax,%edx
+    1436:	72 f0                	jb     1428 <free+0x18>
+    1438:	8b 73 fc             	mov    -0x4(%ebx),%esi
+    143b:	8d 3c f1             	lea    (%ecx,%esi,8),%edi
+    143e:	39 f8                	cmp    %edi,%eax
+    1440:	74 30                	je     1472 <free+0x62>
+    1442:	89 43 f8             	mov    %eax,-0x8(%ebx)
+    1445:	8b 42 04             	mov    0x4(%edx),%eax
+    1448:	8d 34 c2             	lea    (%edx,%eax,8),%esi
+    144b:	39 f1                	cmp    %esi,%ecx
+    144d:	74 3a                	je     1489 <free+0x79>
+    144f:	89 0a                	mov    %ecx,(%edx)
+    1451:	5b                   	pop    %ebx
+    1452:	89 15 94 20 00 00    	mov    %edx,0x2094
+    1458:	5e                   	pop    %esi
+    1459:	5f                   	pop    %edi
+    145a:	5d                   	pop    %ebp
+    145b:	c3                   	ret    
+    145c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    1460:	39 c2                	cmp    %eax,%edx
+    1462:	72 c4                	jb     1428 <free+0x18>
+    1464:	39 c1                	cmp    %eax,%ecx
+    1466:	73 c0                	jae    1428 <free+0x18>
+    1468:	8b 73 fc             	mov    -0x4(%ebx),%esi
+    146b:	8d 3c f1             	lea    (%ecx,%esi,8),%edi
+    146e:	39 f8                	cmp    %edi,%eax
+    1470:	75 d0                	jne    1442 <free+0x32>
+    1472:	03 70 04             	add    0x4(%eax),%esi
+    1475:	89 73 fc             	mov    %esi,-0x4(%ebx)
+    1478:	8b 02                	mov    (%edx),%eax
+    147a:	8b 00                	mov    (%eax),%eax
+    147c:	89 43 f8             	mov    %eax,-0x8(%ebx)
+    147f:	8b 42 04             	mov    0x4(%edx),%eax
+    1482:	8d 34 c2             	lea    (%edx,%eax,8),%esi
+    1485:	39 f1                	cmp    %esi,%ecx
+    1487:	75 c6                	jne    144f <free+0x3f>
+    1489:	03 43 fc             	add    -0x4(%ebx),%eax
+    148c:	89 15 94 20 00 00    	mov    %edx,0x2094
+    1492:	89 42 04             	mov    %eax,0x4(%edx)
+    1495:	8b 4b f8             	mov    -0x8(%ebx),%ecx
+    1498:	89 0a                	mov    %ecx,(%edx)
+    149a:	5b                   	pop    %ebx
+    149b:	5e                   	pop    %esi
+    149c:	5f                   	pop    %edi
+    149d:	5d                   	pop    %ebp
+    149e:	c3                   	ret    
+    149f:	90                   	nop
+
+000014a0 <malloc>:
+    14a0:	55                   	push   %ebp
+    14a1:	89 e5                	mov    %esp,%ebp
+    14a3:	57                   	push   %edi
+    14a4:	56                   	push   %esi
+    14a5:	53                   	push   %ebx
+    14a6:	83 ec 1c             	sub    $0x1c,%esp
+    14a9:	8b 45 08             	mov    0x8(%ebp),%eax
+    14ac:	8b 3d 94 20 00 00    	mov    0x2094,%edi
+    14b2:	8d 70 07             	lea    0x7(%eax),%esi
+    14b5:	c1 ee 03             	shr    $0x3,%esi
+    14b8:	83 c6 01             	add    $0x1,%esi
+    14bb:	85 ff                	test   %edi,%edi
+    14bd:	0f 84 9d 00 00 00    	je     1560 <malloc+0xc0>
+    14c3:	8b 17                	mov    (%edi),%edx
+    14c5:	8b 4a 04             	mov    0x4(%edx),%ecx
+    14c8:	39 f1                	cmp    %esi,%ecx
+    14ca:	73 6a                	jae    1536 <malloc+0x96>
+    14cc:	bb 00 10 00 00       	mov    $0x1000,%ebx
+    14d1:	39 de                	cmp    %ebx,%esi
+    14d3:	0f 43 de             	cmovae %esi,%ebx
+    14d6:	8d 04 dd 00 00 00 00 	lea    0x0(,%ebx,8),%eax
+    14dd:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+    14e0:	eb 17                	jmp    14f9 <malloc+0x59>
+    14e2:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    14e8:	8b 02                	mov    (%edx),%eax
+    14ea:	8b 48 04             	mov    0x4(%eax),%ecx
+    14ed:	39 f1                	cmp    %esi,%ecx
+    14ef:	73 4f                	jae    1540 <malloc+0xa0>
+    14f1:	8b 3d 94 20 00 00    	mov    0x2094,%edi
+    14f7:	89 c2                	mov    %eax,%edx
+    14f9:	39 d7                	cmp    %edx,%edi
+    14fb:	75 eb                	jne    14e8 <malloc+0x48>
+    14fd:	83 ec 0c             	sub    $0xc,%esp
+    1500:	ff 75 e4             	push   -0x1c(%ebp)
+    1503:	e8 73 fc ff ff       	call   117b <sbrk>
+    1508:	83 c4 10             	add    $0x10,%esp
+    150b:	83 f8 ff             	cmp    $0xffffffff,%eax
+    150e:	74 1c                	je     152c <malloc+0x8c>
+    1510:	89 58 04             	mov    %ebx,0x4(%eax)
+    1513:	83 ec 0c             	sub    $0xc,%esp
+    1516:	83 c0 08             	add    $0x8,%eax
+    1519:	50                   	push   %eax
+    151a:	e8 f1 fe ff ff       	call   1410 <free>
+    151f:	8b 15 94 20 00 00    	mov    0x2094,%edx
+    1525:	83 c4 10             	add    $0x10,%esp
+    1528:	85 d2                	test   %edx,%edx
+    152a:	75 bc                	jne    14e8 <malloc+0x48>
+    152c:	8d 65 f4             	lea    -0xc(%ebp),%esp
+    152f:	31 c0                	xor    %eax,%eax
+    1531:	5b                   	pop    %ebx
+    1532:	5e                   	pop    %esi
+    1533:	5f                   	pop    %edi
+    1534:	5d                   	pop    %ebp
+    1535:	c3                   	ret    
+    1536:	89 d0                	mov    %edx,%eax
+    1538:	89 fa                	mov    %edi,%edx
+    153a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    1540:	39 ce                	cmp    %ecx,%esi
+    1542:	74 4c                	je     1590 <malloc+0xf0>
+    1544:	29 f1                	sub    %esi,%ecx
+    1546:	89 48 04             	mov    %ecx,0x4(%eax)
+    1549:	8d 04 c8             	lea    (%eax,%ecx,8),%eax
+    154c:	89 70 04             	mov    %esi,0x4(%eax)
+    154f:	89 15 94 20 00 00    	mov    %edx,0x2094
+    1555:	8d 65 f4             	lea    -0xc(%ebp),%esp
+    1558:	83 c0 08             	add    $0x8,%eax
+    155b:	5b                   	pop    %ebx
+    155c:	5e                   	pop    %esi
+    155d:	5f                   	pop    %edi
+    155e:	5d                   	pop    %ebp
+    155f:	c3                   	ret    
+    1560:	c7 05 94 20 00 00 98 	movl   $0x2098,0x2094
+    1567:	20 00 00 
+    156a:	bf 98 20 00 00       	mov    $0x2098,%edi
+    156f:	c7 05 98 20 00 00 98 	movl   $0x2098,0x2098
+    1576:	20 00 00 
+    1579:	89 fa                	mov    %edi,%edx
+    157b:	c7 05 9c 20 00 00 00 	movl   $0x0,0x209c
+    1582:	00 00 00 
+    1585:	e9 42 ff ff ff       	jmp    14cc <malloc+0x2c>
+    158a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    1590:	8b 08                	mov    (%eax),%ecx
+    1592:	89 0a                	mov    %ecx,(%edx)
+    1594:	eb b9                	jmp    154f <malloc+0xaf>

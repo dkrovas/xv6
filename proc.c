@@ -123,6 +123,7 @@ found:
     p->addr[i].phys_page_used = 0;
     p->addr[i].flags = 0;
     p->addr[i].fd = 0;
+    //p->addr[i].access = 0;
   }
   p->memory_used = 0;
   p->n_mmaps = 0;
@@ -188,10 +189,41 @@ growproc(int n)
   switchuvm(curproc);
   return 0;
 }
-
+void map_shared(uint addr, int size, pde_t* ptp, pde_t* ptc) {
+  int count = 0;
+  while(count < size / 4096) {
+    pte_t* pte = walkpgdir(ptp, (void*)addr + (count * 4096), 0);
+	  if(PTE_P & *pte){
+	    int physical_address = PTE_ADDR(*pte); 	
+	    mappages(ptc, (void*)(addr + count * 4096), 4096, physical_address, PTE_W | PTE_U);
+    }
+	  ++count;
+  }
+}
+void map_private(uint addr, int size, pde_t* ptp, pde_t* ptc) {
+  cprintf("addr %x, size %d\n", addr, size);
+  int count = 0;
+  char* mem = 0;
+  while(count < size / 4096) {
+    pte_t* pte = walkpgdir(ptp, (void*)(addr + (count * 4096)), 0);
+	  if(PTE_P & *pte){
+	    int physical_address = PTE_ADDR(*pte);
+      physical_address = physical_address;
+      mem = kalloc();
+      if(mem == 0){
+        cprintf("kalloc failed in map private fork\n");
+        return;
+      }
+      memmove((void*) mem, (void*)(P2V(physical_address)), 4096);
+      mappages(ptc, (void*)(addr + count * 4096), 4096, V2P(mem), PTE_W | PTE_U);
+      //memmove((void*)(V2P(mem)), (void*)(physical_address), 4096);
+    }
+	  ++count;
+  }
+}
 // Create a new process copying p as the parent.
 // Sets up stack to return as if from system call.
-// Caller must set state of returned proc to RUNNABLE.
+// Caller must set state of returned proc to RUNNABLE
 int
 fork(void)
 {
@@ -199,11 +231,11 @@ fork(void)
   struct proc *np;
   struct proc *curproc = myproc();
 
-  for (int i = 0; i < 16; ++i) {
-    if (curproc->addr[i].flags & MAP_PRIVATE) {
-        curproc->addr[i].flags = curproc->addr[i].flags | MAP_ANONYMOUS; //Making all the mappings anonymous, because the mapping is private
-    }
-  }
+  // for (int i = 0; i < 16; ++i) {
+  //   if (curproc->addr[i].flags & MAP_PRIVATE) {
+  //       curproc->addr[i].flags = curproc->addr[i].flags | MAP_ANONYMOUS; //Making all the mappings anonymous, because the mapping is private
+  //   }
+  // }
 
   // Allocate process.
   if((np = allocproc()) == 0){
@@ -220,6 +252,16 @@ fork(void)
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
+  np->memory_used = curproc->memory_used;
+  np->n_mmaps = curproc->n_mmaps;
+  for(int k = 0; k < 16; ++k) {
+    np->addr[k] = curproc->addr[k];
+    if (np->addr[k].flags & MAP_SHARED) {
+      map_shared(np->addr[k].va, np->addr[k].size, curproc->pgdir, np->pgdir);
+    } else if(np->addr[k].flags & MAP_PRIVATE) {
+      map_private(np->addr[k].va, np->addr[k].size, curproc->pgdir, np->pgdir);
+    }
+  }
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
@@ -242,6 +284,7 @@ fork(void)
   return pid;
 }
 
+
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
@@ -254,11 +297,20 @@ exit(void)
 
   if(curproc == initproc)
     panic("init exiting");
-
+  
   // for(int i = 0; i < 16; ++i) {
-  //   wunmap(curproc->addr[i].va);
+  //  if (curproc->addr[i].va != 0) {
+  //   	wunmap(curproc->addr[i].va);
+  //     }
+  // }
+  
+  // pte_t *pte;
+  // for(uint addr = 0x60000000; addr < 0x80000000; addr +=4096){
+  //     pte = walkpgdir(curproc->pgdir, (void *)addr, 0);
+  //     *pte = 0;
   // }
 
+  
   // Close all open files.
   for(fd = 0; fd < NOFILE; fd++){
     if(curproc->ofile[fd]){
@@ -266,12 +318,12 @@ exit(void)
       curproc->ofile[fd] = 0;
     }
   }
-
+  
   begin_op();
   iput(curproc->cwd);
   end_op();
   curproc->cwd = 0;
-
+  
   acquire(&ptable.lock);
 
   // Parent might be sleeping in wait().
@@ -285,9 +337,11 @@ exit(void)
         wakeup1(initproc);
     }
   }
+  
 
   // Jump into the scheduler, never to return.
   curproc->state = ZOMBIE;
+  //switchuvm(curproc);
   sched();
   panic("zombie exit");
 }

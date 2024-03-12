@@ -42,9 +42,11 @@ struct address {
     int flags;
     int fd;
     int phys_page_used;             // Keeps track of physical pages used.
+   // int access;
 };
 
 // Per-process state
+
 struct proc {
   uint sz;                     // Size of process memory (bytes)
   pde_t* pgdir;                // Page table
